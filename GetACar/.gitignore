@@ -1,0 +1,36 @@
+*.class
+
+# Package Files #
+*.jar
+*.war
+
+# gwt caches and compiled units #
+gwt-unitCache/
+
+# boilerplate generated classes #
+.apt_generated/
+
+# more caches and things from deploy #
+WEB-INF/deploy/
+WEB-INF/classes/
+
+.gwt
+gwt-unitCache
+www-test
+
+#Maven
+target/
+
+#IDEA
+*/.idea/**
+.idea/
+
+target/
+
+.classpath
+.project
+.settings/
+
+*.iml
+*.ipr
+*.iws
