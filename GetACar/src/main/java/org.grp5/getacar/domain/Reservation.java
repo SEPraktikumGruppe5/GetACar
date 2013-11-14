@@ -1,7 +1,6 @@
 package org.grp5.getacar.domain;
 
 import org.codehaus.jackson.annotate.JsonTypeInfo;
-import org.hibernate.annotations.ForeignKey;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -26,7 +25,6 @@ public class Reservation extends BaseDomainObject {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "UID", columnDefinition = "int(10) unsigned")
-    @ForeignKey(name = "FK_UID")
     public User getUser() {
         return user;
     }
@@ -37,7 +35,6 @@ public class Reservation extends BaseDomainObject {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "CID", columnDefinition = "int(10) unsigned")
-    @ForeignKey(name = "FK_CID")
     public Vehicle getVehicle() {
         return vehicle;
     }

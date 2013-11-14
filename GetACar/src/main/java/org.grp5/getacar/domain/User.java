@@ -102,7 +102,6 @@ public class User extends BaseDomainObject {
             uniqueConstraints = @UniqueConstraint(name = "UID_ROID_UC",
                     columnNames = {"Nutzer_UID", "Rolle_ROID"})
     )
-//    @ForeignKey(name="FK_UID" , inverseName="FK_ROID")
     @NotNull
     @Size(min = 1)
     public List<Role> getRoles() {
