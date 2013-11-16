@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name = "fahrzeug")
-@AttributeOverride(name = "id", column = @Column(name = "FID",
+@AttributeOverride(name = "id", column = @Column(name = "f_id",
         columnDefinition = "int(10) unsigned NOT NULL AUTO_INCREMENT"))
 //@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class Vehicle extends BaseDomainObject {
@@ -22,7 +22,7 @@ public class Vehicle extends BaseDomainObject {
     private String comment;
 
     @Basic(optional = false)
-    @Column(name = "Nummer", columnDefinition = "int(10)")
+    @Column(name = "f_nummer", columnDefinition = "int(10)")
     @NotNull
     public Integer getNumber() {
         return number;
@@ -33,7 +33,7 @@ public class Vehicle extends BaseDomainObject {
     }
 
     @Basic(optional = false)
-    @Column(name = "Typ", columnDefinition = "varchar(100)")
+    @Column(name = "f_typ", columnDefinition = "varchar(100)")
     @NotNull
     public String getType() {
         return type;
@@ -44,7 +44,7 @@ public class Vehicle extends BaseDomainObject {
     }
 
     @Basic(optional = false)
-    @Column(name = "Kennzeichen", columnDefinition = "varchar(20)")
+    @Column(name = "f_kennzeichen", columnDefinition = "varchar(20)")
     @NotNull
     public String getLicenseNumber() {
         return licenseNumber;
@@ -55,7 +55,7 @@ public class Vehicle extends BaseDomainObject {
     }
 
     @Basic(optional = false)
-    @Column(name = "Bild", columnDefinition = "text")
+    @Column(name = "f_bild", columnDefinition = "text")
     @NotNull
     public String getPicture() {
         return picture;
@@ -66,7 +66,7 @@ public class Vehicle extends BaseDomainObject {
     }
 
     @Basic(optional = false)
-    @Column(name = "Aktuelle_Koordinaten", columnDefinition = "varchar(40)")
+    @Column(name = "f_aktuelle_koordinaten", columnDefinition = "varchar(40)")
     @NotNull
     public String getActualCoordinates() {
         return actualCoordinates;
@@ -77,7 +77,7 @@ public class Vehicle extends BaseDomainObject {
     }
 
     @Basic(optional = false)
-    @Column(name = "Aktiv", columnDefinition = "tinyint(1) default 0")
+    @Column(name = "f_aktiv", columnDefinition = "tinyint(1) default 0")
     @NotNull
     public Boolean getActive() {
         return active;
@@ -88,7 +88,7 @@ public class Vehicle extends BaseDomainObject {
     }
 
     @Basic(optional = false)
-    @Column(name = "Bemerkung", columnDefinition = "text")
+    @Column(name = "f_bemerkung", columnDefinition = "text")
     @NotNull
     public String getComment() {
         return comment;

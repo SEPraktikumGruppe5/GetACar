@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "rolle")
-@AttributeOverride(name = "id", column = @Column(name = "ROID",
+@AttributeOverride(name = "id", column = @Column(name = "ro_id",
         columnDefinition = "int(10) unsigned NOT NULL AUTO_INCREMENT"))
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class Role extends BaseDomainObject {
@@ -18,7 +18,7 @@ public class Role extends BaseDomainObject {
     private String name;
 
     @Basic(optional = false)
-    @Column(name = "r_name", columnDefinition = "varchar(75)", unique = true)
+    @Column(name = "ro_name", columnDefinition = "varchar(75)", unique = true)
     @Size(min = 2, max = 75)
     public String getName() {
         return name;

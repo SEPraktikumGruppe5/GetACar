@@ -12,8 +12,8 @@ import java.util.List;
  * User domain object.
  */
 @Entity
-@Table(name = "nutzer")
-@AttributeOverride(name = "id", column = @Column(name = "UID",
+@Table(name = "benutzer")
+@AttributeOverride(name = "id", column = @Column(name = "b_id",
         columnDefinition = "int(10) unsigned NOT NULL AUTO_INCREMENT"))
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class User extends BaseDomainObject {
@@ -27,7 +27,7 @@ public class User extends BaseDomainObject {
     private List<Role> roles = Lists.newArrayList();
 
     @Basic(optional = false)
-    @Column(name = "Login", columnDefinition = "varchar(20)")
+    @Column(name = "b_login", columnDefinition = "varchar(20)")
     @NotNull
     public String getLogin() {
         return login;
@@ -38,7 +38,7 @@ public class User extends BaseDomainObject {
     }
 
     @Basic(optional = false)
-    @Column(name = "Passwort", columnDefinition = "text")
+    @Column(name = "b_passwort", columnDefinition = "text")
     @NotNull
     public String getPassword() {
         return password;
@@ -49,7 +49,7 @@ public class User extends BaseDomainObject {
     }
 
     @Basic(optional = false)
-    @Column(name = "Email", columnDefinition = "varchar(50)")
+    @Column(name = "b_email", columnDefinition = "varchar(50)")
     @NotNull
     public String getEmail() {
         return email;
@@ -60,7 +60,7 @@ public class User extends BaseDomainObject {
     }
 
     @Basic(optional = false)
-    @Column(name = "Aktiv", columnDefinition = "tinyint(1) default 0")
+    @Column(name = "b_aktiv", columnDefinition = "tinyint(1) default 0")
     @NotNull
     public Boolean getActive() {
         return active;
@@ -71,7 +71,7 @@ public class User extends BaseDomainObject {
     }
 
     @Basic(optional = false)
-    @Column(name = "Vorname", columnDefinition = "varchar(30)")
+    @Column(name = "b_vorname", columnDefinition = "varchar(30)")
     @NotNull
     public String getFirstName() {
         return firstName;
@@ -82,7 +82,7 @@ public class User extends BaseDomainObject {
     }
 
     @Basic(optional = false)
-    @Column(name = "Nachname", columnDefinition = "varchar(30)")
+    @Column(name = "b_nachname", columnDefinition = "varchar(30)")
     @NotNull
     public String getLastName() {
         return lastName;
@@ -94,13 +94,13 @@ public class User extends BaseDomainObject {
 
     @ManyToMany
     @JoinTable(
-            name = "Nutzer_Rolle",
-            joinColumns = @JoinColumn(name = "Nutzer_UID",
+            name = "benutzer_rolle",
+            joinColumns = @JoinColumn(name = "benutzer_b_id",
                     columnDefinition = "int(10) unsigned NOT NULL"),
-            inverseJoinColumns = @JoinColumn(name = "Rolle_ROID",
+            inverseJoinColumns = @JoinColumn(name = "rolle_ro_id",
                     columnDefinition = "int(10) unsigned NOT NULL"),
-            uniqueConstraints = @UniqueConstraint(name = "UID_ROID_UC",
-                    columnNames = {"Nutzer_UID", "Rolle_ROID"})
+            uniqueConstraints = @UniqueConstraint(
+                    columnNames = {"benutzer_b_id", "rolle_ro_id"})
     )
     @NotNull
     @Size(min = 1)

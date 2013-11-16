@@ -16,168 +16,168 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `ConnectionTestTable`
+-- Table structure for table `benutzer`
 --
 
-DROP TABLE IF EXISTS `ConnectionTestTable`;
+DROP TABLE IF EXISTS `benutzer`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ConnectionTestTable` (
+CREATE TABLE `benutzer` (
+  `b_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `b_aktiv` tinyint(1) NOT NULL DEFAULT '0',
+  `b_email` varchar(50) NOT NULL,
+  `b_vorname` varchar(30) NOT NULL,
+  `b_nachname` varchar(30) NOT NULL,
+  `b_login` varchar(20) NOT NULL,
+  `b_passwort` text NOT NULL,
+  PRIMARY KEY (`b_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `benutzer`
+--
+
+LOCK TABLES `benutzer` WRITE;
+/*!40000 ALTER TABLE `benutzer` DISABLE KEYS */;
+INSERT INTO `benutzer` VALUES (1,0,'admin@getacar.de','admin','admin','admin','$shiro1$SHA-256$500000$iJRddPc2jpRrerxLRXskmQ==$U88i9zJCUZOKJ++1J3tqW5qTa2xUnCho5AaTHyevmsE='),(2,0,'user@getacar.de','user','user','user','$shiro1$SHA-256$500000$A1AfKFLSCVbP3/9C7nBM/A==$NzZuNFZ05acKN5zqgC449FXk8iShHoxUfJrVuCGezm0=');
+/*!40000 ALTER TABLE `benutzer` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `benutzer_rolle`
+--
+
+DROP TABLE IF EXISTS `benutzer_rolle`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `benutzer_rolle` (
+  `benutzer_b_id` int(10) unsigned NOT NULL,
+  `rolle_ro_id` int(10) unsigned NOT NULL,
+  UNIQUE KEY `UK_arq7llj7l2qb3a02e3gwtyaon` (`benutzer_b_id`,`rolle_ro_id`),
+  KEY `FK_bocdnuape4ed8b4ivrtvhwlrw` (`rolle_ro_id`),
+  KEY `FK_34hcs3md2ajdynmnanc4ldcv3` (`benutzer_b_id`),
+  CONSTRAINT `FK_34hcs3md2ajdynmnanc4ldcv3` FOREIGN KEY (`benutzer_b_id`) REFERENCES `benutzer` (`b_id`),
+  CONSTRAINT `FK_bocdnuape4ed8b4ivrtvhwlrw` FOREIGN KEY (`rolle_ro_id`) REFERENCES `rolle` (`ro_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `benutzer_rolle`
+--
+
+LOCK TABLES `benutzer_rolle` WRITE;
+/*!40000 ALTER TABLE `benutzer_rolle` DISABLE KEYS */;
+INSERT INTO `benutzer_rolle` VALUES (1,1),(1,2),(2,2);
+/*!40000 ALTER TABLE `benutzer_rolle` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `connection_test_table`
+--
+
+DROP TABLE IF EXISTS `connection_test_table`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `connection_test_table` (
   `a` char(1) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `ConnectionTestTable`
+-- Dumping data for table `connection_test_table`
 --
 
-LOCK TABLES `ConnectionTestTable` WRITE;
-/*!40000 ALTER TABLE `ConnectionTestTable` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ConnectionTestTable` ENABLE KEYS */;
+LOCK TABLES `connection_test_table` WRITE;
+/*!40000 ALTER TABLE `connection_test_table` DISABLE KEYS */;
+/*!40000 ALTER TABLE `connection_test_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `Fahrzeug`
+-- Table structure for table `fahrzeug`
 --
 
-DROP TABLE IF EXISTS `Fahrzeug`;
+DROP TABLE IF EXISTS `fahrzeug`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Fahrzeug` (
-  `FID` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `Aktiv` tinyint(1) NOT NULL DEFAULT '0',
-  `Aktuelle_Koordinaten` varchar(40) NOT NULL,
-  `Bemerkung` text NOT NULL,
-  `Kennzeichen` varchar(20) NOT NULL,
-  `Nummer` int(10) NOT NULL,
-  `Bild` text NOT NULL,
-  `Typ` varchar(100) NOT NULL,
-  PRIMARY KEY (`FID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+CREATE TABLE `fahrzeug` (
+  `f_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `f_aktiv` tinyint(1) NOT NULL DEFAULT '0',
+  `f_aktuelle_koordinaten` varchar(40) NOT NULL,
+  `f_bemerkung` text NOT NULL,
+  `f_kennzeichen` varchar(20) NOT NULL,
+  `f_nummer` int(10) NOT NULL,
+  `f_bild` text NOT NULL,
+  `f_typ` varchar(100) NOT NULL,
+  PRIMARY KEY (`f_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `Fahrzeug`
+-- Dumping data for table `fahrzeug`
 --
 
-LOCK TABLES `Fahrzeug` WRITE;
-/*!40000 ALTER TABLE `Fahrzeug` DISABLE KEYS */;
-INSERT INTO `Fahrzeug` VALUES (1,1,'10-10','Dings','C-IA 666',1,'auto.jpg','A-Klasse'),(2,1,'12-12','DingsBums','C-IA 667',2,'auto.jpg','B-Klasse'),(3,1,'14-14','DingsBumsBla','C-IA 668',3,'auto.jpg','C-Klasse');
-/*!40000 ALTER TABLE `Fahrzeug` ENABLE KEYS */;
+LOCK TABLES `fahrzeug` WRITE;
+/*!40000 ALTER TABLE `fahrzeug` DISABLE KEYS */;
+INSERT INTO `fahrzeug` VALUES (1,0,'hierundda','Ein Fahrzeug','C-IA 666',1,'auto.jpg','Auto');
+/*!40000 ALTER TABLE `fahrzeug` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `Nutzer`
+-- Table structure for table `reservierung`
 --
 
-DROP TABLE IF EXISTS `Nutzer`;
+DROP TABLE IF EXISTS `reservierung`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Nutzer` (
-  `UID` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `Aktiv` tinyint(1) NOT NULL DEFAULT '0',
-  `Email` varchar(50) NOT NULL,
-  `Vorname` varchar(30) NOT NULL,
-  `Nachname` varchar(30) NOT NULL,
-  `Login` varchar(20) NOT NULL,
-  `Passwort` text NOT NULL,
-  PRIMARY KEY (`UID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `Nutzer`
---
-
-LOCK TABLES `Nutzer` WRITE;
-/*!40000 ALTER TABLE `Nutzer` DISABLE KEYS */;
-INSERT INTO `Nutzer` VALUES (1,1,'admin@getacar.de','Admin','Istrator','admin','$shiro1$SHA-256$500000$iJRddPc2jpRrerxLRXskmQ==$U88i9zJCUZOKJ++1J3tqW5qTa2xUnCho5AaTHyevmsE='),(2,1,'user@getacar.de','Us','Er','user','$shiro1$SHA-256$500000$A1AfKFLSCVbP3/9C7nBM/A==$NzZuNFZ05acKN5zqgC449FXk8iShHoxUfJrVuCGezm0=');
-/*!40000 ALTER TABLE `Nutzer` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `Nutzer_Rolle`
---
-
-DROP TABLE IF EXISTS `Nutzer_Rolle`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Nutzer_Rolle` (
-  `Nutzer_UID` int(10) unsigned NOT NULL,
-  `Rolle_ROID` int(10) unsigned NOT NULL,
-  UNIQUE KEY `UID_ROID_UC` (`Nutzer_UID`,`Rolle_ROID`),
-  KEY `FK_e2bjv48vrvqslf16se35lu6lw` (`Rolle_ROID`),
-  KEY `FK_nt9yuwax8xewpxdnnrfa8p3et` (`Nutzer_UID`),
-  CONSTRAINT `FK_e2bjv48vrvqslf16se35lu6lw` FOREIGN KEY (`Rolle_ROID`) REFERENCES `Rolle` (`ROID`),
-  CONSTRAINT `FK_nt9yuwax8xewpxdnnrfa8p3et` FOREIGN KEY (`Nutzer_UID`) REFERENCES `Nutzer` (`UID`)
+CREATE TABLE `reservierung` (
+  `re_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `re_endkoordinaten` varchar(40) NOT NULL,
+  `re_endzeit` datetime NOT NULL,
+  `re_startkoordinaten` varchar(40) NOT NULL,
+  `re_startzeit` datetime NOT NULL,
+  `b_id` int(10) unsigned NOT NULL,
+  `f_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`re_id`),
+  KEY `FK_ormsdpu23mgh1pixs8arrfjbi` (`b_id`),
+  KEY `FK_bk49px1iafeb7y1okrkit6nx8` (`f_id`),
+  CONSTRAINT `FK_bk49px1iafeb7y1okrkit6nx8` FOREIGN KEY (`f_id`) REFERENCES `fahrzeug` (`f_id`),
+  CONSTRAINT `FK_ormsdpu23mgh1pixs8arrfjbi` FOREIGN KEY (`b_id`) REFERENCES `benutzer` (`b_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `Nutzer_Rolle`
+-- Dumping data for table `reservierung`
 --
 
-LOCK TABLES `Nutzer_Rolle` WRITE;
-/*!40000 ALTER TABLE `Nutzer_Rolle` DISABLE KEYS */;
-INSERT INTO `Nutzer_Rolle` VALUES (1,1),(1,2),(2,2);
-/*!40000 ALTER TABLE `Nutzer_Rolle` ENABLE KEYS */;
+LOCK TABLES `reservierung` WRITE;
+/*!40000 ALTER TABLE `reservierung` DISABLE KEYS */;
+/*!40000 ALTER TABLE `reservierung` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `Reservierung`
+-- Table structure for table `rolle`
 --
 
-DROP TABLE IF EXISTS `Reservierung`;
+DROP TABLE IF EXISTS `rolle`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Reservierung` (
-  `RID` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `Endkoordinaten` varchar(40) NOT NULL,
-  `Endzeit` datetime NOT NULL,
-  `Startkoordinaten` varchar(40) NOT NULL,
-  `Startzeit` datetime NOT NULL,
-  `UID` int(10) unsigned NOT NULL,
-  `CID` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`RID`),
-  KEY `FK_UID` (`UID`),
-  KEY `FK_CID` (`CID`),
-  CONSTRAINT `FK_CID` FOREIGN KEY (`CID`) REFERENCES `Fahrzeug` (`FID`),
-  CONSTRAINT `FK_UID` FOREIGN KEY (`UID`) REFERENCES `Nutzer` (`UID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `Reservierung`
---
-
-LOCK TABLES `Reservierung` WRITE;
-/*!40000 ALTER TABLE `Reservierung` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Reservierung` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `Rolle`
---
-
-DROP TABLE IF EXISTS `Rolle`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Rolle` (
-  `ROID` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `r_name` varchar(75) NOT NULL,
-  PRIMARY KEY (`ROID`),
-  UNIQUE KEY `UK_j33sfc6vevcosj3ohs33fcbd8` (`r_name`)
+CREATE TABLE `rolle` (
+  `ro_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `ro_name` varchar(75) NOT NULL,
+  PRIMARY KEY (`ro_id`),
+  UNIQUE KEY `UK_d27e58n47eiv2hh23g3ag73m6` (`ro_name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `Rolle`
+-- Dumping data for table `rolle`
 --
 
-LOCK TABLES `Rolle` WRITE;
-/*!40000 ALTER TABLE `Rolle` DISABLE KEYS */;
-INSERT INTO `Rolle` VALUES (1,'Admin'),(2,'Benutzer');
-/*!40000 ALTER TABLE `Rolle` ENABLE KEYS */;
+LOCK TABLES `rolle` WRITE;
+/*!40000 ALTER TABLE `rolle` DISABLE KEYS */;
+INSERT INTO `rolle` VALUES (1,'Admin'),(2,'Benutzer');
+/*!40000 ALTER TABLE `rolle` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -189,4 +189,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-11-14 15:36:27
+-- Dump completed on 2013-11-16 20:58:43

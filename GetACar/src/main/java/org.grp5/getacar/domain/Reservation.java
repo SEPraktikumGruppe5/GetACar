@@ -11,7 +11,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "reservierung")
-@AttributeOverride(name = "id", column = @Column(name = "RID",
+@AttributeOverride(name = "id", column = @Column(name = "re_id",
         columnDefinition = "int(10) unsigned NOT NULL AUTO_INCREMENT"))
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class Reservation extends BaseDomainObject {
@@ -24,7 +24,7 @@ public class Reservation extends BaseDomainObject {
     private String endCoordinates;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "UID", columnDefinition = "int(10) unsigned")
+    @JoinColumn(name = "b_id", columnDefinition = "int(10) unsigned")
     public User getUser() {
         return user;
     }
@@ -34,7 +34,7 @@ public class Reservation extends BaseDomainObject {
     }
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "CID", columnDefinition = "int(10) unsigned")
+    @JoinColumn(name = "f_id", columnDefinition = "int(10) unsigned")
     public Vehicle getVehicle() {
         return vehicle;
     }
@@ -44,7 +44,7 @@ public class Reservation extends BaseDomainObject {
     }
 
     @Basic(optional = false)
-    @Column(name = "Startzeit", columnDefinition = "datetime")
+    @Column(name = "re_startzeit", columnDefinition = "datetime")
     @Temporal(TemporalType.TIMESTAMP)
     @NotNull
     public Date getStartTime() {
@@ -56,7 +56,7 @@ public class Reservation extends BaseDomainObject {
     }
 
     @Basic(optional = false)
-    @Column(name = "Endzeit", columnDefinition = "datetime")
+    @Column(name = "re_endzeit", columnDefinition = "datetime")
     @NotNull
     public Date getEndTime() {
         return endTime;
@@ -67,7 +67,7 @@ public class Reservation extends BaseDomainObject {
     }
 
     @Basic(optional = false)
-    @Column(name = "Startkoordinaten", columnDefinition = "varchar(40)")
+    @Column(name = "re_startkoordinaten", columnDefinition = "varchar(40)") // TODO: Brauchen wir die wirklich?
     @NotNull
     public String getStartCoordinates() {
         return startCoordinates;
@@ -78,7 +78,7 @@ public class Reservation extends BaseDomainObject {
     }
 
     @Basic(optional = false)
-    @Column(name = "Endkoordinaten", columnDefinition = "varchar(40)")
+    @Column(name = "re_endkoordinaten", columnDefinition = "varchar(40)")
     @NotNull
     public String getEndCoordinates() {
         return endCoordinates;

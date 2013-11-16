@@ -17,7 +17,7 @@
             <property name="hibernate.c3p0.timeout" value="1800"/>
             <property name="hibernate.c3p0.max_statements" value="50"/>
             <property name="hibernate.c3p0.idle_test_period" value="3000"/>
-            <property name="hibernate.c3p0.automaticTestTable" value="ConnectionTestTable"/>
+            <property name="hibernate.c3p0.automaticTestTable" value="connection_test_table"/>
             <property name="hibernate.format_sql" value="false"/>
             <property name="hibernate.use_sql_comments" value="false"/>
             <property name="hibernate.show_sql" value="false"/>
