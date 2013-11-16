@@ -12,7 +12,7 @@ import java.util.List;
  * User domain object.
  */
 @Entity
-@Table(name = "Nutzer")
+@Table(name = "nutzer")
 @AttributeOverride(name = "id", column = @Column(name = "UID",
         columnDefinition = "int(10) unsigned NOT NULL AUTO_INCREMENT"))
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)

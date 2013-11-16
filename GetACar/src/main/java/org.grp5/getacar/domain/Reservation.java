@@ -10,7 +10,7 @@ import java.util.Date;
  * Reservation domain object.
  */
 @Entity
-@Table(name = "Reservierung")
+@Table(name = "reservierung")
 @AttributeOverride(name = "id", column = @Column(name = "RID",
         columnDefinition = "int(10) unsigned NOT NULL AUTO_INCREMENT"))
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)

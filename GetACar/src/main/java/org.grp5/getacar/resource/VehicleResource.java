@@ -14,12 +14,12 @@ import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 @Path("/rest/vehicles")
-public class CarResource {
+public class VehicleResource {
 
     private final Provider<VehicleDAO> carDAOProvider;
 
     @Inject
-    public CarResource(Provider<VehicleDAO> carDAOProvider) {
+    public VehicleResource(Provider<VehicleDAO> carDAOProvider) {
         this.carDAOProvider = carDAOProvider;
     }
 

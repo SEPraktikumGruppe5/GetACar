@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
  * Role domain object.
  */
 @Entity
-@Table(name = "Rolle")
+@Table(name = "rolle")
 @AttributeOverride(name = "id", column = @Column(name = "ROID",
         columnDefinition = "int(10) unsigned NOT NULL AUTO_INCREMENT"))
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)

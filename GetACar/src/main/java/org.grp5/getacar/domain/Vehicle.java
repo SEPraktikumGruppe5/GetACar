@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
  * Vehicle domain object.
  */
 @Entity
-@Table(name = "Fahrzeug")
+@Table(name = "fahrzeug")
 @AttributeOverride(name = "id", column = @Column(name = "FID",
         columnDefinition = "int(10) unsigned NOT NULL AUTO_INCREMENT"))
 //@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
