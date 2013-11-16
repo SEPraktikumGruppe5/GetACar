@@ -4,7 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 /**
- * Vehicle domain object. Böswillige Änderung werden mit Süßigkeitenentzug bestraft!
+ * Vehicle domain object.
  */
 @Entity
 @Table(name = "fahrzeug")
