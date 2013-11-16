@@ -4,26 +4,17 @@
 *.jar
 *.war
 
-# gwt caches and compiled units #
-gwt-unitCache/
-
-# boilerplate generated classes #
-.apt_generated/
-
-# more caches and things from deploy #
-WEB-INF/deploy/
-WEB-INF/classes/
-
-.gwt
-gwt-unitCache
-www-test
-
-#Maven
+# Maven
 target/
 
-#IDEA
+# IDEA
 */.idea/**
 .idea/
+
+# Eclipse
+.classpath
+.project
+.settings/
 
 target/
 
