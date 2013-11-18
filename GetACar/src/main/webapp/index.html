@@ -12,7 +12,8 @@
         this.type = type;
         this.licenseNumber = licenseNumber;
         this.picture = picture;
-        this.actualCoordinates = actualCoordinates;
+        this.actualPositionLength = actualPositionLength;
+        this.actualPositionWidth = actualPositionWidth;
         this.active = active;
         this.comment = comment;
         this.toJsonString = function () {
@@ -27,10 +28,11 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (data, status, jqXHR) {
-                var output = "";
+                var output = "| ";
                 for (var i in data) {
                     var vehicle = data[i];
-                    output += " " + vehicle.number + " " + vehicle.licenseNumber + " " + vehicle.type;
+                    output += " " + vehicle.number + " " + vehicle.licenseNumber + " " + vehicle.type + " " +
+                            vehicle.actualPositionWidth + " " + vehicle.actualPositionLength + " | "
                 }
                 window.alert(output);
                 // do something

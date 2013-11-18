@@ -4,6 +4,7 @@ import org.codehaus.jackson.annotate.JsonTypeInfo;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -20,8 +21,8 @@ public class Reservation extends BaseDomainObject {
     private Vehicle vehicle;
     private Date startTime;
     private Date endTime;
-    private String startCoordinates;
-    private String endCoordinates;
+    private BigDecimal endPositionWidth;
+    private BigDecimal endPositionLength;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "b_id", columnDefinition = "int(10) unsigned")
@@ -67,24 +68,22 @@ public class Reservation extends BaseDomainObject {
     }
 
     @Basic(optional = false)
-    @Column(name = "re_startkoordinaten", columnDefinition = "varchar(40)") // TODO: Brauchen wir die wirklich?
-    @NotNull
-    public String getStartCoordinates() {
-        return startCoordinates;
+    @Column(name = "re_endkoord_breite", columnDefinition = "decimal(9,6)", nullable = false, updatable = true)
+    public BigDecimal getEndPositionWidth() {
+        return endPositionWidth;
     }
 
-    public void setStartCoordinates(String startCoordinates) {
-        this.startCoordinates = startCoordinates;
+    public void setEndPositionWidth(BigDecimal endPositionWidth) {
+        this.endPositionWidth = endPositionWidth;
     }
 
     @Basic(optional = false)
-    @Column(name = "re_endkoordinaten", columnDefinition = "varchar(40)")
-    @NotNull
-    public String getEndCoordinates() {
-        return endCoordinates;
+    @Column(name = "re_endkoord_laenge", columnDefinition = "decimal(9,6)", nullable = false, updatable = true)
+    public BigDecimal getEndPositionLength() {
+        return endPositionLength;
     }
 
-    public void setEndCoordinates(String endCoordinates) {
-        this.endCoordinates = endCoordinates;
+    public void setEndPositionLength(BigDecimal endPositionLength) {
+        this.endPositionLength = endPositionLength;
     }
 }

@@ -2,6 +2,7 @@ package org.grp5.getacar.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 /**
  * Vehicle domain object.
@@ -17,7 +18,8 @@ public class Vehicle extends BaseDomainObject {
     private String type;
     private String licenseNumber;
     private String picture;
-    private String actualCoordinates;
+    private BigDecimal actualPositionWidth;
+    private BigDecimal actualPositionLength;
     private Boolean active;
     private String comment;
 
@@ -65,19 +67,28 @@ public class Vehicle extends BaseDomainObject {
         this.picture = picture;
     }
 
-    @Basic(optional = false)
-    @Column(name = "f_aktuelle_koordinaten", columnDefinition = "varchar(40)")
-    @NotNull
-    public String getActualCoordinates() {
-        return actualCoordinates;
+    @Basic(optional = true)
+    @Column(name = "f_akt_koord_breite", columnDefinition = "decimal(9,6)")
+    public BigDecimal getActualPositionWidth() {
+        return actualPositionWidth;
     }
 
-    public void setActualCoordinates(String actualCoordinates) {
-        this.actualCoordinates = actualCoordinates;
+    public void setActualPositionWidth(BigDecimal actualPositionWidth) {
+        this.actualPositionWidth = actualPositionWidth;
+    }
+
+    @Basic(optional = true)
+    @Column(name = "f_akt_koord_laenge", columnDefinition = "decimal(9,6)")
+    public BigDecimal getActualPositionLength() {
+        return actualPositionLength;
+    }
+
+    public void setActualPositionLength(BigDecimal actualPositionLength) {
+        this.actualPositionLength = actualPositionLength;
     }
 
     @Basic(optional = false)
-    @Column(name = "f_aktiv", columnDefinition = "tinyint(1) default 0")
+    @Column(name = "f_aktiv", columnDefinition = "bit(1) default 0")
     @NotNull
     public Boolean getActive() {
         return active;

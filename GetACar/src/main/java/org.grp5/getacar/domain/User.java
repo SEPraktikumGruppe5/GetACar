@@ -60,7 +60,7 @@ public class User extends BaseDomainObject {
     }
 
     @Basic(optional = false)
-    @Column(name = "b_aktiv", columnDefinition = "tinyint(1) default 0")
+    @Column(name = "b_aktiv", columnDefinition = "bit(1) default 0")
     @NotNull
     public Boolean getActive() {
         return active;

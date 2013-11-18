@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `benutzer`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `benutzer` (
   `b_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `b_aktiv` tinyint(1) NOT NULL DEFAULT '0',
+  `b_aktiv` bit(1) NOT NULL DEFAULT b'0',
   `b_email` varchar(50) NOT NULL,
   `b_vorname` varchar(30) NOT NULL,
   `b_nachname` varchar(30) NOT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE `benutzer` (
 
 LOCK TABLES `benutzer` WRITE;
 /*!40000 ALTER TABLE `benutzer` DISABLE KEYS */;
-INSERT INTO `benutzer` VALUES (1,0,'admin@getacar.de','admin','admin','admin','$shiro1$SHA-256$500000$iJRddPc2jpRrerxLRXskmQ==$U88i9zJCUZOKJ++1J3tqW5qTa2xUnCho5AaTHyevmsE='),(2,0,'user@getacar.de','user','user','user','$shiro1$SHA-256$500000$A1AfKFLSCVbP3/9C7nBM/A==$NzZuNFZ05acKN5zqgC449FXk8iShHoxUfJrVuCGezm0=');
+INSERT INTO `benutzer` VALUES (1,'\0','admin@getacar.de','admin','admin','admin','$shiro1$SHA-256$500000$iJRddPc2jpRrerxLRXskmQ==$U88i9zJCUZOKJ++1J3tqW5qTa2xUnCho5AaTHyevmsE='),(2,'\0','user@getacar.de','user','user','user','$shiro1$SHA-256$500000$A1AfKFLSCVbP3/9C7nBM/A==$NzZuNFZ05acKN5zqgC449FXk8iShHoxUfJrVuCGezm0=');
 /*!40000 ALTER TABLE `benutzer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -102,15 +102,16 @@ DROP TABLE IF EXISTS `fahrzeug`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `fahrzeug` (
   `f_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `f_aktiv` tinyint(1) NOT NULL DEFAULT '0',
-  `f_aktuelle_koordinaten` varchar(40) NOT NULL,
+  `f_aktiv` bit(1) NOT NULL DEFAULT b'0',
+  `f_akt_koord_laenge` decimal(9,6) DEFAULT NULL,
+  `f_akt_koord_breite` decimal(9,6) DEFAULT NULL,
   `f_bemerkung` text NOT NULL,
   `f_kennzeichen` varchar(20) NOT NULL,
   `f_nummer` int(10) NOT NULL,
   `f_bild` text NOT NULL,
   `f_typ` varchar(100) NOT NULL,
   PRIMARY KEY (`f_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -119,7 +120,7 @@ CREATE TABLE `fahrzeug` (
 
 LOCK TABLES `fahrzeug` WRITE;
 /*!40000 ALTER TABLE `fahrzeug` DISABLE KEYS */;
-INSERT INTO `fahrzeug` VALUES (1,0,'hierundda','Ein Fahrzeug','C-IA 666',1,'auto.jpg','Auto');
+INSERT INTO `fahrzeug` VALUES (1,'','12.927389','50.839203','Ein Fahrzeug','C-IA 666',1,'auto.jpg','Auto'),(2,'','12.927389','50.839203','Ein zweites Auto','C-IA 667',2,'auto2.jpg','Auto');
 /*!40000 ALTER TABLE `fahrzeug` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -132,9 +133,9 @@ DROP TABLE IF EXISTS `reservierung`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `reservierung` (
   `re_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `re_endkoordinaten` varchar(40) NOT NULL,
+  `re_endkoord_laenge` decimal(9,6) NOT NULL,
+  `re_endkoord_breite` decimal(9,6) NOT NULL,
   `re_endzeit` datetime NOT NULL,
-  `re_startkoordinaten` varchar(40) NOT NULL,
   `re_startzeit` datetime NOT NULL,
   `b_id` int(10) unsigned NOT NULL,
   `f_id` int(10) unsigned NOT NULL,
@@ -189,4 +190,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-11-16 20:58:43
+-- Dump completed on 2013-11-18 15:41:20
