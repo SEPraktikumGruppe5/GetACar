@@ -17,13 +17,12 @@
         <jstl.version>1.2</jstl.version>
         <guava.version>14.0.1</guava.version>
         <slf4j.version>1.7.2</slf4j.version>
-        <log4j.version>1.2.17</log4j.version>
-        <commonsLogging.version>1.1.1</commonsLogging.version>
         <jUnit.version>4.11</jUnit.version>
         <hibernate.version>4.2.5.Final</hibernate.version>
         <hibernate-validator.version>4.3.1.Final</hibernate-validator.version>
         <jpa-api.version>2.0.Beta-20090815</jpa-api.version>
         <mysql-connector-java.version>5.1.22</mysql-connector-java.version>
+        <org.apache.onami.logging.slf4j.version>3.4.0-incubating</org.apache.onami.logging.slf4j.version>
 
         <!-- Standard encoding -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -72,8 +71,13 @@
         <dependency>
             <groupId>org.apache.onami.logging</groupId>
             <artifactId>org.apache.onami.logging.slf4j</artifactId>
-            <version>3.4.0-incubating</version>
+            <version>${org.apache.onami.logging.slf4j.version}</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
         </dependency>
         <!-- JUnit -->
         <dependency>

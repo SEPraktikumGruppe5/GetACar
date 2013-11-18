@@ -32,7 +32,8 @@
                 for (var i in data) {
                     var vehicle = data[i];
                     output += " " + vehicle.number + " " + vehicle.licenseNumber + " " + vehicle.type + " " +
-                            vehicle.actualPositionWidth + " " + vehicle.actualPositionLength + " | "
+                            vehicle.actualPositionWidth + " " + vehicle.actualPositionLength +
+                            " " + vehicle.active + " | "
                 }
                 window.alert(output);
                 // do something
