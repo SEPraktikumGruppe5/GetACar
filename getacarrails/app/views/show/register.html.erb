@@ -1,0 +1,37 @@
+<h2>Registrierung</h2>
+
+<font color="red"><b> 
+
+<% if @fehlernouser%>
+Bitte einen Nutzer anlegen
+<%end%> 
+<% if @fehlerdoppeluser %>
+dieser User existiert bereits
+<%end%> 
+<% if @fehlerNoPw %>
+Bitte geben Sie ein Passwort ein
+<%end%> 
+<% if @fehlerPwNichtIdentisch %>
+Die Passwoerter sind nicht identisch!
+<%end%> 
+<% if @hatgefunkt %>
+Benutzer registriert!
+<%end%> 
+<br /></b></font>
+
+<form action="register" method="post">
+	<table width="30%">
+		<tr><td> Username: </td> <td> <input type="text" name="newuser" ></td></tr>
+		<tr><td> Passwort: </td> <td> <input type="password" name="pass" ></td></tr>
+		<tr><td> Passwort wiederholen: </td> <td> <input type="password" name="passwdh" ></td></tr>
+		
+		<tr><td> <a href="/show/login">zuruck zum login</a> </td> <td> <input type="hidden" name="registrieren" value="true" > 
+						   <input type="submit"  value="registrieren" /></td></tr>
+		
+	</table>
+
+
+</form>
+
+
+<p> sie koennen sich einloggen sobald sie freigeschalten wurden</p>

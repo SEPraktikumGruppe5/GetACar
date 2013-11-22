@@ -1,0 +1,14 @@
+<% if @fehler %>
+<font color="red"><b> Sie sind nicht eingeloggt <br /></b></font>
+<a href="/show/login">Hier gehts zum Login</a><br />
+<% else %>
+<h2>Willkommen <%= @username%></h2>
+<form action="/show/login" method="post">
+ 	<input type="hidden" name="logout" value="true" />
+	<input type="submit" value="Logout" />
+
+</form>
+<%end%>
+
+
+
