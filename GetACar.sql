@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.1.70, for pc-linux-gnu (x86_64)
+-- MySQL dump 10.13  Distrib 5.5.32, for Win32 (x86)
 --
 -- Host: localhost    Database: getacar
 -- ------------------------------------------------------
--- Server version	5.1.70-log
+-- Server version	5.5.32
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -107,7 +107,6 @@ CREATE TABLE `fahrzeug` (
   `f_akt_koord_breite` decimal(9,6) DEFAULT NULL,
   `f_bemerkung` text NOT NULL,
   `f_kennzeichen` varchar(20) NOT NULL,
-  `f_nummer` int(10) NOT NULL,
   `f_bild` text NOT NULL,
   `f_typ` varchar(100) NOT NULL,
   PRIMARY KEY (`f_id`)
@@ -120,7 +119,7 @@ CREATE TABLE `fahrzeug` (
 
 LOCK TABLES `fahrzeug` WRITE;
 /*!40000 ALTER TABLE `fahrzeug` DISABLE KEYS */;
-INSERT INTO `fahrzeug` VALUES (1,'','12.927389','50.839203','Ein Fahrzeug','C-IA 666',1,'auto.jpg','Auto'),(2,'','12.927389','50.839203','Ein zweites Auto','C-IA 667',2,'auto2.jpg','Auto');
+INSERT INTO `fahrzeug` VALUES (1,'',12.927389,50.839203,'Ein Fahrzeug','C-IA 666','auto.jpg','Auto'),(2,'',12.927389,50.839203,'Ein zweites Auto','C-IA 667','auto2.jpg','Auto');
 /*!40000 ALTER TABLE `fahrzeug` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -190,4 +189,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-11-18 15:41:20
+-- Dump completed on 2013-11-24 20:31:34

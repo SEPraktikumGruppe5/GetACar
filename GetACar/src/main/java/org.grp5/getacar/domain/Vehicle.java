@@ -14,7 +14,6 @@ import java.math.BigDecimal;
 //@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class Vehicle extends BaseDomainObject {
 
-    private Integer number;
     private String type;
     private String licenseNumber;
     private String picture;
@@ -22,17 +21,6 @@ public class Vehicle extends BaseDomainObject {
     private BigDecimal actualPositionLength;
     private Boolean active;
     private String comment;
-
-    @Basic(optional = false)
-    @Column(name = "f_nummer", columnDefinition = "int(10)")
-    @NotNull
-    public Integer getNumber() {
-        return number;
-    }
-
-    public void setNumber(Integer number) {
-        this.number = number;
-    }
 
     @Basic(optional = false)
     @Column(name = "f_typ", columnDefinition = "varchar(100)")
