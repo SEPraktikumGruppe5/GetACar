@@ -38,4 +38,8 @@ public class ReservationResource {
     public List<Reservation> getReservations() {
         return reservationDAOProvider.get().findAll();
     }
+
+    public void reserveVehicle(Reservation reservation) { // Könnte sein, dass wir die Parameter einzeln übergeben müssen, nicht als "fertiges" Reservation-Objekt!
+
+    }
 }

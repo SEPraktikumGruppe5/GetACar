@@ -22,7 +22,7 @@ public class SecurityModule extends AbstractModule {
     @Override
     protected void configure() {
         install(new ShiroAopModule());
-        install(new ShiroModule(context));
+        install(new GetACarShiroWebModule(context));
         ShiroWebModule.bindGuiceFilter(binder());
 
         bind(PasswordService.class).to(DefaultPasswordService.class);
