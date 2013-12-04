@@ -10,7 +10,7 @@ import org.junit.Test;
 import java.math.BigDecimal;
 
 /**
- *
+ *  only a test to test checkout new branch
  */
 
 public class DistanceCalculatorTest {
