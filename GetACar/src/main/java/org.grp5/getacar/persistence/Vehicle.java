@@ -1,23 +1,22 @@
-package org.grp5.getacar.domain;
+package org.grp5.getacar.persistence;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 /**
- * Vehicle domain object.
+ * Vehicle entity class.
  */
 @Entity
 @Table(name = "fahrzeug")
 @AttributeOverride(name = "id", column = @Column(name = "f_id",
         columnDefinition = "int(10) unsigned NOT NULL AUTO_INCREMENT"))
-//@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
-public class Vehicle extends BaseDomainObject {
+public class Vehicle extends BaseEntity {
 
     private String type;
     private String licenseNumber;
     private String picture;
-    private BigDecimal actualPositionWidth;
+    private BigDecimal actualPositionWidth;  // TODO: Longitude latitude
     private BigDecimal actualPositionLength;
     private Boolean active;
     private String comment;

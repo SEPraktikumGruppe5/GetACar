@@ -1,6 +1,4 @@
-package org.grp5.getacar.domain;
-
-import org.codehaus.jackson.annotate.JsonTypeInfo;
+package org.grp5.getacar.persistence;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -8,14 +6,13 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * Reservation domain object.
+ * Reservation entity class.
  */
 @Entity
 @Table(name = "reservierung")
 @AttributeOverride(name = "id", column = @Column(name = "re_id",
         columnDefinition = "int(10) unsigned NOT NULL AUTO_INCREMENT"))
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
-public class Reservation extends BaseDomainObject {
+public class Reservation extends BaseEntity {
 
     private User user;
     private Vehicle vehicle;

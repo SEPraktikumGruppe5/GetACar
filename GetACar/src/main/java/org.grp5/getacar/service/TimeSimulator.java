@@ -5,6 +5,6 @@ import java.util.Date;
 /**
  *
  */
-public interface TimeManager {
+public interface TimeSimulator {
     Date getTime();
 }

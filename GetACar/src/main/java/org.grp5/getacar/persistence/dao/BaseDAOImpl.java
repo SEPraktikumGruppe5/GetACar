@@ -1,5 +1,6 @@
-package org.grp5.getacar.domain.dao;
+package org.grp5.getacar.persistence.dao;
 
+import com.google.common.collect.Sets;
 import com.google.inject.Provider;
 import com.google.inject.persist.Transactional;
 import org.grp5.getacar.util.ClassHelper;
@@ -14,16 +15,19 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Base Data Access Object implementation.
  */
 public class BaseDAOImpl<K extends Serializable, D> implements BaseDAO<K, D> {
 
-    private final Class<D> domainClass;
+    private final Class<D> entityClass;
     private final Provider<EntityManager> entityManagerProvider;
     private final Provider<Session> hibernateSessionProvider;
     private final Validator validator;
@@ -34,11 +38,11 @@ public class BaseDAOImpl<K extends Serializable, D> implements BaseDAO<K, D> {
         this.validator = validator;
         this.entityManagerProvider = entityManagerProvider;
         this.hibernateSessionProvider = hibernateSessionProvider;
-        this.domainClass = (Class<D>) ClassHelper.getTypeArguments(BaseDAOImpl.class, getClass()).get(1);
+        this.entityClass = (Class<D>) ClassHelper.getTypeArguments(BaseDAOImpl.class, getClass()).get(1);
     }
 
-    public Class<D> getDomainClass() {
-        return domainClass;
+    public Class<D> getEntityClass() {
+        return entityClass;
     }
 
     public Validator getValidator() {
@@ -73,55 +77,58 @@ public class BaseDAOImpl<K extends Serializable, D> implements BaseDAO<K, D> {
 
     @Transactional(rollbackOn = {Exception.class})
     @Override
-    public void create(D domainObject) {
+    public void create(D entity) {
+        validate(entity);
         final Session hibernateSession = getHibernateSession();
-        hibernateSession.save(domainObject);
+        hibernateSession.save(entity);
         hibernateSession.flush();
     }
 
     @Transactional(rollbackOn = {Exception.class})
     @Override
-    public void change(D domainObject) {
+    public void change(D entity) {
+        validate(entity);
         final Session hibernateSession = getHibernateSession();
-        hibernateSession.update(domainObject);
+        hibernateSession.update(entity);
         hibernateSession.flush();
     }
 
     @Transactional(rollbackOn = {Exception.class})
     @Override
-    public void remove(D domainObject) {
+    public void remove(D entity) {
+//        validate(entity); TODO: ?
         final Session hibernateSession = getHibernateSession();
-        hibernateSession.delete(domainObject);
+        hibernateSession.delete(entity);
         hibernateSession.flush();
     }
 
     @Override
     public D find(K id) {
         EntityManager entityManager = getEntityManager();
-        return entityManager.find(domainClass, id);
+        return entityManager.find(entityClass, id);
     }
 
     @Override
     @Transactional
     public D findCurrentDbStateInstance(K id) {
         final StatelessSession hibernateStatelessSession = getHibernateStatelessSession();
-        final D domainObject = (D) hibernateStatelessSession.get(getDomainClass(), id, LockMode.READ);
+        final D entity = (D) hibernateStatelessSession.get(getEntityClass(), id, LockMode.READ);
         hibernateStatelessSession.close();
-        return domainObject;
+        return entity;
     }
 
     @Override
     public List<D> findAll() {
         EntityManager entityManager = getEntityManager();
-        CriteriaQuery<D> query = entityManager.getCriteriaBuilder().createQuery(getDomainClass());
-        query.select(query.from(getDomainClass()));
+        CriteriaQuery<D> query = entityManager.getCriteriaBuilder().createQuery(getEntityClass());
+        query.select(query.from(getEntityClass()));
         return entityManager.createQuery(query).getResultList();
     }
 
     @Override
     public List<D> findRange(int start, int end) {
-        CriteriaQuery<D> query = getEntityManager().getCriteriaBuilder().createQuery(getDomainClass());
-        query.select(query.from(getDomainClass()));
+        CriteriaQuery<D> query = getEntityManager().getCriteriaBuilder().createQuery(getEntityClass());
+        query.select(query.from(getEntityClass()));
         TypedQuery<D> q = getEntityManager().createQuery(query);
         q.setMaxResults(end - start);
         q.setFirstResult(start);
@@ -131,8 +138,8 @@ public class BaseDAOImpl<K extends Serializable, D> implements BaseDAO<K, D> {
     @Override
     @SuppressWarnings("unchecked")
     public int count() {
-        CriteriaQuery query = getEntityManager().getCriteriaBuilder().createQuery(getDomainClass());
-        Root rt = query.from(getDomainClass());
+        CriteriaQuery query = getEntityManager().getCriteriaBuilder().createQuery(getEntityClass());
+        Root rt = query.from(getEntityClass());
         query.select(getEntityManager().getCriteriaBuilder().count(rt));
         TypedQuery<D> q = getEntityManager().createQuery(query);
         try {
@@ -143,9 +150,16 @@ public class BaseDAOImpl<K extends Serializable, D> implements BaseDAO<K, D> {
     }
 
     @Override
-    public void remove(List<D> domainObjects) {
-        for (D domainObject : domainObjects) {
-            remove(domainObject);
+    public void remove(List<D> entities) {
+        for (D entity : entities) {
+            remove(entity);
+        }
+    }
+
+    private void validate(D entity) throws ConstraintViolationException {
+        final Set<ConstraintViolation<D>> constraintViolations = validator.validate(entity);
+        if (!constraintViolations.isEmpty()) {
+            throw new ConstraintViolationException(Sets.<ConstraintViolation<?>>newHashSet(constraintViolations));
         }
     }
 }

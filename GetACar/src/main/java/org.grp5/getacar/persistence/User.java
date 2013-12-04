@@ -1,7 +1,8 @@
-package org.grp5.getacar.domain;
+package org.grp5.getacar.persistence;
 
 import com.google.common.collect.Lists;
-import org.codehaus.jackson.annotate.JsonTypeInfo;
+import org.grp5.getacar.validation.LoginNameNotExistent;
+import org.grp5.getacar.validation.PasswordsMatch;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -9,17 +10,23 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 /**
- * User domain object.
+ * User entity class.
  */
 @Entity
 @Table(name = "benutzer")
 @AttributeOverride(name = "id", column = @Column(name = "b_id",
         columnDefinition = "int(10) unsigned NOT NULL AUTO_INCREMENT"))
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
-public class User extends BaseDomainObject {
+@LoginNameNotExistent.List(
+        @LoginNameNotExistent(loginNameField = "loginName")
+)
+@PasswordsMatch.List(
+        @PasswordsMatch(password = "password", passwordRepeat = "passwordRepeat")
+)
+public class User extends BaseEntity {
 
-    private String login;
+    private String loginName;
     private String password;
+    private String passwordRepeat;
     private String email;
     private Boolean active;
     private String firstName;
@@ -29,12 +36,12 @@ public class User extends BaseDomainObject {
     @Basic(optional = false)
     @Column(name = "b_login", columnDefinition = "varchar(20)")
     @NotNull
-    public String getLogin() {
-        return login;
+    public String getLoginName() {
+        return loginName;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
     }
 
     @Basic(optional = false)
@@ -46,6 +53,15 @@ public class User extends BaseDomainObject {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Transient
+    public String getPasswordRepeat() {
+        return passwordRepeat;
+    }
+
+    public void setPasswordRepeat(String passwordRepeat) {
+        this.passwordRepeat = passwordRepeat;
     }
 
     @Basic(optional = false)
@@ -73,6 +89,7 @@ public class User extends BaseDomainObject {
     @Basic(optional = false)
     @Column(name = "b_vorname", columnDefinition = "varchar(30)")
     @NotNull
+    @Size(min = 5, max = 40)
     public String getFirstName() {
         return firstName;
     }
@@ -110,5 +127,13 @@ public class User extends BaseDomainObject {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    /**
+     * Makes sure that the passwordRepeat field is set so that validation does not fail when changing the user.
+     */
+    @PostLoad
+    private void postLoad() {
+        passwordRepeat = password;
     }
 }

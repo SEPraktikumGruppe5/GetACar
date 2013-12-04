@@ -2,8 +2,8 @@ package org.grp5.getacar.resource;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import org.grp5.getacar.domain.Reservation;
-import org.grp5.getacar.domain.dao.ReservationDAO;
+import org.grp5.getacar.persistence.Reservation;
+import org.grp5.getacar.persistence.dao.ReservationDAO;
 import org.grp5.getacar.log.LogInvocation;
 
 import javax.ws.rs.GET;

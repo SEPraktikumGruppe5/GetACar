@@ -1,6 +1,7 @@
 package org.grp5.getacar.security.guice;
 
 import com.google.inject.Inject;
+import com.google.inject.Key;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.name.Names;
@@ -10,6 +11,7 @@ import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.guice.web.ShiroWebModule;
 import org.apache.shiro.web.filter.authc.LogoutFilter;
+import org.apache.shiro.web.filter.authc.PassThruAuthenticationFilter;
 import org.grp5.getacar.security.GetACarRealm;
 
 import javax.inject.Named;
@@ -20,6 +22,9 @@ import javax.servlet.ServletContext;
  * {@link SecurityModule} is being installed.
  */
 public class GetACarShiroWebModule extends ShiroWebModule {
+
+    public static final Key<PassThruAuthenticationFilter> AUTHC_PASSTHRU = Key.get(PassThruAuthenticationFilter.class);
+
 
     public GetACarShiroWebModule(ServletContext servletContext) {
         super(servletContext);
@@ -37,12 +42,11 @@ public class GetACarShiroWebModule extends ShiroWebModule {
 //        }
 
         /* Filters */
-//        addFilterChain("/account/logout", LOGOUT);
-//        addFilterChain("/resources/**", ANON);
-//        addFilterChain("/app/gwtRequest/**", AJAX);
+        addFilterChain("/account/logout", LOGOUT);
+        addFilterChain("/app/**", AUTHC);
         addFilterChain("/**", ANON);
-//        addFilterChain("/account/**", AUTHC, NO_SESSION_CREATION);
-//        addFilterChain("/error/**", ANON);
+        addFilterChain("/rest/**", ANON);
+        addFilterChain("/account/**", AUTHC_PASSTHRU);
 
         /* Component bindings */
         bind(CredentialsMatcher.class).to(PasswordMatcher.class);
@@ -51,11 +55,16 @@ public class GetACarShiroWebModule extends ShiroWebModule {
         expose(CacheManager.class);
 
         /* Config constants */
-        bindConstant().annotatedWith(Names.named("shiro.loginUrl")).to("/account/login.jsp");
-        bindConstant().annotatedWith(Names.named("shiro.successUrl")).to("/index.html");
+        bindConstant().annotatedWith(Names.named("shiro.loginUrl")).to("/account");
+        expose(Key.get(String.class, Names.named("shiro.loginUrl")));
+        bindConstant().annotatedWith(Names.named("shiro.successUrl")).to("/app");
+        expose(Key.get(String.class, Names.named("shiro.successUrl")));
         bindConstant().annotatedWith(Names.named("shiro.unauthorizedUrl")).to("/error/error.html");
+        expose(Key.get(String.class, Names.named("shiro.unauthorizedUrl")));
         bindConstant().annotatedWith(Names.named("shiro.roles.unauthorizedUrl")).to("/error/error.html");
-        bindConstant().annotatedWith(Names.named("shiro.redirectUrl")).to("/account/login.jsp");
+        expose(Key.get(String.class, Names.named("shiro.unauthorizedUrl")));
+        bindConstant().annotatedWith(Names.named("shiro.redirectUrl")).to("/account");
+        expose(Key.get(String.class, Names.named("shiro.redirectUrl")));
     }
 
     @Provides

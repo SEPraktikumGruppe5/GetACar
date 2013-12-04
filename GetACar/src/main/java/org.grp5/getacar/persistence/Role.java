@@ -1,19 +1,16 @@
-package org.grp5.getacar.domain;
-
-import org.codehaus.jackson.annotate.JsonTypeInfo;
+package org.grp5.getacar.persistence;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 
 /**
- * Role domain object.
+ * Role entity class.
  */
 @Entity
 @Table(name = "rolle")
 @AttributeOverride(name = "id", column = @Column(name = "ro_id",
         columnDefinition = "int(10) unsigned NOT NULL AUTO_INCREMENT"))
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
-public class Role extends BaseDomainObject {
+public class Role extends BaseEntity {
 
     private String name;
 

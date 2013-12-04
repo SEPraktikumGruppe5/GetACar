@@ -1,0 +1,27 @@
+/* Invalid input */
+.ng-invalid {
+    border-color: #E96666;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(233, 102, 102, 0.6);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(233, 102, 102, 0.6);
+}
+
+.form-horizontal.ng-invalid {
+    outline: 0;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+}
+
+/* Reset invalid style after changing the input again */
+/*.ng-dirty.ng-invalid {*/
+    /*border-color: #CCCCCC;*/
+    /*box-shadow: none;*/
+    /*outline: 0 none;*/
+/*}*/
+
+/* Highlight previously invalid input fields as usual */
+.ng-dirty.ng-invalid.form-control:focus {
+    border-color: #66AFE9;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(102, 175, 233, 0.6);
+    outline: 0 none;
+}

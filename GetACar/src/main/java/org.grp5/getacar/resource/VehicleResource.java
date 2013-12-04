@@ -2,10 +2,10 @@ package org.grp5.getacar.resource;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import org.grp5.getacar.domain.Vehicle;
-import org.grp5.getacar.domain.dao.VehicleDAO;
+import org.grp5.getacar.persistence.Vehicle;
+import org.grp5.getacar.persistence.dao.VehicleDAO;
 import org.grp5.getacar.log.LogInvocation;
-import org.grp5.getacar.service.TimeManager;
+import org.grp5.getacar.service.TimeSimulator;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -19,10 +19,10 @@ import java.util.List;
 public class VehicleResource {
 
     private final Provider<VehicleDAO> vehicleDAOProvider;
-    private final Provider<TimeManager> timeManagerProvider;
+    private final Provider<TimeSimulator> timeManagerProvider;
 
     @Inject
-    public VehicleResource(Provider<VehicleDAO> vehicleDAOProvider, Provider<TimeManager> timeManagerProvider) {
+    public VehicleResource(Provider<VehicleDAO> vehicleDAOProvider, Provider<TimeSimulator> timeManagerProvider) {
         this.vehicleDAOProvider = vehicleDAOProvider;
         this.timeManagerProvider = timeManagerProvider;
     }
@@ -55,8 +55,8 @@ public class VehicleResource {
 //        final GregorianCalendar gregorianCalendar = new GregorianCalendar(TimeZone.getTimeZone("DE"));
 //        final Date time = gregorianCalendar.getTime();
 
-        final TimeManager timeManager = timeManagerProvider.get();
-        final Date time = timeManager.getTime();
+        final TimeSimulator timeSimulator = timeManagerProvider.get();
+        final Date time = timeSimulator.getTime();
     }
 
     public void searchVehicle(/* Location location, */ Date startTime, Date endTime, Integer radius) {

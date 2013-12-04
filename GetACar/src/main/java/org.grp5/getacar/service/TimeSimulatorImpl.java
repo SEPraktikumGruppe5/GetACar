@@ -10,12 +10,12 @@ import java.util.Date;
 /**
  *
  */
-public class TimeManagerImpl implements TimeManager {
+public class TimeSimulatorImpl implements TimeSimulator {
 
     private final Provider<HttpServletRequest> servletRequestProvider;
 
     @Inject
-    public TimeManagerImpl(Provider<HttpServletRequest> servletRequestProvider) {
+    public TimeSimulatorImpl(Provider<HttpServletRequest> servletRequestProvider) {
         this.servletRequestProvider = servletRequestProvider;
     }
 

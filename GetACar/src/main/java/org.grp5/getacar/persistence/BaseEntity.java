@@ -1,20 +1,20 @@
-package org.grp5.getacar.domain;
+package org.grp5.getacar.persistence;
 
 import com.google.common.base.Objects;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
- * Abstract base domain object from which all domain objects should extend.
+ * Abstract base entity from which all other entities should extend.
  */
 @MappedSuperclass
-public abstract class BaseDomainObject {
+public abstract class BaseEntity implements Serializable {
 
     private Integer id;
 
     @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false,
             columnDefinition = "int(10) unsigned NOT NULL AUTO_INCREMENT")
     public Integer getId() {
@@ -28,9 +28,9 @@ public abstract class BaseDomainObject {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof BaseDomainObject)) return false;
+        if (!(o instanceof BaseEntity)) return false;
 
-        BaseDomainObject that = (BaseDomainObject) o;
+        BaseEntity that = (BaseEntity) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
 
