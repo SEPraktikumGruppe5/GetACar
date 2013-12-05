@@ -25,9 +25,9 @@ import java.util.Set;
 /**
  * Base Data Access Object implementation.
  */
-public class BaseDAOImpl<K extends Serializable, D> implements BaseDAO<K, D> {
+public class BaseDAOImpl<K extends Serializable, E> implements BaseDAO<K, E> {
 
-    private final Class<D> entityClass;
+    private final Class<E> entityClass;
     private final Provider<EntityManager> entityManagerProvider;
     private final Provider<Session> hibernateSessionProvider;
     private final Validator validator;
@@ -38,10 +38,10 @@ public class BaseDAOImpl<K extends Serializable, D> implements BaseDAO<K, D> {
         this.validator = validator;
         this.entityManagerProvider = entityManagerProvider;
         this.hibernateSessionProvider = hibernateSessionProvider;
-        this.entityClass = (Class<D>) ClassHelper.getTypeArguments(BaseDAOImpl.class, getClass()).get(1);
+        this.entityClass = (Class<E>) ClassHelper.getTypeArguments(BaseDAOImpl.class, getClass()).get(1);
     }
 
-    public Class<D> getEntityClass() {
+    public Class<E> getEntityClass() {
         return entityClass;
     }
 
@@ -77,8 +77,8 @@ public class BaseDAOImpl<K extends Serializable, D> implements BaseDAO<K, D> {
 
     @Transactional(rollbackOn = {Exception.class})
     @Override
-    public void create(D entity) {
-        validate(entity);
+    public void create(E entity) {
+        validateAndThrow(entity);
         final Session hibernateSession = getHibernateSession();
         hibernateSession.save(entity);
         hibernateSession.flush();
@@ -86,8 +86,8 @@ public class BaseDAOImpl<K extends Serializable, D> implements BaseDAO<K, D> {
 
     @Transactional(rollbackOn = {Exception.class})
     @Override
-    public void change(D entity) {
-        validate(entity);
+    public void change(E entity) {
+        validateAndThrow(entity);
         final Session hibernateSession = getHibernateSession();
         hibernateSession.update(entity);
         hibernateSession.flush();
@@ -95,7 +95,7 @@ public class BaseDAOImpl<K extends Serializable, D> implements BaseDAO<K, D> {
 
     @Transactional(rollbackOn = {Exception.class})
     @Override
-    public void remove(D entity) {
+    public void remove(E entity) {
 //        validate(entity); TODO: ?
         final Session hibernateSession = getHibernateSession();
         hibernateSession.delete(entity);
@@ -103,33 +103,33 @@ public class BaseDAOImpl<K extends Serializable, D> implements BaseDAO<K, D> {
     }
 
     @Override
-    public D find(K id) {
+    public E find(K id) {
         EntityManager entityManager = getEntityManager();
         return entityManager.find(entityClass, id);
     }
 
     @Override
     @Transactional
-    public D findCurrentDbStateInstance(K id) {
+    public E findCurrentDbStateInstance(K id) {
         final StatelessSession hibernateStatelessSession = getHibernateStatelessSession();
-        final D entity = (D) hibernateStatelessSession.get(getEntityClass(), id, LockMode.READ);
+        final E entity = (E) hibernateStatelessSession.get(getEntityClass(), id, LockMode.READ);
         hibernateStatelessSession.close();
         return entity;
     }
 
     @Override
-    public List<D> findAll() {
+    public List<E> findAll() {
         EntityManager entityManager = getEntityManager();
-        CriteriaQuery<D> query = entityManager.getCriteriaBuilder().createQuery(getEntityClass());
+        CriteriaQuery<E> query = entityManager.getCriteriaBuilder().createQuery(getEntityClass());
         query.select(query.from(getEntityClass()));
         return entityManager.createQuery(query).getResultList();
     }
 
     @Override
-    public List<D> findRange(int start, int end) {
-        CriteriaQuery<D> query = getEntityManager().getCriteriaBuilder().createQuery(getEntityClass());
+    public List<E> findRange(int start, int end) {
+        CriteriaQuery<E> query = getEntityManager().getCriteriaBuilder().createQuery(getEntityClass());
         query.select(query.from(getEntityClass()));
-        TypedQuery<D> q = getEntityManager().createQuery(query);
+        TypedQuery<E> q = getEntityManager().createQuery(query);
         q.setMaxResults(end - start);
         q.setFirstResult(start);
         return q.getResultList();
@@ -141,7 +141,7 @@ public class BaseDAOImpl<K extends Serializable, D> implements BaseDAO<K, D> {
         CriteriaQuery query = getEntityManager().getCriteriaBuilder().createQuery(getEntityClass());
         Root rt = query.from(getEntityClass());
         query.select(getEntityManager().getCriteriaBuilder().count(rt));
-        TypedQuery<D> q = getEntityManager().createQuery(query);
+        TypedQuery<E> q = getEntityManager().createQuery(query);
         try {
             return ((Long) q.getSingleResult()).intValue();
         } catch (NoResultException ex) {
@@ -150,14 +150,20 @@ public class BaseDAOImpl<K extends Serializable, D> implements BaseDAO<K, D> {
     }
 
     @Override
-    public void remove(List<D> entities) {
-        for (D entity : entities) {
+    public void remove(List<E> entities) {
+        for (E entity : entities) {
             remove(entity);
         }
     }
 
-    private void validate(D entity) throws ConstraintViolationException {
-        final Set<ConstraintViolation<D>> constraintViolations = validator.validate(entity);
+    @Override
+    public Set<ConstraintViolation<E>> validate(E entity) {
+        return validator.validate(entity);
+    }
+
+    @Override
+    public void validateAndThrow(E entity) throws ConstraintViolationException {
+        final Set<ConstraintViolation<E>> constraintViolations = validate(entity);
         if (!constraintViolations.isEmpty()) {
             throw new ConstraintViolationException(Sets.<ConstraintViolation<?>>newHashSet(constraintViolations));
         }

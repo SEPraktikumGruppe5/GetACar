@@ -14,9 +14,9 @@
 
 /* Reset invalid style after changing the input again */
 /*.ng-dirty.ng-invalid {*/
-    /*border-color: #CCCCCC;*/
-    /*box-shadow: none;*/
-    /*outline: 0 none;*/
+/*border-color: #CCCCCC;*/
+/*box-shadow: none;*/
+/*outline: 0 none;*/
 /*}*/
 
 /* Highlight previously invalid input fields as usual */
@@ -24,4 +24,14 @@
     border-color: #66AFE9;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(102, 175, 233, 0.6);
     outline: 0 none;
+}
+
+.errors {
+    color: #E96666;
+}
+
+.errors.col-sm-10 {
+    float: right;
+    padding-left: 30px;
+    padding-top: 3px;
 }

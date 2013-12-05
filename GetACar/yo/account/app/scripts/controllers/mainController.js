@@ -1,5 +1,5 @@
 angular.module('accountApp')
-    .controller('MainCtrl', function ($scope) {
+    .controller('MainController', function ($scope) {
 //        $scope.awesomeThings = [
 //            'HTML5 Boilerplate',
 //            'AngularJS',

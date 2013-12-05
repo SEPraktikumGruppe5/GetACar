@@ -1,6 +1,5 @@
-<div ng-controller="LoginCtrl">
+<div ng-controller="LoginController">
     <h3>Login</h3>
-
     <form name="loginForm" novalidate class="form-horizontal" role="form">
         <div class="form-group">
             <label for="inputLoginName" class="col-sm-2 control-label">Login</label>
@@ -22,6 +21,10 @@
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit" class="btn btn-default" ng-click="login(user)">Log me in</button>
             </div>
+        </div>
+        <div class="alert alert-success" ng-show="$stateParams.justRegistered">
+            You successfully registered for Get A Car! With some luck the admins might accept your registration. Sadly
+            you can not log in until then!
         </div>
     </form>
 </div>

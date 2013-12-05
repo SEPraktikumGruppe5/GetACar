@@ -1,6 +1,5 @@
 angular.module('accountApp', [
         'ngCookies',
-        'ngResource',
         'ngSanitize',
         'ui.router'
     ])
@@ -26,18 +25,19 @@ angular.module('accountApp', [
             .state('main', {
                 url: '/',
                 templateUrl: 'views/main.html',
-                controller: 'MainCtrl'
+                controller: 'MainController'
             })
             .state('login', {
-                url: 'login',
+                url: 'login?justRegistered',
                 parent: 'main',
                 templateUrl: 'partials/login.html',
-                controller: 'LoginCtrl'
+                controller: 'LoginController'
             })
             .state('register', {
                 url: 'register',
                 parent: 'main',
-                templateUrl: 'partials/register.html'
+                templateUrl: 'partials/register.html',
+                controller: 'RegisterController'
             });
 
 //        $httpProvider.interceptors.push('getACarHttpInterceptor');

@@ -1,4 +1,4 @@
-<div ng-controller="RegisterCtrl">
+<div ng-controller="RegisterController">
     <h3>Register</h3>
 
     <form name="registerForm" novalidate class="form-horizontal" role="form">
@@ -9,7 +9,7 @@
                 <input name="firstName" type="text" class="form-control" id="inputFirstName" placeholder="First Name"
                        ng-model="user.firstName" server-error>
             </div>
-            <div class="errors" ng-show="!registerForm.firstName.$dirty && registerForm.firstName.$invalid">
+            <div class="errors col-sm-10" ng-show="!registerForm.firstName.$dirty && registerForm.firstName.$invalid">
                 <span ng-show="registerForm.firstName.$error.server">{{ errors.firstName }}</span>
             </div>
         </div>
@@ -20,7 +20,7 @@
                 <input name="lastName" type="text" class="form-control" id="inputLastName" placeholder="Last Name"
                        ng-model="user.lastName" server-error>
             </div>
-            <div class="errors" ng-show="!registerForm.lastName.$dirty && registerForm.lastName.$invalid">
+            <div class="errors col-sm-10" ng-show="!registerForm.lastName.$dirty && registerForm.lastName.$invalid">
                 <span ng-show="registerForm.lastName.$error.server">{{ errors.lastName }}</span>
             </div>
         </div>
@@ -31,7 +31,7 @@
                 <input name="loginName" type="text" class="form-control" id="inputLoginName" placeholder="Login"
                        ng-model="user.loginName" server-error>
             </div>
-            <div class="errors" ng-show="!registerForm.loginName.$dirty && registerForm.loginName.$invalid">
+            <div class="errors col-sm-10" ng-show="!registerForm.loginName.$dirty && registerForm.loginName.$invalid">
                 <span ng-show="registerForm.loginName.$error.server">{{ errors.loginName }}</span>
             </div>
         </div>
@@ -42,7 +42,7 @@
                 <input name="email" type="text" class="form-control" id="inputEmail" placeholder="E-Mail"
                        ng-model="user.email" server-error>
             </div>
-            <div class="errors" ng-show="!registerForm.email.$dirty && registerForm.email.$invalid">
+            <div class="errors col-sm-10" ng-show="!registerForm.email.$dirty && registerForm.email.$invalid">
                 <span ng-show="registerForm.email.$error.server">{{ errors.email }}</span>
             </div>
         </div>
@@ -53,7 +53,7 @@
                 <input name="password" type="password" class="form-control" id="inputPassword" placeholder="Password"
                        ng-model="user.password" server-error>
             </div>
-            <div class="errors" ng-show="!registerForm.password.$dirty && registerForm.password.$invalid">
+            <div class="errors col-sm-10" ng-show="!registerForm.password.$dirty && registerForm.password.$invalid">
                 <span ng-show="registerForm.password.$error.server">{{ errors.password }}</span>
             </div>
         </div>
@@ -64,7 +64,7 @@
                 <input name="passwordRepeat" type="password" class="form-control" id="inputPasswordRepeat"
                        placeholder="Password Repeat" ng-model="user.passwordRepeat" server-error>
             </div>
-            <div class="errors" ng-show="!registerForm.passwordRepeat.$dirty && registerForm.passwordRepeat.$invalid">
+            <div class="errors col-sm-10" ng-show="!registerForm.passwordRepeat.$dirty && registerForm.passwordRepeat.$invalid">
                 <span ng-show="registerForm.passwordRepeat.$error.server">{{ errors.passwordRepeat }}</span>
             </div>
         </div>

@@ -33,6 +33,7 @@
 
         <!-- Misc stuff -->
         <yeoman-account-project.directory>yo/account</yeoman-account-project.directory>
+        <yeoman-main-project.directory>yo/main</yeoman-main-project.directory>
     </properties>
 
     <dependencies>
@@ -200,19 +201,11 @@
                                     <directory>${yeoman-account-project.directory}/app</directory>
                                     <targetPath>account</targetPath>
                                 </resource>
+                                <resource>
+                                    <directory>${yeoman-main-project.directory}/app</directory>
+                                    <targetPath>app</targetPath>
+                                </resource>
                             </webResources>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>tomcat-maven-plugin</artifactId>
-                        <!--<version>1.1</version>-->
-                        <version>1.1</version>
-                        <configuration>
-                            <url>http://localhost:8080/manager/text</url>
-                            <path>/getacar</path>
-                            <username>admin</username>
-                            <password>verwaltung</password>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -258,11 +251,23 @@
                         <artifactId>yeoman-maven-plugin</artifactId>
                         <version>0.1</version>
                         <configuration>
-                            <yeomanProjectDirectory>${yeoman-account-project.directory}</yeomanProjectDirectory>
                             <indentSize>4</indentSize>
                         </configuration>
                         <executions>
                             <execution>
+                                <id>account</id>
+                                <configuration>
+                                    <yeomanProjectDirectory>${yeoman-account-project.directory}</yeomanProjectDirectory>
+                                </configuration>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>main</id>
+                                <configuration>
+                                    <yeomanProjectDirectory>${yeoman-main-project.directory}</yeomanProjectDirectory>
+                                </configuration>
                                 <goals>
                                     <goal>build</goal>
                                 </goals>
@@ -278,43 +283,63 @@
                                     <directory>${yeoman-account-project.directory}/dist</directory>
                                     <targetPath>account</targetPath>
                                 </resource>
+                                <resource>
+                                    <directory>${yeoman-main-project.directory}/dist</directory>
+                                    <targetPath>app</targetPath>
+                                </resource>
                             </webResources>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <artifactId>maven-clean-plugin</artifactId>
-                        <version>2.5</version>
-                        <configuration>
-                            <filesets>
-                                <fileset>
-                                    <directory>${yeoman-account-project.directory}/dist</directory>
-                                </fileset>
-                                <fileset>
-                                    <directory>${yeoman-account-project.directory}/.tmp</directory>
-                                </fileset>
-                                <fileset>
-                                    <directory>${yeoman-account-project.directory}/app/components</directory>
-                                </fileset>
-                                <fileset>
-                                    <directory>${yeoman-account-project.directory}/node_modules</directory>
-                                </fileset>
-                            </filesets>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>tomcat-maven-plugin</artifactId>
-                        <!--<version>1.1</version>-->
-                        <version>1.1</version>
-                        <configuration>
-                            <url>http://localhost:8080/manager/text</url>
-                            <path>/getacar</path>
-                            <username>admin</username>
-                            <password>verwaltung</password>
                         </configuration>
                     </plugin>
                 </plugins>
             </build>
         </profile>
     </profiles>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>tomcat-maven-plugin</artifactId>
+                <!--<version>1.1</version>-->
+                <version>1.1</version>
+                <configuration>
+                    <url>http://localhost:8080/manager/text</url>
+                    <path>/getacar</path>
+                    <username>admin</username>
+                    <password>verwaltung</password>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${yeoman-account-project.directory}/dist</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>${yeoman-account-project.directory}/.tmp</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>${yeoman-account-project.directory}/app/components</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>${yeoman-account-project.directory}/node_modules</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>${yeoman-main-project.directory}/dist</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>${yeoman-main-project.directory}/.tmp</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>${yeoman-main-project.directory}/app/components</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>${yeoman-main-project.directory}/node_modules</directory>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

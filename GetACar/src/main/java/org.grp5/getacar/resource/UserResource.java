@@ -7,6 +7,7 @@ import com.google.inject.persist.Transactional;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authc.credential.PasswordService;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.web.util.SavedRequest;
@@ -35,6 +36,7 @@ public class UserResource {
     private final Provider<RoleDAO> roleDAOProvider;
     private final Provider<HttpServletRequest> servletRequestProvider;
     private final Provider<HttpServletResponse> servletResponseProvider;
+    private final Provider<PasswordService> passwordServiceProvider;
     private final Validator validator;
     private final String successURL;
 
@@ -42,11 +44,13 @@ public class UserResource {
     public UserResource(Provider<UserDAO> userDAOProvider, Provider<RoleDAO> roleDAOProvider,
                         Provider<HttpServletRequest> servletRequestProvider,
                         Provider<HttpServletResponse> servletResponseProvider,
-                        Validator validator, @Named("shiro.successUrl") String successURL) {
+                        Provider<PasswordService> passwordServiceProvider, Validator validator,
+                        @Named("shiro.successUrl") String successURL) {
         this.userDAOProvider = userDAOProvider;
         this.roleDAOProvider = roleDAOProvider;
         this.servletRequestProvider = servletRequestProvider;
         this.servletResponseProvider = servletResponseProvider;
+        this.passwordServiceProvider = passwordServiceProvider;
         this.validator = validator;
         this.successURL = successURL;
     }
@@ -121,11 +125,16 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     @LogInvocation
     public void registerUser(User user) {
+        final UserDAO userDAO = userDAOProvider.get();
         user.setActive(false);
         final RoleDAO roleDAO = roleDAOProvider.get();
         user.getRoles().add(roleDAO.findByName(UserRole.USER.getNameInDB()));
-        // TODO: Hash password!!
-        userDAOProvider.get().create(user);
+        // validate early so that we can match the password with the password repetition before overwriting them
+        // with the encrypted passwords
+        userDAO.validateAndThrow(user);
+        user.setPassword(encryptPassword(user.getPassword()));
+        user.setPasswordRepeat(user.getPassword());
+        userDAO.create(user);
     }
 
     public void removeUser(User user) {
@@ -153,6 +162,20 @@ public class UserResource {
             newURL = new URL(getBaseURL(request, true) + successURL);
         }
         return Response.status(Response.Status.ACCEPTED).location(newURL.toURI()).build();
+    }
+
+    /**
+     * Encrypts a password using the Apache Shiro {@link PasswordService}.
+     *
+     * @param password The password to encrypt
+     * @return The encrypted password
+     */
+    private String encryptPassword(String password) {
+        if (password == null) {
+            return null;
+        }
+        final PasswordService passwordService = passwordServiceProvider.get();
+        return passwordService.encryptPassword(password);
     }
 
     /**
