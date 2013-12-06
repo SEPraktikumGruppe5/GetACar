@@ -27,7 +27,12 @@ import javax.ws.rs.core.Response;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.List;
+
+import static javax.ws.rs.core.Response.Status.ACCEPTED;
+import static javax.ws.rs.core.Response.Status.CREATED;
+import static javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
 
 @Path("/rest/users")
 public class UserResource {
@@ -73,7 +78,7 @@ public class UserResource {
     }
 
     @GET
-    @Path("/user/{id}")
+    @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @LogInvocation
     @RequiresAuthentication
@@ -82,7 +87,7 @@ public class UserResource {
     }
 
     @GET
-    @Path("all")
+    @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     @LogInvocation
     @RequiresRoles("Admin")
@@ -108,15 +113,16 @@ public class UserResource {
             // Check if the user is still active, if not log out again.
             if (!loggedInUser.getActive()) {
                 SecurityUtils.getSubject().logout();
-                // TODO: Show inactive error somehow
+                return Response.status(INTERNAL_SERVER_ERROR).entity(Collections.singletonMap("error", "Inactive")) // TODO: il8n messages?
+                        .build();
             }
             return createRedirectResponse();
         } catch (AuthenticationException ex) {
-            // TODO: Show wrong username / password error somehow!
+            return Response.status(INTERNAL_SERVER_ERROR).entity(Collections.singletonMap("error",
+                    "Wrong username or password")).build();
         } catch (URISyntaxException | MalformedURLException e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            return Response.status(INTERNAL_SERVER_ERROR).build();
         }
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
     }
 
     @POST
@@ -124,7 +130,7 @@ public class UserResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @LogInvocation
-    public void registerUser(User user) {
+    public Response registerUser(User user) {
         final UserDAO userDAO = userDAOProvider.get();
         user.setActive(false);
         final RoleDAO roleDAO = roleDAOProvider.get();
@@ -135,6 +141,7 @@ public class UserResource {
         user.setPassword(encryptPassword(user.getPassword()));
         user.setPasswordRepeat(user.getPassword());
         userDAO.create(user);
+        return Response.status(CREATED).build();
     }
 
     public void removeUser(User user) {
@@ -161,7 +168,7 @@ public class UserResource {
         } else {
             newURL = new URL(getBaseURL(request, true) + successURL);
         }
-        return Response.status(Response.Status.ACCEPTED).location(newURL.toURI()).build();
+        return Response.status(ACCEPTED).location(newURL.toURI()).build();
     }
 
     /**

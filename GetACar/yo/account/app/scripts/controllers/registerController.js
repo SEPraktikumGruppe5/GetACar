@@ -3,15 +3,24 @@ angular.module('accountApp')
         $scope.user = {
             firstName: undefined
         };
+        $scope.errors = {};
 
-        $scope.register = function (user) { // TODO: UserService with login / register?
+        $scope.register = function (user) {
             $scope.errors = {}; // clean up server errors
-            AccountService.register(user)
-                .success(function (data, status, headers, config) {
-                    // TODO: Check status code!
-                    $state.go('login', {justRegistered: true});
-                })
-                .error(function (data, status, headers, config) {
+
+            AccountService.register(user,
+                function (successResponse) {
+                    var status = successResponse.status;
+                    if (status === 201) {
+                        $state.go('login', {justRegistered: true});
+                    } else {
+                        // TODO: Error message?
+                    }
+                },
+                function (errorResponse) {
+                    var status, data;
+                    status = errorResponse.status;
+                    data = errorResponse.data;
                     // 422 means validation errors
                     if (status === 422) {
                         $scope.registerForm.$setPristine();

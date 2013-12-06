@@ -1,32 +1,32 @@
-angular.module('accountApp').factory('AccountService', ['$http', function ($http) { // TODO: Use Restangular here instead of $http!
-    return {
-        /**
-         * Attempts to register the user.
-         *
-         * @param user The user object
-         * @param {string} user.loginName The login name of the user
-         * @param {string} user.password The password for the login attempt
-         */
-        register: function (user) {
-            return $http({
-                method: 'POST',
-                url: '/getacar/rest/users/registerUser',
-                data: user
-            });
-        },
-        /**
-         * Attempts to log the user in.
-         *
-         * @param {object} user The user object
-         * @param {string} user.loginName The login name for the login attempt
-         * @param {string} user.password The password for the login attempt
-         */
-        login: function (user) {
-            return $http({
-                method: 'POST',
-                url: '/getacar/rest/users/loginUser',
-                data: user
-            });
-        }
-    };
-}]);
+angular.module('accountApp')
+    .factory('AccountService', ['$http', 'Restangular', function ($http, Restangular) {
+        return {
+            /**
+             * Attempts to log the user in.
+             *
+             * @param {object} user The user object
+             * @param {string} user.loginName The login name for the login attempt
+             * @param {string} user.password The password for the login attempt
+             * @param {function} successFunction The function that is called when the call succeeds
+             * @param {function} errorFunction The function that is called when the call fails // TODO: Doc for functions?
+             */
+            login: function (user, successFunction, errorFunction) {
+                Restangular.all('users').loginUser(user)
+                    .then(successFunction, errorFunction);
+            },
+            /**
+             * Attempts to register the user.
+             *
+             * @param user The user object
+             * @param {string} user.loginName The login name of the user
+             * @param {string} user.password The password for the login attempt
+             * TODO: Document other options!
+             * @param {function} successFunction The function that is called when the call succeeds // TODO: Doc for functions?
+             * @param {function} errorFunction The function that is called when the call fails
+             */
+            register: function (user, successFunction, errorFunction) {
+                Restangular.all('users').registerUser(user)
+                    .then(successFunction, errorFunction);
+            }
+        };
+    }]);

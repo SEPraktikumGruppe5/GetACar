@@ -1,9 +1,12 @@
 angular.module('mainApp', [
         'ngCookies',
         'ngSanitize',
-        'ui.router'
+        'ui.router',
+        'restangular'
     ])
-    .config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
+    .config(function ($stateProvider, $urlRouterProvider) {
+        /* Routes */
+
         // For any unmatched url, redirect to /
         $urlRouterProvider.otherwise('/');
         // Now set up the states
@@ -13,19 +16,6 @@ angular.module('mainApp', [
                 templateUrl: 'views/main.html',
                 controller: 'MainController'
             });
-//            .state('login', {
-//                url: 'login',
-//                parent: 'main',
-//                templateUrl: 'partials/login.html',
-//                controller: 'LoginCtrl'
-//            })
-//            .state('register', {
-//                url: 'register',
-//                parent: 'main',
-//                templateUrl: 'partials/register.html'
-//            });
-
-//        $httpProvider.interceptors.push('getACarHttpInterceptor');
     })
     .run(['$rootScope', '$state', '$stateParams',
         function ($rootScope, $state, $stateParams) {

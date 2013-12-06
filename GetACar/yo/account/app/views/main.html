@@ -1,15 +1,16 @@
 <div ng-controller="MainController">
-    <div class="header">
-        <ul class="nav nav-pills pull-right">
-            <li ng-class="{active: $state.includes('login')}"><a ui-sref="login">Login</a></li>
-            <li ng-class="{active: $state.includes('register')}"><a ui-sref="register">Register</a></li>
-        </ul>
-        <h3 class="text-muted">Get A Car</h3>
+    <div role="navigation" class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a ui-sref="login" class="navbar-brand">Get A Car</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav pull-right">
+                    <li ng-class="{active: $state.includes('login')}"><a ui-sref="login">Login</a></li>
+                    <li ng-class="{active: $state.includes('register')}"><a ui-sref="register">Register</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
-
-    <div ui-view></div>
-
-    <div class="footer">
-        <p>♥ from your Get A Car team - Stay sober!</p>
-    </div>
+    <div class="container" ui-view></div>
 </div>
