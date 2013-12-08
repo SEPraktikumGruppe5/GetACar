@@ -23,6 +23,9 @@
         <jpa-api.version>2.0.Beta-20090815</jpa-api.version>
         <mysql-connector-java.version>5.1.22</mysql-connector-java.version>
         <org.apache.onami.logging.slf4j.version>3.4.0-incubating</org.apache.onami.logging.slf4j.version>
+        <jackson-datatype-joda.version>2.1.2</jackson-datatype-joda.version>
+        <joda-time.version>2.3</joda-time.version>
+        <usertype.core.version>3.0.0.GA</usertype.core.version>
 
         <!-- Standard encoding -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -53,6 +56,16 @@
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-jackson-provider</artifactId>
+            <version>${resteasy-guice.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-joda</artifactId>
+            <version>${jackson-datatype-joda.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-hibernatevalidator-provider</artifactId>
             <version>${resteasy-guice.version}</version>
         </dependency>
         <!-- Guice -->
@@ -148,11 +161,22 @@
             <artifactId>hibernate-validator-annotation-processor</artifactId>
             <version>${hibernate-validator.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.jadira.usertype</groupId>
+            <artifactId>usertype.core</artifactId>
+            <version>${usertype.core.version}</version>
+        </dependency>
         <!-- JDBC -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql-connector-java.version}</version>
+        </dependency>
+        <!-- Joda-Time -->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>${joda-time.version}</version>
         </dependency>
     </dependencies>
 

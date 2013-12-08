@@ -1,10 +1,7 @@
 package org.grp5.getacar.persistence.dao;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Base Data Access Object interface.
@@ -79,20 +76,4 @@ public interface BaseDAO<K extends Serializable, E> {
      * @return The total number of entities available
      */
     public int count();
-
-    /**
-     * Validates an entity.
-     *
-     * @param entity The entity to validate
-     * @return The set containing the constraint violations
-     */
-    Set<ConstraintViolation<E>> validate(E entity);
-
-    /**
-     * Validates an entity.
-     *
-     * @param entity The entity to validate
-     * @throws ConstraintViolationException Thrown if at least one of the constraints is violated
-     */
-    void validateAndThrow(E entity) throws ConstraintViolationException;
 }

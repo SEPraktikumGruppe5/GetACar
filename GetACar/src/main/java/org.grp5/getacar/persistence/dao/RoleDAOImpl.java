@@ -3,14 +3,14 @@ package org.grp5.getacar.persistence.dao;
 import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import org.grp5.getacar.persistence.Role;
 import org.grp5.getacar.exception.NotImplementedException;
+import org.grp5.getacar.persistence.Role;
+import org.grp5.getacar.persistence.validation.ValidationHelper;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
 import javax.persistence.EntityManager;
-import javax.validation.Validator;
 import java.util.List;
 
 /**
@@ -19,9 +19,9 @@ import java.util.List;
 public class RoleDAOImpl extends BaseDAOImpl<Integer, Role> implements RoleDAO {
 
     @Inject
-    public RoleDAOImpl(Validator validator, Provider<EntityManager> entityManagerProvider,
+    public RoleDAOImpl(ValidationHelper validationHelper, Provider<EntityManager> entityManagerProvider,
                        Provider<Session> hibernateSessionProvider) {
-        super(validator, entityManagerProvider, hibernateSessionProvider);
+        super(validationHelper, entityManagerProvider, hibernateSessionProvider);
     }
 
     /**

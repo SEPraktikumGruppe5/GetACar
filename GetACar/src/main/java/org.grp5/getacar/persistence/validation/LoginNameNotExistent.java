@@ -1,4 +1,4 @@
-package org.grp5.getacar.validation;
+package org.grp5.getacar.persistence.validation;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -14,7 +14,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 @Constraint(validatedBy = LoginNameNotExistentValidator.class)
 public @interface LoginNameNotExistent {
-    String DEFAULT_MESSAGE = "{org.grp5.getacar.validation.LoginNameNotExistent.message}";
+    String DEFAULT_MESSAGE = "{org.grp5.getacar.persistence.validation.LoginNameNotExistent.message}";
 
     String message() default DEFAULT_MESSAGE;
 

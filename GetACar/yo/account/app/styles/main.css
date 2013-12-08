@@ -40,3 +40,16 @@ body {
     float: none;
     margin: 0 auto;
 }
+
+.full-width, .full-width .datetimepicker table {
+    width: 100%;
+}
+
+/* Pointer and usual form input background for the date-time picker input field */
+.datetimepickerbox,
+.form-control[disabled].datetimepickerbox,
+.form-control[readonly].datetimepickerbox,
+fieldset[disabled] .form-control.datetimepickerbox {
+    cursor: pointer;
+    background-color: #FFFFFF;
+}

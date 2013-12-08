@@ -1,8 +1,8 @@
 package org.grp5.getacar.persistence.dao;
 
-import com.google.common.collect.Sets;
 import com.google.inject.Provider;
 import com.google.inject.persist.Transactional;
+import org.grp5.getacar.persistence.validation.ValidationHelper;
 import org.grp5.getacar.util.ClassHelper;
 import org.hibernate.FlushMode;
 import org.hibernate.LockMode;
@@ -15,12 +15,8 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-import javax.validation.Validator;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Base Data Access Object implementation.
@@ -30,12 +26,12 @@ public class BaseDAOImpl<K extends Serializable, E> implements BaseDAO<K, E> {
     private final Class<E> entityClass;
     private final Provider<EntityManager> entityManagerProvider;
     private final Provider<Session> hibernateSessionProvider;
-    private final Validator validator;
+    private final ValidationHelper validationHelper;
 
     @SuppressWarnings("unchecked")
-    public BaseDAOImpl(Validator validator, Provider<EntityManager> entityManagerProvider,
+    public BaseDAOImpl(ValidationHelper validationHelper, Provider<EntityManager> entityManagerProvider,
                        Provider<Session> hibernateSessionProvider) {
-        this.validator = validator;
+        this.validationHelper = validationHelper;
         this.entityManagerProvider = entityManagerProvider;
         this.hibernateSessionProvider = hibernateSessionProvider;
         this.entityClass = (Class<E>) ClassHelper.getTypeArguments(BaseDAOImpl.class, getClass()).get(1);
@@ -45,8 +41,8 @@ public class BaseDAOImpl<K extends Serializable, E> implements BaseDAO<K, E> {
         return entityClass;
     }
 
-    public Validator getValidator() {
-        return validator;
+    public ValidationHelper getValidationHelper() {
+        return validationHelper;
     }
 
     protected EntityManager getEntityManager() {
@@ -78,7 +74,7 @@ public class BaseDAOImpl<K extends Serializable, E> implements BaseDAO<K, E> {
     @Transactional(rollbackOn = {Exception.class})
     @Override
     public void create(E entity) {
-        validateAndThrow(entity);
+        validationHelper.validateAndThrow(entity);
         final Session hibernateSession = getHibernateSession();
         hibernateSession.save(entity);
         hibernateSession.flush();
@@ -87,7 +83,7 @@ public class BaseDAOImpl<K extends Serializable, E> implements BaseDAO<K, E> {
     @Transactional(rollbackOn = {Exception.class})
     @Override
     public void change(E entity) {
-        validateAndThrow(entity);
+        validationHelper.validateAndThrow(entity);
         final Session hibernateSession = getHibernateSession();
         hibernateSession.update(entity);
         hibernateSession.flush();
@@ -153,19 +149,6 @@ public class BaseDAOImpl<K extends Serializable, E> implements BaseDAO<K, E> {
     public void remove(List<E> entities) {
         for (E entity : entities) {
             remove(entity);
-        }
-    }
-
-    @Override
-    public Set<ConstraintViolation<E>> validate(E entity) {
-        return validator.validate(entity);
-    }
-
-    @Override
-    public void validateAndThrow(E entity) throws ConstraintViolationException {
-        final Set<ConstraintViolation<E>> constraintViolations = validate(entity);
-        if (!constraintViolations.isEmpty()) {
-            throw new ConstraintViolationException(Sets.<ConstraintViolation<?>>newHashSet(constraintViolations));
         }
     }
 }

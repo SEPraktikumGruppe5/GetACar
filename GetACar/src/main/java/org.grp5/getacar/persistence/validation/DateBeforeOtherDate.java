@@ -1,4 +1,4 @@
-package org.grp5.getacar.validation;
+package org.grp5.getacar.persistence.validation;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

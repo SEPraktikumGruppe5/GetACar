@@ -1,8 +1,8 @@
 package org.grp5.getacar.persistence;
 
 import com.google.common.collect.Lists;
-import org.grp5.getacar.validation.LoginNameNotExistent;
-import org.grp5.getacar.validation.PasswordsMatch;
+import org.grp5.getacar.persistence.validation.LoginNameNotExistent;
+import org.grp5.getacar.persistence.validation.PasswordsMatch;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

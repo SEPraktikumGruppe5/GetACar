@@ -1,7 +1,8 @@
 angular.module('accountApp')
     .controller('RegisterController', function ($scope, AccountService, $state) {
-        $scope.user = {
-            firstName: undefined
+        // At least initialize the form-data at "object level" for deserialization reasons at server-side
+        $scope.registerFormData = {
+            user: {}
         };
         $scope.errors = {};
 
@@ -26,9 +27,9 @@ angular.module('accountApp')
                         $scope.registerForm.$setPristine();
                         angular.forEach(data.errors, function (errors, field) {
                             // tell the form that field is invalid
-                            var registerFormField = $scope.registerForm[field];
-                            if (registerFormField) {
-                                registerFormField.$setValidity('server', false);
+                            var formField = $scope.registerForm[field];
+                            if (formField) {
+                                formField.$setValidity('server', false);
                                 // keep the error messages from the server
                                 $scope.errors[field] = errors.join(', ');
                             }

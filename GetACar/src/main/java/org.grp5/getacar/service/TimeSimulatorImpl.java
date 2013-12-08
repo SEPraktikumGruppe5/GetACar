@@ -1,29 +1,26 @@
 package org.grp5.getacar.service;
 
 import com.google.inject.Inject;
-import com.google.inject.Provider;
+import org.joda.time.DateTime;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.util.Date;
-
-/**
- *
- */
 public class TimeSimulatorImpl implements TimeSimulator {
 
-    private final Provider<HttpServletRequest> servletRequestProvider;
+    private DateTime simulatedTime = null;
 
     @Inject
-    public TimeSimulatorImpl(Provider<HttpServletRequest> servletRequestProvider) {
-        this.servletRequestProvider = servletRequestProvider;
+    public TimeSimulatorImpl() {
+    }
+
+    public void setTime(DateTime time) {
+        this.simulatedTime = time;
     }
 
     @Override
-    public Date getTime() {
-        final HttpServletRequest httpServletRequest = servletRequestProvider.get();
-        final HttpSession session = httpServletRequest.getSession();
-        final Date simulatedTime = (Date) session.getAttribute("simulatedTime");
-        return new Date();
+    public DateTime getTime() {
+        final DateTime now = new DateTime();
+        if (simulatedTime == null) {
+            return now;
+        }
+        return simulatedTime.plus(now.getMillis() - simulatedTime.getMillis());
     }
 }

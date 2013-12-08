@@ -1,11 +1,11 @@
-package org.grp5.getacar.validation;
+package org.grp5.getacar.persistence.validation;
 
 import org.grp5.getacar.persistence.BaseEntity;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import static org.grp5.getacar.validation.DateBeforeOtherDate.Accuracy;
+import static org.grp5.getacar.persistence.validation.DateBeforeOtherDate.Accuracy;
 
 /**
  *

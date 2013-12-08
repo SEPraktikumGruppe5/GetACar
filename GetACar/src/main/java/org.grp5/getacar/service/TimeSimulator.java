@@ -1,10 +1,12 @@
 package org.grp5.getacar.service;
 
-import java.util.Date;
+import org.joda.time.DateTime;
 
 /**
  *
  */
 public interface TimeSimulator {
-    Date getTime();
+    DateTime getTime();
+
+    void setTime(DateTime time);
 }

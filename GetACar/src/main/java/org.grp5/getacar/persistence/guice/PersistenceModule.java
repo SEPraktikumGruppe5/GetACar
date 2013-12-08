@@ -8,7 +8,9 @@ import com.google.inject.persist.PersistFilter;
 import com.google.inject.persist.jpa.JpaPersistModule;
 import com.google.inject.servlet.ServletModule;
 import org.grp5.getacar.persistence.dao.*;
-import org.grp5.getacar.validation.InjectingConstraintValidationFactory;
+import org.grp5.getacar.persistence.validation.InjectingConstraintValidationFactory;
+import org.grp5.getacar.persistence.validation.ValidationHelper;
+import org.grp5.getacar.persistence.validation.ValidationHelperImpl;
 import org.hibernate.Session;
 import org.hibernate.StatelessSession;
 
@@ -29,6 +31,8 @@ public class PersistenceModule extends ServletModule {
 
         /* IMPORTANT: Has to be the first filter */
         filter("/*").through(PersistFilter.class);
+
+        bind(ValidationHelper.class).to(ValidationHelperImpl.class).in(Singleton.class);
 
         bind(VehicleDAO.class).to(VehicleDAOImpl.class);
         bind(UserDAO.class).to(UserDAOImpl.class);

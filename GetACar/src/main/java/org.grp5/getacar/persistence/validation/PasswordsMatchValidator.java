@@ -1,4 +1,4 @@
-package org.grp5.getacar.validation;
+package org.grp5.getacar.persistence.validation;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.grp5.getacar.persistence.BaseEntity;

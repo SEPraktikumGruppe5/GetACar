@@ -2,7 +2,8 @@ angular.module('accountApp', [
         'ngCookies',
         'ngSanitize',
         'ui.router',
-        'restangular'
+        'restangular',
+        'ui.bootstrap.datetimepicker'
     ])
     .config(function ($stateProvider, $urlRouterProvider, RestangularProvider) {
         /* Routes */ // TODO: Try to configure this in a separate .js file!

@@ -6,6 +6,7 @@ import org.grp5.getacar.persistence.Vehicle;
 import org.grp5.getacar.persistence.dao.VehicleDAO;
 import org.grp5.getacar.log.LogInvocation;
 import org.grp5.getacar.service.TimeSimulator;
+import org.joda.time.DateTime;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -56,7 +57,7 @@ public class VehicleResource {
 //        final Date time = gregorianCalendar.getTime();
 
         final TimeSimulator timeSimulator = timeManagerProvider.get();
-        final Date time = timeSimulator.getTime();
+        final DateTime time = timeSimulator.getTime();
     }
 
     public void searchVehicle(/* Location location, */ Date startTime, Date endTime, Integer radius) {
