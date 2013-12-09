@@ -3,6 +3,7 @@ angular.module('accountApp', [
         'ngSanitize',
         'ui.router',
         'restangular',
+        'ui.bootstrap',
         'ui.bootstrap.datetimepicker'
     ])
     .config(function ($stateProvider, $urlRouterProvider, RestangularProvider) {

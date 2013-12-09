@@ -1,10 +1,23 @@
 angular.module('accountApp')
-    .controller('RegisterController', function ($scope, AccountService, $state) {
+    .controller('RegisterController', function ($scope, AccountService, $state, ModalService) {
         // At least initialize the form-data at "object level" for deserialization reasons at server-side
         $scope.registerFormData = {
             user: {}
         };
-        $scope.errors = {};
+        $scope.errors = {}; // empty initialization of server errors
+
+        $scope.readTOS = function() {
+            var modalOptions = {
+                closeButtonText: 'Cancel',
+                actionButtonText: 'Ok',
+                headerText: 'TOS',
+                bodyText: 'TOS of Get A Car!'
+            };
+
+            ModalService.showModal({}, modalOptions).then(function (result) {
+                $scope.registerFormData.acceptTOS = true;
+            });
+        };
 
         $scope.register = function (user) {
             $scope.errors = {}; // clean up server errors

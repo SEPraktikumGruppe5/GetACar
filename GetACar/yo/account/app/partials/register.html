@@ -7,78 +7,95 @@
                 <label for="inputFirstName" class="col-sm-2 control-label">First Name</label>
 
                 <div class="col-sm-10">
-                    <input name="firstName" type="text" class="form-control" id="inputFirstName"
+                    <input name="user.firstName" type="text" class="form-control" id="inputFirstName"
                            placeholder="First Name"
                            ng-model="registerFormData.user.firstName" server-error>
                 </div>
                 <div class="errors col-sm-offset-2 col-sm-10"
-                     ng-show="!registerForm.firstName.$dirty && registerForm.firstName.$invalid">
-                    <span ng-show="registerForm.firstName.$error.server">{{ errors.firstName }}</span>
+                     ng-show="!registerForm['user.firstName'].$dirty && registerForm['user.firstName'].$invalid">
+                    <span ng-show="registerForm['user.firstName'].$error.server">{{ errors['user.firstName'] }}</span>
                 </div>
             </div>
             <div class="form-group">
                 <label for="inputLastName" class="col-sm-2 control-label">Last Name</label>
 
                 <div class="col-sm-10">
-                    <input name="lastName" type="text" class="form-control" id="inputLastName" placeholder="Last Name"
-                           ng-model="registerFormData.user.lastName" server-error>
+                    <input name="user.lastName" type="text" class="form-control" id="inputLastName"
+                           placeholder="Last Name" ng-model="registerFormData.user.lastName" server-error>
                 </div>
-                <div class="errors col-sm-offset-2 col-sm-10" ng-show="!registerForm.lastName.$dirty && registerForm.lastName.$invalid">
-                    <span ng-show="registerForm.lastName.$error.server">{{ errors.lastName }}</span>
+                <div class="errors col-sm-offset-2 col-sm-10"
+                     ng-show="!registerForm['user.lastName'].$dirty && registerForm['user.lastName'].$invalid">
+                    <span ng-show="registerForm['user.lastName'].$error.server">{{ errors['user.lastName'] }}</span>
                 </div>
             </div>
             <div class="form-group">
                 <label for="inputLoginName" class="col-sm-2 control-label">Login</label>
 
                 <div class="col-sm-10">
-                    <input name="loginName" type="text" class="form-control" id="inputLoginName" placeholder="Login"
-                           ng-model="registerFormData.user.loginName" server-error>
+                    <input name="user.loginName" type="text" class="form-control" id="inputLoginName"
+                           placeholder="Login" ng-model="registerFormData.user.loginName" server-error>
                 </div>
                 <div class="errors col-sm-offset-2 col-sm-10"
-                     ng-show="!registerForm.loginName.$dirty && registerForm.loginName.$invalid">
-                    <span ng-show="registerForm.loginName.$error.server">{{ errors.loginName }}</span>
+                     ng-show="!registerForm['user.loginName'].$dirty && registerForm['user.loginName'].$invalid">
+                    <span ng-show="registerForm['user.loginName'].$error.server">{{ errors['user.loginName'] }}</span>
                 </div>
             </div>
             <div class="form-group">
                 <label for="inputEmail" class="col-sm-2 control-label">E-Mail</label>
 
                 <div class="col-sm-10">
-                    <input name="email" type="text" class="form-control" id="inputEmail" placeholder="E-Mail"
+                    <input name="user.email" type="text" class="form-control" id="inputEmail" placeholder="E-Mail"
                            ng-model="registerFormData.user.email" server-error>
                 </div>
-                <div class="errors col-sm-offset-2 col-sm-10" ng-show="!registerForm.email.$dirty && registerForm.email.$invalid">
-                    <span ng-show="registerForm.email.$error.server">{{ errors.email }}</span>
+                <div class="errors col-sm-offset-2 col-sm-10"
+                     ng-show="!registerForm['user.email'].$dirty && registerForm['user.email'].$invalid">
+                    <span ng-show="registerForm['user.email'].$error.server">{{ errors['user.email'] }}</span>
                 </div>
             </div>
             <div class="form-group">
                 <label for="inputPassword" class="col-sm-2 control-label">Password</label>
 
                 <div class="col-sm-10">
-                    <input name="password" type="password" class="form-control" id="inputPassword"
-                           placeholder="Password"
-                           ng-model="registerFormData.user.password" server-error>
+                    <input name="user.password" type="password" class="form-control" id="inputPassword"
+                           placeholder="Password" ng-model="registerFormData.user.password" server-error>
                 </div>
-                <div class="errors col-sm-offset-2 col-sm-10" ng-show="!registerForm.password.$dirty && registerForm.password.$invalid">
-                    <span ng-show="registerForm.password.$error.server">{{ errors.password }}</span>
+                <div class="errors col-sm-offset-2 col-sm-10"
+                     ng-show="!registerForm['user.password'].$dirty && registerForm['user.password'].$invalid">
+                    <span ng-show="registerForm['user.password'].$error.server">{{ errors['user.password'] }}</span>
                 </div>
             </div>
             <div class="form-group">
                 <label for="inputPasswordRepeat" class="col-sm-2 control-label">Password Repeat</label>
 
                 <div class="col-sm-10">
-                    <input name="passwordRepeat" type="password" class="form-control" id="inputPasswordRepeat"
+                    <input name="user.passwordRepeat" type="password" class="form-control" id="inputPasswordRepeat"
                            placeholder="Password Repeat" ng-model="registerFormData.user.passwordRepeat" server-error>
                 </div>
                 <div class="errors col-sm-offset-2 col-sm-10"
-                     ng-show="!registerForm.passwordRepeat.$dirty && registerForm.passwordRepeat.$invalid">
-                    <span ng-show="registerForm.passwordRepeat.$error.server">{{ errors.passwordRepeat }}</span>
+                     ng-show="!registerForm['user.passwordRepeat'].$dirty && registerForm['user.passwordRepeat'].$invalid">
+                    <span ng-show="registerForm['user.passwordRepeat'].$error.server">{{ errors['user.passwordRepeat'] }}</span>
                 </div>
             </div>
-            <!-- TODO: Introduce "I accept the license and terms" checkbox -->
-            TODO: Introduce "I accept the license and terms" checkbox
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                    <button type="submit" class="btn btn-default" ng-click="register(registerFormData)">Register me</button>
+                    <div class="checkbox">
+                        <label>
+                            <input name="acceptTOS" type="checkbox" id="inputAcceptTOS"
+                                   ng-model="registerFormData.acceptTOS" server-error>
+                            <span>I accept the <a ng-click="readTOS()">TOS</a></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="errors col-sm-offset-2 col-sm-10"
+                     ng-show="!registerForm.acceptTOS.$dirty && registerForm.acceptTOS.$invalid">
+                    <span ng-show="registerForm.acceptTOS.$error.server">{{ errors.acceptTOS }}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default" ng-click="register(registerFormData)">
+                        Register me
+                    </button>
                 </div>
             </div>
         </form>

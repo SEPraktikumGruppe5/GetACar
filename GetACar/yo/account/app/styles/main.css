@@ -50,6 +50,11 @@ body {
 .form-control[disabled].datetimepickerbox,
 .form-control[readonly].datetimepickerbox,
 fieldset[disabled] .form-control.datetimepickerbox {
-    cursor: pointer;
     background-color: #FFFFFF;
+    cursor: pointer;
+}
+
+/* 'Click'-cursor */
+.dropdown-toggle {
+    cursor: pointer
 }

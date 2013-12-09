@@ -10,6 +10,11 @@ angular.module('accountApp')
                         ctrl.$setValidity('server', true);
                     });
                 });
+                element.bind('blur', function () {
+                    scope.$apply(function () {
+                        ctrl.$setValidity('server', true);
+                    });
+                });
             }
         };
     });
