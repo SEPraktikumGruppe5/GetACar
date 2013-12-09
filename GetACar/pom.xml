@@ -23,6 +23,9 @@
         <jpa-api.version>2.0.Beta-20090815</jpa-api.version>
         <mysql-connector-java.version>5.1.22</mysql-connector-java.version>
         <org.apache.onami.logging.slf4j.version>3.4.0-incubating</org.apache.onami.logging.slf4j.version>
+        <jackson-datatype-joda.version>2.1.2</jackson-datatype-joda.version>
+        <joda-time.version>2.3</joda-time.version>
+        <usertype.core.version>3.0.0.GA</usertype.core.version>
 
         <!-- Standard encoding -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -30,6 +33,10 @@
         <!-- Target source -->
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
+
+        <!-- Misc stuff -->
+        <yeoman-account-project.directory>yo/account</yeoman-account-project.directory>
+        <yeoman-main-project.directory>yo/main</yeoman-main-project.directory>
     </properties>
 
     <dependencies>
@@ -49,6 +56,16 @@
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-jackson-provider</artifactId>
+            <version>${resteasy-guice.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-joda</artifactId>
+            <version>${jackson-datatype-joda.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-hibernatevalidator-provider</artifactId>
             <version>${resteasy-guice.version}</version>
         </dependency>
         <!-- Guice -->
@@ -144,48 +161,165 @@
             <artifactId>hibernate-validator-annotation-processor</artifactId>
             <version>${hibernate-validator.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.jadira.usertype</groupId>
+            <artifactId>usertype.core</artifactId>
+            <version>${usertype.core.version}</version>
+        </dependency>
         <!-- JDBC -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql-connector-java.version}</version>
         </dependency>
+        <!-- Joda-Time -->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>${joda-time.version}</version>
+        </dependency>
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>development</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>3.0</version>
+                        <configuration>
+                            <source>1.7</source>
+                            <target>1.7</target>
+                        </configuration>
+                    </plugin>
+                    <!--<plugin>-->
+                    <!--<groupId>org.apache.maven.plugins</groupId>-->
+                    <!--<artifactId>maven-surefire-plugin</artifactId>-->
+                    <!--<configuration>-->
+                    <!--<skip>true</skip>-->
+                    <!--</configuration>-->
+                    <!--<executions>-->
+                    <!--<execution>-->
+                    <!--<id>surefire-it</id>-->
+                    <!--<phase>integration-test</phase>-->
+                    <!--<goals>-->
+                    <!--<goal>test</goal>-->
+                    <!--</goals>-->
+                    <!--<configuration>-->
+                    <!--<skip>false</skip>-->
+                    <!--</configuration>-->
+                    <!--</execution>-->
+                    <!--</executions>-->
+                    <!--</plugin>-->
+                    <plugin>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <version>2.4</version>
+                        <configuration>
+                            <webResources>
+                                <resource>
+                                    <directory>${yeoman-account-project.directory}/app</directory>
+                                    <targetPath>account</targetPath>
+                                </resource>
+                                <resource>
+                                    <directory>${yeoman-main-project.directory}/app</directory>
+                                    <targetPath>app</targetPath>
+                                </resource>
+                            </webResources>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>production</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>3.0</version>
+                        <configuration>
+                            <source>1.7</source>
+                            <target>1.7</target>
+                        </configuration>
+                    </plugin>
+                    <!--<plugin>-->
+                    <!--<groupId>org.apache.maven.plugins</groupId>-->
+                    <!--<artifactId>maven-surefire-plugin</artifactId>-->
+                    <!--<configuration>-->
+                    <!--<skip>true</skip>-->
+                    <!--</configuration>-->
+                    <!--<executions>-->
+                    <!--<execution>-->
+                    <!--<id>surefire-it</id>-->
+                    <!--<phase>integration-test</phase>-->
+                    <!--<goals>-->
+                    <!--<goal>test</goal>-->
+                    <!--</goals>-->
+                    <!--<configuration>-->
+                    <!--<skip>false</skip>-->
+                    <!--</configuration>-->
+                    <!--</execution>-->
+                    <!--</executions>-->
+                    <!--</plugin>-->
+                    <plugin>
+                        <groupId>com.github.trecloux</groupId>
+                        <artifactId>yeoman-maven-plugin</artifactId>
+                        <version>0.1</version>
+                        <configuration>
+                            <indentSize>4</indentSize>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>account</id>
+                                <configuration>
+                                    <yeomanProjectDirectory>${yeoman-account-project.directory}</yeomanProjectDirectory>
+                                </configuration>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>main</id>
+                                <configuration>
+                                    <yeomanProjectDirectory>${yeoman-main-project.directory}</yeomanProjectDirectory>
+                                </configuration>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <version>2.4</version>
+                        <configuration>
+                            <webResources>
+                                <resource>
+                                    <directory>${yeoman-account-project.directory}/dist</directory>
+                                    <targetPath>account</targetPath>
+                                </resource>
+                                <resource>
+                                    <directory>${yeoman-main-project.directory}/dist</directory>
+                                    <targetPath>app</targetPath>
+                                </resource>
+                            </webResources>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.0</version>
-                <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>surefire-it</id>
-                        <phase>integration-test</phase>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                        <configuration>
-                            <skip>false</skip>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>2.3</version>
-            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>tomcat-maven-plugin</artifactId>
@@ -196,6 +330,38 @@
                     <path>/getacar</path>
                     <username>admin</username>
                     <password>verwaltung</password>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${yeoman-account-project.directory}/dist</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>${yeoman-account-project.directory}/.tmp</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>${yeoman-account-project.directory}/app/components</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>${yeoman-account-project.directory}/node_modules</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>${yeoman-main-project.directory}/dist</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>${yeoman-main-project.directory}/.tmp</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>${yeoman-main-project.directory}/app/components</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>${yeoman-main-project.directory}/node_modules</directory>
+                        </fileset>
+                    </filesets>
                 </configuration>
             </plugin>
         </plugins>

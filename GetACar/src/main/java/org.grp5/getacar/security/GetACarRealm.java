@@ -12,9 +12,9 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.grp5.getacar.domain.Role;
-import org.grp5.getacar.domain.User;
-import org.grp5.getacar.domain.dao.UserDAO;
+import org.grp5.getacar.persistence.Role;
+import org.grp5.getacar.persistence.User;
+import org.grp5.getacar.persistence.dao.UserDAO;
 import org.slf4j.Logger;
 
 import java.util.Set;
@@ -95,7 +95,7 @@ public class GetACarRealm extends AuthorizingRealm {
         }
         String login = (String) getAvailablePrincipal(principals);
         UserDAO userDAO = userDAOProvider.get();
-        User user = userDAO.findByLogin(login);
+        User user = userDAO.findByLoginName(login);
         // Retrieve permissions for the user
         UserPermissionsRolesInformation permissionsRolesInformation = getRoleNames(user);
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
@@ -106,12 +106,12 @@ public class GetACarRealm extends AuthorizingRealm {
     private LoginPasswordInformation getPasswordInformationForUser(String login) {
 
         UserDAO userDAO = userDAOProvider.get();
-        User user = userDAO.findByLogin(login);
+        User user = userDAO.findByLoginName(login);
         if (user == null) {
             return null;
         }
 
-        return new LoginPasswordInformation(user.getLogin(), user.getPassword());
+        return new LoginPasswordInformation(user.getLoginName(), user.getPassword());
     }
 
     protected UserPermissionsRolesInformation getRoleNames(User user) {
