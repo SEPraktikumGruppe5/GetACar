@@ -190,3 +190,10 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2013-11-24 20:31:34
+
+-- Create user
+
+drop user getacar;
+CREATE USER 'getacar'@'%' IDENTIFIED BY 'getacar';
+GRANT USAGE ON * . * TO 'getacar'@'%' IDENTIFIED BY 'getacar';
+GRANT ALL PRIVILEGES ON `getacar` . * TO 'getacar'@'%';
