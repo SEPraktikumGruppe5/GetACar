@@ -1,4 +1,4 @@
-angular.module('accountApp')
+angular.module('mainApp')
     .directive('serverError', [
         function () {
             return {

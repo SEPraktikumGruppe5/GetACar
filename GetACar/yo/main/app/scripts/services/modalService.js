@@ -1,4 +1,4 @@
-angular.module('accountApp')
+angular.module('mainApp')
     .service('ModalService', ['$modal',
         function ($modal) {
             var modalDefaults, modalOptions;

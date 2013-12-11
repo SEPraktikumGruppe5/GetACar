@@ -1,4 +1,4 @@
-<div class="row" ng-controller="LoginController">
+<div class="row" ng-controller="LoginController" xmlns="http://www.w3.org/1999/html">
     <div class="col-xs-6 col-centered">
         <h3>Login</h3>
 
@@ -31,7 +31,7 @@
                 <label for="inputTimeSimulation" class="col-sm-3 control-label">Time simulation</label>
 
                 <div class="col-sm-9">
-                    <div class="dropdown"> <!-- TODO: Replace by Angular-UI stuff once at Bootstrap 3 -->
+                    <div class="dropdown"> <!-- TODO: Replace by Angular-UI stuff once at Bootstrap 3? -->
                         <a class="dropdown-toggle time-simulation-toggle-select" role="button" data-toggle="dropdown">
                             <div class="input-group">
                                 <input name="timeSimulation" id="inputTimeSimulation" type="text" class="form-control
@@ -63,9 +63,7 @@
                 <div class="col-sm-offset-3 col-sm-9">
                     <div class="alert alert-success" ng-show="$stateParams.justRegistered">
                         You successfully registered for Get A Car! With some luck the admins might accept your
-                        registration.
-                        Sadly
-                        you can not log in until then!
+                        registration. Sadly you can not log in until then!
                     </div>
                     <div class="alert alert-danger" ng-show="errorMessage">
                         {{errorMessage}}

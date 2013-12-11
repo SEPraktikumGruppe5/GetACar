@@ -2,20 +2,54 @@ angular.module('mainApp', [
         'ngCookies',
         'ngSanitize',
         'ui.router',
-        'restangular'
+        'restangular',
+        'ui.bootstrap',
+        'ui.bootstrap.datetimepicker'
     ])
-    .config(function ($stateProvider, $urlRouterProvider) {
-        /* Routes */
-
-        // For any unmatched url, redirect to /
-        $urlRouterProvider.otherwise('/');
+    .config(function ($stateProvider, $urlRouterProvider, RestangularProvider) {
+        /* Routes */ // TODO: Try to configure this in a separate .js file!
+        // For any unmatched url, redirect to /login
+        $urlRouterProvider.otherwise('/home');
         // Now set up the states
         $stateProvider
             .state('main', {
                 url: '/',
                 templateUrl: 'views/main.html',
                 controller: 'MainController'
+            })
+            .state('home', {
+                url: 'home',
+                parent: 'main',
+                templateUrl: 'partials/home.html',
+                controller: 'HomeController'
+            })
+            .state('search', {
+                url: 'search',
+                parent: 'main',
+                templateUrl: 'partials/search.html',
+                controller: 'SearchVehicleController'
             });
+
+        /* Restangular */ // TODO: Try to configure this in a separate .js file!
+        RestangularProvider.setBaseUrl('/getacar/rest/'); // TODO: Change baseUrl to sth. more standard for Rest stuff -> /getacar/api/v1/ ?
+        // Include headers and everything else in every response
+        RestangularProvider.setFullResponse(true);
+//        // Define loginUser method
+//        RestangularProvider.addElementTransformer('users', true, function (user) {
+//            // This will add a method called loginUser that will do a POST to the path loginUser
+//            // signature is (name, operation, path, params, headers, elementToPost)
+//            user.addRestangularMethod('loginUser', 'post', 'loginUser');
+//
+//            return user;
+//        });
+//        // Define registerUser method
+//        RestangularProvider.addElementTransformer('users', true, function (user) {
+//            // This will add a method called loginUser that will do a POST to the path loginUser
+//            // signature is (name, operation, path, params, headers, elementToPost)
+//            user.addRestangularMethod('registerUser', 'post', 'registerUser');
+//
+//            return user;
+//        });
     })
     .run(['$rootScope', '$state', '$stateParams',
         function ($rootScope, $state, $stateParams) {

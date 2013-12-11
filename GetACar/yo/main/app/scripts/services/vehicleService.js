@@ -1,5 +1,5 @@
-angular.module('accountApp')
-    .factory('AccountService', ['$http', 'Restangular',
+angular.module('mainApp')
+    .factory('VehicleService', ['$http', 'Restangular',
         function ($http, Restangular) {
             return {
                 /**
