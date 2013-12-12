@@ -1,5 +1,11 @@
 <div ng-controller="SearchVehicleController" xmlns="http://www.w3.org/1999/html">
+    <pre>Model: {{result | json}}</pre>
+    <!-- TODO: Template for typeahead, include logitude, latitude that is not shown but sent when the form is submitted -->
+    <input type="text" ng-model="result" typeahead="suggestion.name for suggestion in cities($viewValue)"
+           typeahead-editable="false" typeahead-min-length="2" typeahead-wait-ms="100">
+
     <div>
-        <h3>Search: Suchmaske mit Umkreissuche. Beim ankommen auf der Seite wird mit standardparametern abgeschickt. Anzeige der Ergebnisse in einer Liste + irgendwo eine große Map mit den Suchergebnissen markiert!</h3>
+        <h3>Search: Suchmaske mit Umkreissuche. Beim ankommen auf der Seite wird mit standardparametern abgeschickt.
+            Anzeige der Ergebnisse in einer Liste + irgendwo eine große Map mit den Suchergebnissen markiert!</h3>
     </div>
 </div>

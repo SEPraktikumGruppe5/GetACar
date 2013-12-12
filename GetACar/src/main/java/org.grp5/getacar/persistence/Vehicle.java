@@ -16,8 +16,8 @@ public class Vehicle extends BaseEntity {
     private String type;
     private String licenseNumber;
     private String picture;
-    private BigDecimal actualPositionWidth;  // TODO: Longitude latitude
-    private BigDecimal actualPositionLength;
+    private BigDecimal latitude;
+    private BigDecimal longitude;
     private Boolean active;
     private String comment;
 
@@ -55,23 +55,23 @@ public class Vehicle extends BaseEntity {
     }
 
     @Basic(optional = true)
-    @Column(name = "f_akt_koord_breite", columnDefinition = "decimal(9,6)")
-    public BigDecimal getActualPositionWidth() {
-        return actualPositionWidth;
+    @Column(name = "f_breitengrad", columnDefinition = "decimal(10,7)")
+    public BigDecimal getLatitude() {
+        return latitude;
     }
 
-    public void setActualPositionWidth(BigDecimal actualPositionWidth) {
-        this.actualPositionWidth = actualPositionWidth;
+    public void setLatitude(BigDecimal latitude) {
+        this.latitude = latitude;
     }
 
     @Basic(optional = true)
-    @Column(name = "f_akt_koord_laenge", columnDefinition = "decimal(9,6)")
-    public BigDecimal getActualPositionLength() {
-        return actualPositionLength;
+    @Column(name = "f_laengengrad", columnDefinition = "decimal(10,7)")
+    public BigDecimal getLongitude() {
+        return longitude;
     }
 
-    public void setActualPositionLength(BigDecimal actualPositionLength) {
-        this.actualPositionLength = actualPositionLength;
+    public void setLongitude(BigDecimal longitude) {
+        this.longitude = longitude;
     }
 
     @Basic(optional = false)

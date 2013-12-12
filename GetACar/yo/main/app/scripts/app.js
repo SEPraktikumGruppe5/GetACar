@@ -34,14 +34,14 @@ angular.module('mainApp', [
         RestangularProvider.setBaseUrl('/getacar/rest/'); // TODO: Change baseUrl to sth. more standard for Rest stuff -> /getacar/api/v1/ ?
         // Include headers and everything else in every response
         RestangularProvider.setFullResponse(true);
-//        // Define loginUser method
-//        RestangularProvider.addElementTransformer('users', true, function (user) {
-//            // This will add a method called loginUser that will do a POST to the path loginUser
-//            // signature is (name, operation, path, params, headers, elementToPost)
-//            user.addRestangularMethod('loginUser', 'post', 'loginUser');
-//
-//            return user;
-//        });
+        // Define cities method
+        RestangularProvider.addElementTransformer('geo', true, function (geo) {
+            // This will add a method called cities that will do a GET to the path cities
+            // signature is (name, operation, path, params, headers, elementToPost)
+            geo.addRestangularMethod('cities', 'get', 'cities');
+
+            return geo;
+        });
 //        // Define registerUser method
 //        RestangularProvider.addElementTransformer('users', true, function (user) {
 //            // This will add a method called loginUser that will do a POST to the path loginUser
