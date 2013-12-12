@@ -1,4 +1,4 @@
-package org.grp5.getacar.util;
+package org.grp5.getacar.persistence.util;
 
 /**
  * Enumeration used when role names are needed in the code to prevent typos.

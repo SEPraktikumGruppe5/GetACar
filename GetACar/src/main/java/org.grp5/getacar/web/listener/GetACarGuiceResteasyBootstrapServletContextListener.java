@@ -1,4 +1,4 @@
-package org.grp5.getacar.listener;
+package org.grp5.getacar.web.listener;
 
 import com.google.common.collect.Lists;
 import com.google.inject.Module;
@@ -9,6 +9,7 @@ import org.grp5.getacar.log.guice.LogModule;
 import org.grp5.getacar.resource.guice.ResourcesModule;
 import org.grp5.getacar.security.guice.SecurityModule;
 import org.grp5.getacar.service.guice.ServicesModule;
+import org.grp5.getacar.web.guice.WebModule;
 import org.jboss.resteasy.plugins.guice.GuiceResteasyBootstrapServletContextListener;
 
 import javax.servlet.ServletContext;
@@ -24,6 +25,7 @@ public class GetACarGuiceResteasyBootstrapServletContextListener extends
     @Override
     protected List<Module> getModules(ServletContext context) {
         return Lists.newArrayList(new PersistenceModule(), new ResourcesModule(), new ServicesModule(),
-                new SecurityModule(context), new Slf4jLoggingModule(Matchers.any()), new LogModule());
+                new SecurityModule(context), new Slf4jLoggingModule(Matchers.any()), new LogModule(),
+                new WebModule());
     }
 }

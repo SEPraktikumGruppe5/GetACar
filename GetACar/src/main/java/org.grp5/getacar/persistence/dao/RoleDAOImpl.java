@@ -3,7 +3,7 @@ package org.grp5.getacar.persistence.dao;
 import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import org.grp5.getacar.exception.NotImplementedException;
+import org.grp5.getacar.persistence.exception.NotImplementedException;
 import org.grp5.getacar.persistence.Role;
 import org.grp5.getacar.persistence.validation.ValidationHelper;
 import org.hibernate.Criteria;

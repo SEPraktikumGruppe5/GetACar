@@ -3,7 +3,7 @@ package org.grp5.getacar.persistence.dao;
 import com.google.inject.Provider;
 import com.google.inject.persist.Transactional;
 import org.grp5.getacar.persistence.validation.ValidationHelper;
-import org.grp5.getacar.util.ClassHelper;
+import org.grp5.getacar.persistence.util.ClassHelper;
 import org.hibernate.FlushMode;
 import org.hibernate.LockMode;
 import org.hibernate.Session;

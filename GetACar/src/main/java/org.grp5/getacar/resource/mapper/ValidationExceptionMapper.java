@@ -1,4 +1,4 @@
-package org.grp5.getacar.mapper;
+package org.grp5.getacar.resource.mapper;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;

@@ -1,4 +1,4 @@
-package org.grp5.getacar.util;
+package org.grp5.getacar.persistence.util;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;

@@ -6,7 +6,7 @@
 
     <listener>
         <listener-class>
-            org.grp5.getacar.listener.GetACarGuiceResteasyBootstrapServletContextListener
+            org.grp5.getacar.web.listener.GetACarGuiceResteasyBootstrapServletContextListener
         </listener-class>
     </listener>
 
@@ -36,7 +36,7 @@
             resteasy.providers
         </param-name>
         <param-value>
-            org.grp5.getacar.mapper.ValidationExceptionMapper
+            org.grp5.getacar.resource.mapper.ValidationExceptionMapper
         </param-value>
     </context-param>
 

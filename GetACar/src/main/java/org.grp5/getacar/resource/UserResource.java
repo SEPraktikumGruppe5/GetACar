@@ -20,7 +20,7 @@ import org.grp5.getacar.persistence.validation.ValidationHelper;
 import org.grp5.getacar.resource.form.LoginForm;
 import org.grp5.getacar.resource.form.RegisterForm;
 import org.grp5.getacar.service.TimeSimulator;
-import org.grp5.getacar.util.UserRole;
+import org.grp5.getacar.persistence.util.UserRole;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
