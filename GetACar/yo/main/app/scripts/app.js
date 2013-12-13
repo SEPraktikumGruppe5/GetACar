@@ -4,7 +4,9 @@ angular.module('mainApp', [
         'ui.router',
         'restangular',
         'ui.bootstrap',
-        'ui.bootstrap.datetimepicker'
+        'ui.bootstrap.datetimepicker',
+        'google-maps',
+        'gpAutocomplete'
     ])
     .config(function ($stateProvider, $urlRouterProvider, RestangularProvider) {
         /* Routes */ // TODO: Try to configure this in a separate .js file!
