@@ -7,6 +7,8 @@ import org.grp5.getacar.persistence.validation.PasswordsMatch;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.validation.constraints.Pattern;
+import org.hibernate.validator.constraints.Email;
 import java.util.List;
 
 /**
@@ -35,6 +37,8 @@ public class User extends BaseEntity {
 
     @Basic(optional = false)
     @Column(name = "b_login", columnDefinition = "varchar(20)")
+    @Size(min = 4, max = 20)
+    @Pattern(regexp="[a-zA-Z]*")
     @NotNull
     public String getLoginName() {
         return loginName;
@@ -46,6 +50,8 @@ public class User extends BaseEntity {
 
     @Basic(optional = false)
     @Column(name = "b_passwort", columnDefinition = "text")
+    @Size(min = 4, max = 20)
+    // TODO requirements for good passwords 
     @NotNull
     public String getPassword() {
         return password;
@@ -66,6 +72,8 @@ public class User extends BaseEntity {
 
     @Basic(optional = false)
     @Column(name = "b_email", columnDefinition = "varchar(50)")
+    @Size(min = 6, max = 50)
+    @Email
     @NotNull
     public String getEmail() {
         return email;
@@ -88,8 +96,9 @@ public class User extends BaseEntity {
 
     @Basic(optional = false)
     @Column(name = "b_vorname", columnDefinition = "varchar(30)")
-    @NotNull
-    @Size(min = 5, max = 40)
+    @Size(min = 2, max = 30)
+    @Pattern(regexp="[a-zA-Z]*")
+    @NotNull    
     public String getFirstName() {
         return firstName;
     }
@@ -100,6 +109,8 @@ public class User extends BaseEntity {
 
     @Basic(optional = false)
     @Column(name = "b_nachname", columnDefinition = "varchar(30)")
+    @Size(min = 2, max = 30)
+    @Pattern(regexp="[a-zA-Z]*")
     @NotNull
     public String getLastName() {
         return lastName;
