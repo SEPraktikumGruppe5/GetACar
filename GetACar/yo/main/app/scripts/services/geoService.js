@@ -12,7 +12,7 @@ angular.module('mainApp')
                  * @return //TODO:
                  */
                 cities: function (namePart, maxResults, successFunction, errorFunction) {
-                    return Restangular.all('geo').customGET("cities", {namePart: namePart, maxResults: maxResults})
+                    return Restangular.all('geo').customGET('cities', {namePart: namePart, maxResults: maxResults})
                         .then(successFunction, errorFunction);
                 }
             };
