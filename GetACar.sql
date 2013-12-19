@@ -40,7 +40,7 @@ CREATE TABLE `benutzer` (
 
 LOCK TABLES `benutzer` WRITE;
 /*!40000 ALTER TABLE `benutzer` DISABLE KEYS */;
-INSERT INTO `benutzer` VALUES (1,'','admin@getacar.de','admin','admin','admin','$shiro1$SHA-256$500000$iJRddPc2jpRrerxLRXskmQ==$U88i9zJCUZOKJ++1J3tqW5qTa2xUnCho5AaTHyevmsE='),(2,'','user@getacar.de','user','user','user','$shiro1$SHA-256$500000$A1AfKFLSCVbP3/9C7nBM/A==$NzZuNFZ05acKN5zqgC449FXk8iShHoxUfJrVuCGezm0=');
+INSERT INTO `benutzer` VALUES (1,'','admin@getacar.de','admin','admin','admin','$shiro1$SHA-256$500000$iJRddPc2jpRrerxLRXskmQ==$U88i9zJCUZOKJ++1J3tqW5qTa2xUnCho5AaTHyevmsE='),(2,'','user@getacar.de','user','user','user','$shiro1$SHA-256$500000$A1AfKFLSCVbP3/9C7nBM/A==$NzZuNFZ05acKN5zqgC449FXk8iShHoxUfJrVuCGezm0='),(3,'','tobias.torbaum@tobtor.com','Tobias','Torbaum','tobtor','');
 /*!40000 ALTER TABLE `benutzer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -121,7 +121,7 @@ CREATE TABLE `fahrzeug` (
 
 LOCK TABLES `fahrzeug` WRITE;
 /*!40000 ALTER TABLE `fahrzeug` DISABLE KEYS */;
-INSERT INTO `fahrzeug` VALUES (1,'','13.4000000','52.5200000','Ein Fahrzeug','C-IA 666','auto.jpg',1),(2,'','12.9273890','50.8392030','Ein zweites Auto','C-IA 667','auto2.jpg',3);
+INSERT INTO `fahrzeug` VALUES (1,'','12.9149680','50.8427300','Ein Fahrzeug','C-IA 666','auto.jpg',1),(2,'','12.9149690','50.8427300','Ein zweites Auto','C-IA 667','auto2.jpg',3),(3,'','12.9149700','50.8427300','Macht Brumbrum','C-IA 668','auto3.jpg',2),(4,'','12.9149710','50.8427300','Rechtslenker','C-IA 669','auto4.jpg',2),(5,'','12.9149680','50.8427310','Nr. 5 lebt','C-AT 123','auto5.jpg',3),(6,'','12.9149690','50.8427310','Sechstes Auto','C-AR 6','auto6.jpg',1),(7,'','12.9149700','50.8427310','The Magic Number','S-IE 777','auto7.jpg',1),(8,'','12.9149710','50.8427310','Auto Nummero acht','DD-D 888','auto8.jpg',3);
 /*!40000 ALTER TABLE `fahrzeug` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -180,7 +180,15 @@ CREATE TABLE `reservierung` (
 
 LOCK TABLES `reservierung` WRITE;
 /*!40000 ALTER TABLE `reservierung` DISABLE KEYS */;
-INSERT INTO `reservierung` VALUES (1,'53.842816','13.897877','2013-12-15 09:00:00',1,1,'2013-12-16 09:00:00'),(2,'48.000000','12.000000','2013-12-12 09:00:00',1,1,'2013-12-13 09:00:00');
+INSERT INTO `reservierung` VALUES (
+1,'12.9293270','50.8384450','2013-12-15 09:00:00',1,1,'2013-12-16 09:00:00'),(
+2,'12.8923640','50.8476240','2013-12-12 09:00:00',1,1,'2013-12-13 09:00:00'),(
+3,'12.9298980','50.8127220','2013-12-27 19:00:00',2,1,'2013-12-27 23:00:00'),(
+4,'13.7351170','51.0544570','2013-12-24 10:45:00',2,5,'2013-12-25 10:15:00'),(
+5,'12.9053440','50.8042220','2014-01-01 03:35:00',1,7,'2014-01-01 06:15:00'),(
+6,'12.9209200','50.8337910','2013-12-19 10:00:00',3,8,'2013-12-23 10:00:00'),(
+7,'12.9272890','50.8391990','2014-01-06 08:00:00',1,4,'2014-01-06 16:00:00'),(
+8,'12.8678670','50.8633680','2014-01-06 16:15:00',2,4,'2014-01-06 20:15:00');
 /*!40000 ALTER TABLE `reservierung` ENABLE KEYS */;
 UNLOCK TABLES;
 
