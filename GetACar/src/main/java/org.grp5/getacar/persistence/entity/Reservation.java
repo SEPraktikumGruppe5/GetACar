@@ -70,7 +70,7 @@ public class Reservation extends BaseEntity {
     }
 
     @Basic(optional = false)
-    @Column(name = "re_end_breitengrad", columnDefinition = "decimal(9,6)", nullable = false, updatable = true)
+    @Column(name = "re_end_breitengrad", columnDefinition = "decimal(10,7)", nullable = false, updatable = true)
     @NotNull
     public BigDecimal getEndLatitude() {
         return endLatitude;
@@ -81,7 +81,7 @@ public class Reservation extends BaseEntity {
     }
 
     @Basic(optional = false)
-    @Column(name = "re_end_laengengrad", columnDefinition = "decimal(9,6)", nullable = false, updatable = true)
+    @Column(name = "re_end_laengengrad", columnDefinition = "decimal(10,7)", nullable = false, updatable = true)
     @NotNull
     public BigDecimal getEndLongitude() {
         return endLongitude;

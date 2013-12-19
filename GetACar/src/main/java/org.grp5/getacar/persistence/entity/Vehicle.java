@@ -58,7 +58,7 @@ public class Vehicle extends BaseEntity {
     }
 
     @Basic(optional = true)
-    @Column(name = "f_breitengrad", columnDefinition = "decimal(10,7)")
+    @Column(name = "f_breitengrad_init", columnDefinition = "decimal(10,7)")
     @Digits(integer = 3, fraction = 7)
     public BigDecimal getLatitude() {
         return latitude;
@@ -69,7 +69,7 @@ public class Vehicle extends BaseEntity {
     }
 
     @Basic(optional = true)
-    @Column(name = "f_laengengrad", columnDefinition = "decimal(10,7)")
+    @Column(name = "f_laengengrad_init", columnDefinition = "decimal(10,7)")
     @Digits(integer = 3, fraction = 7)
     public BigDecimal getLongitude() {
         return longitude;
