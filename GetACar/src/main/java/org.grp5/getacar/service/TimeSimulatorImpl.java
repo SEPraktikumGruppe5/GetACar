@@ -6,6 +6,7 @@ import org.joda.time.DateTime;
 public class TimeSimulatorImpl implements TimeSimulator {
 
     private DateTime simulatedTime = null;
+    private DateTime realTimeAtSet = null;
 
     @Inject
     public TimeSimulatorImpl() {
@@ -13,6 +14,7 @@ public class TimeSimulatorImpl implements TimeSimulator {
 
     public void setTime(DateTime time) {
         this.simulatedTime = time;
+        realTimeAtSet = new DateTime();
     }
 
     @Override
@@ -21,6 +23,6 @@ public class TimeSimulatorImpl implements TimeSimulator {
         if (simulatedTime == null) {
             return now;
         }
-        return simulatedTime.plus(now.getMillis() - simulatedTime.getMillis());
+        return simulatedTime.plus(now.getMillis() - realTimeAtSet.getMillis());
     }
 }

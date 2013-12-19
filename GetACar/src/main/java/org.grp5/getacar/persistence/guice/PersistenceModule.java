@@ -34,8 +34,8 @@ public class PersistenceModule extends ServletModule {
 
         bind(ValidationHelper.class).to(ValidationHelperImpl.class).in(Singleton.class);
 
-        bind(CityDAO.class).to(CityDAOImpl.class);
         bind(VehicleDAO.class).to(VehicleDAOImpl.class);
+        bind(VehicleTypeDAO.class).to(VehicleTypeDAOImpl.class);
         bind(UserDAO.class).to(UserDAOImpl.class);
         bind(ReservationDAO.class).to(ReservationDAOImpl.class);
         bind(RoleDAO.class).to(RoleDAOImpl.class);

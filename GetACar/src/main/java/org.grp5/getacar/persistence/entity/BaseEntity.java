@@ -1,4 +1,4 @@
-package org.grp5.getacar.persistence;
+package org.grp5.getacar.persistence.entity;
 
 import com.google.common.base.Objects;
 

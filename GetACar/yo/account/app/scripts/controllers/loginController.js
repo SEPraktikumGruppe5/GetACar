@@ -1,7 +1,10 @@
 angular.module('accountApp')
     .controller('LoginController', ['$scope', 'AccountService', '$window', '$stateParams',
         function ($scope, AccountService, $window, $stateParams) {
-            $scope.loginFormData = {};
+
+            $scope.loginFormData = {
+                timeSimulation : new Date()
+            };
             $scope.errorMessage = undefined;
             $scope.errors = {};
 

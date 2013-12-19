@@ -28,30 +28,25 @@ angular.module('mainApp', [
             .state('search', {
                 url: 'search',
                 parent: 'main',
-                templateUrl: 'partials/search.html',
-                controller: 'SearchVehicleController'
+                templateUrl: 'partials/searchVehicles.html',
+                controller: 'SearchVehiclesController'
             });
 
         /* Restangular */ // TODO: Try to configure this in a separate .js file!
         RestangularProvider.setBaseUrl('/getacar/rest/'); // TODO: Change baseUrl to sth. more standard for Rest stuff -> /getacar/api/v1/ ?
         // Include headers and everything else in every response
         RestangularProvider.setFullResponse(true);
-        // Define cities method
-        RestangularProvider.addElementTransformer('geo', true, function (geo) {
-            // This will add a method called cities that will do a GET to the path cities
+        // Define custom Restangular methods
+        RestangularProvider.addElementTransformer('vehicles', true, function (vehicles) {
+            // This will add a method called searchVehicles that will do a POST to the path searchVehicles
             // signature is (name, operation, path, params, headers, elementToPost)
-            geo.addRestangularMethod('cities', 'get', 'cities');
-
-            return geo;
+            vehicles.addRestangularMethod('searchVehicles', 'post', 'searchVehicles');
+            return vehicles;
         });
-//        // Define registerUser method
-//        RestangularProvider.addElementTransformer('users', true, function (user) {
-//            // This will add a method called loginUser that will do a POST to the path loginUser
-//            // signature is (name, operation, path, params, headers, elementToPost)
-//            user.addRestangularMethod('registerUser', 'post', 'registerUser');
-//
-//            return user;
-//        });
+        RestangularProvider.addElementTransformer('time', true, function (time) {
+            time.addRestangularMethod('whatTimeIsIt', 'get', 'whatTimeIsIt');
+            return time;
+        });
     })
     .run(['$rootScope', '$state', '$stateParams',
         function ($rootScope, $state, $stateParams) {

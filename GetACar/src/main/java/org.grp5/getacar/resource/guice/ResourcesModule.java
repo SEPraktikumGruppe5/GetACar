@@ -1,10 +1,7 @@
 package org.grp5.getacar.resource.guice;
 
 import com.google.inject.AbstractModule;
-import org.grp5.getacar.resource.GeoResource;
-import org.grp5.getacar.resource.ReservationResource;
-import org.grp5.getacar.resource.UserResource;
-import org.grp5.getacar.resource.VehicleResource;
+import org.grp5.getacar.resource.*;
 
 /**
  * Contains the bindings of the resources.
@@ -13,9 +10,10 @@ public class ResourcesModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        bind(GeoResource.class);
         bind(ReservationResource.class);
+        bind(TimeResource.class);
         bind(UserResource.class);
         bind(VehicleResource.class);
+        bind(VehicleTypeResource.class);
     }
 }

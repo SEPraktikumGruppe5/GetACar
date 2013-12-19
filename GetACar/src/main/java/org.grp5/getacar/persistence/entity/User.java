@@ -1,14 +1,14 @@
-package org.grp5.getacar.persistence;
+package org.grp5.getacar.persistence.entity;
 
 import com.google.common.collect.Lists;
 import org.grp5.getacar.persistence.validation.LoginNameNotExistent;
 import org.grp5.getacar.persistence.validation.PasswordsMatch;
+import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.validation.constraints.Pattern;
-import org.hibernate.validator.constraints.Email;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 /**
@@ -38,7 +38,7 @@ public class User extends BaseEntity {
     @Basic(optional = false)
     @Column(name = "b_login", columnDefinition = "varchar(20)")
     @Size(min = 4, max = 20)
-    @Pattern(regexp="[a-zA-Z]*")
+    @Pattern(regexp="[a-zA-Z' '-]*") // TODO: 'Karl-Heinz' and 'Karl Heinz' now works, but 'Karl--', too FIX!
     @NotNull
     public String getLoginName() {
         return loginName;

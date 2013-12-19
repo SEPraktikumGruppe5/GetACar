@@ -1,10 +1,9 @@
-package org.grp5.getacar.persistence;
+package org.grp5.getacar.persistence.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-import javax.validation.constraints.Digits;
 import java.math.BigDecimal;
 
 /**
@@ -16,7 +15,7 @@ import java.math.BigDecimal;
         columnDefinition = "int(10) unsigned NOT NULL AUTO_INCREMENT"))
 public class Vehicle extends BaseEntity {
 
-    private String type;
+    private VehicleType vehicleType;
     private String licenseNumber;
     private String picture;
     private BigDecimal latitude;
@@ -24,22 +23,20 @@ public class Vehicle extends BaseEntity {
     private Boolean active;
     private String comment;
 
-    @Basic(optional = false)
-    @Column(name = "f_typ", columnDefinition = "varchar(100)")
-    @Size(min = 3, max = 100)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "ft_id", columnDefinition = "int(10) unsigned")
     @NotNull
-    public String getType() {
-        return type;
+    public VehicleType getVehicleType() {
+        return vehicleType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setVehicleType(VehicleType vehicleType) {
+        this.vehicleType = vehicleType;
     }
 
     @Basic(optional = false)
     @Column(name = "f_kennzeichen", columnDefinition = "varchar(20)")
-    @Size(min = 5, max = 20)
-    @Pattern(regexp="[A-Z]{1,3}[ -][A-Z]{1,2} [1-9][0-9]{0,3}")
+    @Pattern(regexp = "[A-Z]{1,3}[-][A-Z]{1,2} [1-9][0-9]{0,3}")
     @NotNull
     public String getLicenseNumber() {
         return licenseNumber;
@@ -62,7 +59,7 @@ public class Vehicle extends BaseEntity {
 
     @Basic(optional = true)
     @Column(name = "f_breitengrad", columnDefinition = "decimal(10,7)")
-    @Digits(integer=3, fraction=7)
+    @Digits(integer = 3, fraction = 7)
     public BigDecimal getLatitude() {
         return latitude;
     }
@@ -73,7 +70,7 @@ public class Vehicle extends BaseEntity {
 
     @Basic(optional = true)
     @Column(name = "f_laengengrad", columnDefinition = "decimal(10,7)")
-    @Digits(integer=3, fraction=7)
+    @Digits(integer = 3, fraction = 7)
     public BigDecimal getLongitude() {
         return longitude;
     }

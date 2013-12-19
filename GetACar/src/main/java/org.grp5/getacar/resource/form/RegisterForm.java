@@ -1,6 +1,6 @@
 package org.grp5.getacar.resource.form;
 
-import org.grp5.getacar.persistence.User;
+import org.grp5.getacar.persistence.entity.User;
 
 import javax.validation.Valid;
 import javax.validation.constraints.AssertTrue;

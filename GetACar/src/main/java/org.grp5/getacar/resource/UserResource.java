@@ -13,14 +13,14 @@ import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.web.util.SavedRequest;
 import org.apache.shiro.web.util.WebUtils;
 import org.grp5.getacar.log.LogInvocation;
-import org.grp5.getacar.persistence.User;
 import org.grp5.getacar.persistence.dao.RoleDAO;
 import org.grp5.getacar.persistence.dao.UserDAO;
+import org.grp5.getacar.persistence.entity.User;
+import org.grp5.getacar.persistence.util.UserRole;
 import org.grp5.getacar.persistence.validation.ValidationHelper;
 import org.grp5.getacar.resource.form.LoginForm;
 import org.grp5.getacar.resource.form.RegisterForm;
 import org.grp5.getacar.service.TimeSimulator;
-import org.grp5.getacar.persistence.util.UserRole;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -147,7 +147,7 @@ public class UserResource {
         user.getRoles().add(roleDAO.findByName(UserRole.USER.getNameInDB()));
         // validate early so that we can match the password with the password repetition before overwriting them
         // with the encrypted passwords
-        validationHelper.validateAndThrow(user);
+//        validationHelper.validateAndThrow(user); // Should already be validated!
         user.setPassword(encryptPassword(user.getPassword()));
         user.setPasswordRepeat(user.getPassword());
         userDAO.create(user);
@@ -178,7 +178,7 @@ public class UserResource {
         } else {
             newURL = new URL(getBaseURL(request, true) + successURL);
         }
-        return Response.status(ACCEPTED).location(newURL.toURI()).build();
+        return Response.status(ACCEPTED).location(newURL.toURI()).entity(timeSimulatorProvider.get().getTime()).build();
     }
 
     /**

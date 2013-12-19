@@ -1,4 +1,6 @@
 /**
+ * TODO: FIX DOC!!
+ *
  * A directive for adding google places autocomplete to a text box
  * google places autocomplete info: https://developers.google.com/maps/documentation/javascript/places
  *
@@ -18,17 +20,20 @@
  *      country: country string, ISO 3166-1 Alpha-2 compatible country code. examples; 'ca', 'us', 'gb'
  *   }
  */
-angular.module("gpAutocomplete", [])
+angular.module('gpAutocomplete', [])
     .directive('gpAutocomplete', [
         function () {
             return {
                 restrict: 'A',
                 scope: {
-                    details: '=',
-                    gpAutocomplete: '=',
-                    options: '='
+                    gpOptions: '=',
+                    gpValue: '=',
+                    gpDetails: '=',
+                    gpLatLng: '=',
+                    gpPlaceChanged: '&onPlaceChanged'
                 },
                 link: function (scope, element, attrs, model) {
+                    var geocoder = new google.maps.Geocoder(); // TODO: Where to initialize the geocoder best?
 
                     // options for autocomplete
                     var opts;
@@ -58,10 +63,10 @@ angular.module("gpAutocomplete", [])
                     var newAutocomplete = function () {
                         scope.gPlace = new google.maps.places.Autocomplete(element[0], opts);
                         google.maps.event.addListener(scope.gPlace, 'place_changed', function () {
-                            scope.$apply(function () {
-                                scope.details = scope.gPlace.getPlace();
-                                scope.gpAutocomplete = element.val();
-                            });
+                            scope.gpValue = element.val();
+                            scope.gpDetails = scope.gPlace.getPlace();
+                            scope.gpPlaceChanged({value: scope.gpValue, details: scope.gpDetails});
+                            scope.$apply();
                         });
                     };
                     newAutocomplete();
@@ -70,11 +75,47 @@ angular.module("gpAutocomplete", [])
                     scope.watchOptions = function () {
                         return scope.options;
                     };
+
                     scope.$watch(scope.watchOptions, function () {
                         initOpts();
                         newAutocomplete();
                         element[0].value = '';
-                        scope.gpAutocomplete = element.val();
+                        scope.gpPlaceChanged({value: undefined, details: undefined});
+                    }, true);
+
+                    // watch value provided to directive
+                    scope.watchGPValue = function () {
+                        return scope.gpValue;
+                    };
+
+                    scope.$watch(scope.watchGPValue, function () {
+                        element[0].value = '';
+                        if (scope.gpValue) {
+                            element[0].value = scope.gpValue;
+                        }
+                    });
+
+                    // watch latLng provided to directive
+                    scope.watchGPLatLng = function () {
+                        return scope.gpLatLng;
+                    };
+
+                    scope.$watch(scope.watchGPLatLng, function () {
+                        if (scope.gpLatLng && scope.gpLatLng.lat && scope.gpLatLng.lng) { // TODO: How to check more than one level deep without such a long if?
+                            var latlng = new google.maps.LatLng(scope.gpLatLng.lat, scope.gpLatLng.lng);
+                            geocoder.geocode({'latLng': latlng}, function (results, status) {
+                                if (status === google.maps.GeocoderStatus.OK) {
+                                    if (results[1]) {
+                                        /*jshint camelcase: false */
+                                        element[0].value = results[1].formatted_address;
+                                    } else {
+                                        // TODO No results found message
+                                    }
+                                } else {
+                                    // TODO Error message
+                                }
+                            });
+                        }
                     }, true);
                 }
             };

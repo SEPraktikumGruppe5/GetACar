@@ -1,7 +1,7 @@
 package org.grp5.getacar.persistence.validation;
 
 import org.apache.commons.beanutils.PropertyUtils;
-import org.grp5.getacar.persistence.BaseEntity;
+import org.grp5.getacar.persistence.entity.BaseEntity;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -9,7 +9,7 @@ import javax.validation.ConstraintValidatorContext;
 /**
  * Validator that checks if the values of the two password fields match.
  */
-public class PasswordsMatchValidator implements ConstraintValidator<PasswordsMatch, BaseEntity> {
+public class PasswordsMatchValidator extends BaseValidator implements ConstraintValidator<PasswordsMatch, BaseEntity> {
 
     private String passwordFieldName;
     private String passwordRepeatFieldName;
@@ -29,21 +29,13 @@ public class PasswordsMatchValidator implements ConstraintValidator<PasswordsMat
             final String passwordRepeat = (String) PropertyUtils.getProperty(value, passwordRepeatFieldName);
 
             if (!password.equals(passwordRepeat)) {
-                context.buildConstraintViolationWithTemplate(message)
-                        .addNode(passwordFieldName)
-                        .addConstraintViolation();
-                context.buildConstraintViolationWithTemplate(message)
-                        .addNode(passwordRepeatFieldName)
-                        .addConstraintViolation();
+                addConstraintValidation(context, message, passwordFieldName);
+                addConstraintValidation(context, message, passwordRepeatFieldName);
                 return false;
             }
         } catch (Exception e) {
-            context.buildConstraintViolationWithTemplate(message)
-                    .addNode(passwordFieldName)
-                    .addConstraintViolation();
-            context.buildConstraintViolationWithTemplate(message)
-                    .addNode(passwordRepeatFieldName)
-                    .addConstraintViolation();
+            addConstraintValidation(context, message, passwordFieldName);
+            addConstraintValidation(context, message, passwordRepeatFieldName);
             return false;
         }
         return true;

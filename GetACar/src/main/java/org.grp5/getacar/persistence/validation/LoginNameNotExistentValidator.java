@@ -3,8 +3,8 @@ package org.grp5.getacar.persistence.validation;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.apache.commons.beanutils.PropertyUtils;
-import org.grp5.getacar.persistence.User;
 import org.grp5.getacar.persistence.dao.UserDAO;
+import org.grp5.getacar.persistence.entity.User;
 import org.hibernate.Session;
 import org.hibernate.StatelessSession;
 import org.hibernate.engine.spi.SessionImplementor;
@@ -17,7 +17,8 @@ import java.io.Serializable;
 /**
  *
  */
-public class LoginNameNotExistentValidator implements ConstraintValidator<LoginNameNotExistent, User> {
+public class LoginNameNotExistentValidator extends BaseValidator implements
+        ConstraintValidator<LoginNameNotExistent, User> {
 
     @Inject
     private Provider<UserDAO> userDAOProvider;
@@ -47,12 +48,12 @@ public class LoginNameNotExistentValidator implements ConstraintValidator<LoginN
             final User byLoginName = userDAO.findByLoginName(loginName);
             if (id == null) { // new user
                 if (byLoginName != null) {
-                    addConstraintValidation(context);
+                    addConstraintValidation(context, message, loginNameField);
                     return false;
                 }
             } else { // user edit
                 if (byLoginName != null && !byLoginName.getId().equals(id)) {
-                    addConstraintValidation(context);
+                    addConstraintValidation(context, message, loginNameField);
                     return false;
                 }
             }
@@ -62,10 +63,5 @@ public class LoginNameNotExistentValidator implements ConstraintValidator<LoginN
         return true;
     }
 
-    private void addConstraintValidation(ConstraintValidatorContext context) {
-        context.disableDefaultConstraintViolation();
-        context.buildConstraintViolationWithTemplate(message)
-                .addNode(loginNameField)
-                .addConstraintViolation();
-    }
+
 }

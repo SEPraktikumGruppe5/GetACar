@@ -1,17 +1,16 @@
 angular.module('mainApp')
-    .factory('VehicleService', ['Restangular',
+    .factory('TimeService', ['Restangular',
         function (Restangular) {
             return {
                 /**
-                 * Searches for vehicles. TODO: Doc Ready
+                 * Gets the current time from the server.
                  *
-                 * @param searchVehiclesFormData
                  * @param successFunction
                  * @param errorFunction
                  * @returns {*}
                  */
-                searchVehicles: function (searchVehiclesFormData, successFunction, errorFunction) {
-                    return Restangular.all('vehicles').searchVehicles(searchVehiclesFormData)
+                whatTimeIsIt: function (successFunction, errorFunction) {
+                    return Restangular.all('time').whatTimeIsIt()
                         .then(successFunction, errorFunction);
                 }
             };

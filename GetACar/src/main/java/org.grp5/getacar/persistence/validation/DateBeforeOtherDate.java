@@ -15,11 +15,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Constraint(validatedBy = DateBeforeOtherDateValidator.class)
 public @interface DateBeforeOtherDate {
 
-    public enum Accuracy {
-        DATE, MILLISECOND
-    }
-
-    String DEFAULT_MESSAGE = "{org.ase.mip.persistence.validator.DateBeforeOtherDate.message}";
+    String DEFAULT_MESSAGE = "{org.grp5.getacar.persistence.validation.DateBeforeOtherDate.message}";
 
     String message() default DEFAULT_MESSAGE;
 
@@ -37,12 +33,10 @@ public @interface DateBeforeOtherDate {
      */
     String otherDate();
 
-    Accuracy accuracy();
-
     /**
      * Defines several <code>@DateBeforeOtherDate</code> annotations on the same element
      *
-     * @see org.ase.mip.persistence.validator.DateBeforeOtherDate
+     * @see org.grp5.getacar.persistence.validation.DateBeforeOtherDate
      */
     @Target({TYPE, ANNOTATION_TYPE})
     @Retention(RUNTIME)

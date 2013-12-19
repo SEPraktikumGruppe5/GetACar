@@ -59,13 +59,9 @@ fieldset[disabled] .form-control.datetimepickerbox {
     cursor: pointer
 }
 
-#map_canvas {
-    height: 400px;
-}
-
 .angular-google-map-container {
     width: 100%;
-    height: 600px;
+    height: 300px;
 }
 
 /* fix for Twitter Bootstrap handling of responsive images */
@@ -73,34 +69,20 @@ fieldset[disabled] .form-control.datetimepickerbox {
     max-width: inherit;
 }
 
-.angular-google-map {
-    top: 80px;
-}
-
-.shrink {
-    font-size: 8;
-}
-
-.true:hover {
-    background-color: lightgreen;
-}
-
-.false:hover {
-    background-color: lightpink;
-}
-
 .marker-labels {
-    color: red;
-    background-color: white;
-    font-family: "Lucida Grande", "Arial", sans-serif;
-    font-size: 10px;
-    font-weight: bold;
+    background-color: #FFFFFF;
+    border: 2px solid #000000;
+    font-weight: bold !important;
     text-align: center;
-    width: 40px;
-    border: 1px solid black;
-    white-space: nowrap;
+    white-space: normal;
+    width: 50px;
 }
 
-.angular-google-map {
-    display: block;
+.userPosition {
+    width: 300px;
+    height: 75px;
+}
+
+.clock {
+    width: 200px;
 }

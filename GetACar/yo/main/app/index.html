@@ -41,7 +41,10 @@
 <!-- Add your site or application content here -->
 <div id="wrap" ui-view></div>
 <div class="footer">
-    <p>♥ from your Get A Car team - Stay sober!</p>
+    <p class="pull-left">♥ from your Get A Car team - Stay sober!</p>
+    <div class="pull-right">
+        <gac-Clock></gac-Clock>
+    </div>
 </div>
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -64,12 +67,12 @@
 
 <script src="bower_components/jquery/jquery.js"></script>
 <script src="bower_components/angular/angular.js"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&language=en&libraries=places,weather&v=3.13"></script>
 
 <!-- build:js scripts/plugins.js -->
 <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
 <script type="text/javascript" src="bower_components/lodash/dist/lodash.js"></script>
 <script type="text/javascript" src="bower_components/moment/moment.js"></script>
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&language=en&libraries=places,weather&v=3.13"></script>
 <!-- endbuild -->
 
 <!-- build:js scripts/modules.js -->
@@ -87,13 +90,15 @@
 
 <!-- build:js({.tmp,app}) scripts/scripts.js -->
 <script src="scripts/app.js"></script>
-<script src="scripts/services/vehicleService.js"></script>
 <script src="scripts/services/modalService.js"></script>
-<script src="scripts/services/geoService.js"></script>
+<script src="scripts/services/timeService.js"></script>
+<script src="scripts/services/vehicleTypeService.js"></script>
+<script src="scripts/services/vehicleService.js"></script>
 <script src="scripts/directives/serverErrorDirective.js"></script>
+<script src="scripts/directives/gacClockDirective.js"></script>
 <script src="scripts/controllers/mainController.js"></script>
 <script src="scripts/controllers/homeController.js"></script>
-<script src="scripts/controllers/searchVehicleController.js"></script>
+<script src="scripts/controllers/searchVehiclesController.js"></script>
 <!-- endbuild -->
 </body>
 </html>

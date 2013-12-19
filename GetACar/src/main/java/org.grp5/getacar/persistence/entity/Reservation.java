@@ -1,9 +1,11 @@
-package org.grp5.getacar.persistence;
+package org.grp5.getacar.persistence.entity;
+
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * Reservation entity class.
@@ -16,13 +18,14 @@ public class Reservation extends BaseEntity {
 
     private User user;
     private Vehicle vehicle;
-    private Date startTime;
-    private Date endTime;
-    private BigDecimal endPositionWidth;
-    private BigDecimal endPositionLength;
+    private DateTime startTime;
+    private DateTime endTime;
+    private BigDecimal endLongitude;
+    private BigDecimal endLatitude;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "b_id", columnDefinition = "int(10) unsigned")
+    @NotNull
     public User getUser() {
         return user;
     }
@@ -33,6 +36,7 @@ public class Reservation extends BaseEntity {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "f_id", columnDefinition = "int(10) unsigned")
+    @NotNull
     public Vehicle getVehicle() {
         return vehicle;
     }
@@ -43,44 +47,47 @@ public class Reservation extends BaseEntity {
 
     @Basic(optional = false)
     @Column(name = "re_startzeit", columnDefinition = "datetime")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
     @NotNull
-    public Date getStartTime() {
+    public DateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(DateTime startTime) {
         this.startTime = startTime;
     }
 
     @Basic(optional = false)
     @Column(name = "re_endzeit", columnDefinition = "datetime")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
     @NotNull
-    public Date getEndTime() {
+    public DateTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(DateTime endTime) {
         this.endTime = endTime;
     }
 
     @Basic(optional = false)
-    @Column(name = "re_endkoord_breite", columnDefinition = "decimal(9,6)", nullable = false, updatable = true)
-    public BigDecimal getEndPositionWidth() {
-        return endPositionWidth;
+    @Column(name = "re_end_breitengrad", columnDefinition = "decimal(9,6)", nullable = false, updatable = true)
+    @NotNull
+    public BigDecimal getEndLatitude() {
+        return endLatitude;
     }
 
-    public void setEndPositionWidth(BigDecimal endPositionWidth) {
-        this.endPositionWidth = endPositionWidth;
+    public void setEndLatitude(BigDecimal endPositionWidth) {
+        this.endLatitude = endPositionWidth;
     }
 
     @Basic(optional = false)
-    @Column(name = "re_endkoord_laenge", columnDefinition = "decimal(9,6)", nullable = false, updatable = true)
-    public BigDecimal getEndPositionLength() {
-        return endPositionLength;
+    @Column(name = "re_end_laengengrad", columnDefinition = "decimal(9,6)", nullable = false, updatable = true)
+    @NotNull
+    public BigDecimal getEndLongitude() {
+        return endLongitude;
     }
 
-    public void setEndPositionLength(BigDecimal endPositionLength) {
-        this.endPositionLength = endPositionLength;
+    public void setEndLongitude(BigDecimal endPositionLength) {
+        this.endLongitude = endPositionLength;
     }
 }

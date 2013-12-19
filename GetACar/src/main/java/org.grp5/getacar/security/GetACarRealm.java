@@ -12,9 +12,9 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.grp5.getacar.persistence.Role;
-import org.grp5.getacar.persistence.User;
 import org.grp5.getacar.persistence.dao.UserDAO;
+import org.grp5.getacar.persistence.entity.Role;
+import org.grp5.getacar.persistence.entity.User;
 import org.slf4j.Logger;
 
 import java.util.Set;

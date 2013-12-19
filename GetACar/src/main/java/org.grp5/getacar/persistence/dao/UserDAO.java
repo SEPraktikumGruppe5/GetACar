@@ -1,9 +1,9 @@
 package org.grp5.getacar.persistence.dao;
 
-import org.grp5.getacar.persistence.User;
+import org.grp5.getacar.persistence.entity.User;
 
 /**
- * Interface for Data Access Object for {@link org.grp5.getacar.persistence.User} entities.
+ * Interface for Data Access Object for {@link org.grp5.getacar.persistence.entity.User} entities.
  */
 public interface UserDAO extends BaseDAO<Integer, User> {
 
