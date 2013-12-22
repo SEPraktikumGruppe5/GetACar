@@ -31,7 +31,7 @@ CREATE TABLE `benutzer` (
   `b_login` varchar(20) NOT NULL,
   `b_passwort` text NOT NULL,
   PRIMARY KEY (`b_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `benutzer` (
 
 LOCK TABLES `benutzer` WRITE;
 /*!40000 ALTER TABLE `benutzer` DISABLE KEYS */;
-INSERT INTO `benutzer` VALUES (1,'','admin@getacar.de','admin','admin','admin','$shiro1$SHA-256$500000$iJRddPc2jpRrerxLRXskmQ==$U88i9zJCUZOKJ++1J3tqW5qTa2xUnCho5AaTHyevmsE='),(2,'','user@getacar.de','user','user','user','$shiro1$SHA-256$500000$A1AfKFLSCVbP3/9C7nBM/A==$NzZuNFZ05acKN5zqgC449FXk8iShHoxUfJrVuCGezm0='),(3,'','tobias.torbaum@tobtor.com','Tobias','Torbaum','tobtor','');
+INSERT INTO `benutzer` VALUES (1,'','admin@getacar.de','admin','admin','admin','$shiro1$SHA-256$500000$iJRddPc2jpRrerxLRXskmQ==$U88i9zJCUZOKJ++1J3tqW5qTa2xUnCho5AaTHyevmsE='),(2,'','user@getacar.de','user','user','user','$shiro1$SHA-256$500000$A1AfKFLSCVbP3/9C7nBM/A==$NzZuNFZ05acKN5zqgC449FXk8iShHoxUfJrVuCGezm0='),(3,'','tobias.torbaum@tobtor.com','Tobias','Torbaum','tobtor','$shiro1$SHA-256$500000$kx1IcP/1MtPmH3DcMQmK4g==$o3OIyJqLDDgco0g5xQpqy1Pb1yA9t8zsY4VUt/dTWo8=');
 /*!40000 ALTER TABLE `benutzer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -68,7 +68,7 @@ CREATE TABLE `benutzer_rolle` (
 
 LOCK TABLES `benutzer_rolle` WRITE;
 /*!40000 ALTER TABLE `benutzer_rolle` DISABLE KEYS */;
-INSERT INTO `benutzer_rolle` VALUES (1,1),(1,2),(2,2);
+INSERT INTO `benutzer_rolle` VALUES (1,1),(1,2),(2,2),(3,2);
 /*!40000 ALTER TABLE `benutzer_rolle` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -103,16 +103,15 @@ DROP TABLE IF EXISTS `fahrzeug`;
 CREATE TABLE `fahrzeug` (
   `f_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `f_aktiv` bit(1) NOT NULL DEFAULT b'0',
-  `f_laengengrad` decimal(10,7) DEFAULT NULL,
-  `f_breitengrad` decimal(10,7) DEFAULT NULL,
+  `f_laengengrad_init` decimal(10,7) NOT NULL,
+  `f_breitengrad_init` decimal(10,7) NOT NULL,
   `f_bemerkung` text NOT NULL,
   `f_kennzeichen` varchar(20) NOT NULL,
-  `f_bild` text NOT NULL,
   `ft_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`f_id`),
   KEY `FK_93sfioc9b5lk3hmp86iq33i7k` (`ft_id`),
   CONSTRAINT `FK_93sfioc9b5lk3hmp86iq33i7k` FOREIGN KEY (`ft_id`) REFERENCES `fahrzeugtyp` (`ft_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -121,8 +120,36 @@ CREATE TABLE `fahrzeug` (
 
 LOCK TABLES `fahrzeug` WRITE;
 /*!40000 ALTER TABLE `fahrzeug` DISABLE KEYS */;
-INSERT INTO `fahrzeug` VALUES (1,'','12.9149680','50.8427300','Ein Fahrzeug','C-IA 666','auto.jpg',1),(2,'','12.9149690','50.8427300','Ein zweites Auto','C-IA 667','auto2.jpg',3),(3,'','12.9149700','50.8427300','Macht Brumbrum','C-IA 668','auto3.jpg',2),(4,'','12.9149710','50.8427300','Rechtslenker','C-IA 669','auto4.jpg',2),(5,'','12.9149680','50.8427310','Nr. 5 lebt','C-AT 123','auto5.jpg',3),(6,'','12.9149690','50.8427310','Sechstes Auto','C-AR 6','auto6.jpg',1),(7,'','12.9149700','50.8427310','The Magic Number','S-IE 777','auto7.jpg',1),(8,'','12.9149710','50.8427310','Auto Nummero acht','DD-D 888','auto8.jpg',3);
+INSERT INTO `fahrzeug` VALUES (1,'','13.4000000','52.5200000','Ein Fahrzeug','C-IA 666',1),(2,'','12.9273890','50.8392030','Ein zweites Auto','C-IA 667',3),(3,'','12.9149700','50.8427300','Macht Brumbrum','C-IA 668',2),(4,'','12.9149710','50.8427300','Rechtslenker','C-IA 669',2),(5,'','12.9149680','50.8427310','Nr. 5 lebt','C-AT 123',3),(6,'','12.9149690','50.8427310','Sechstes Auto','C-AR 6',1),(7,'','12.9149700','50.8427310','The Magic Number','S-IE 777',1),(8,'','12.9149710','50.8427310','Auto Nummero acht','DD-D 888',3);
 /*!40000 ALTER TABLE `fahrzeug` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `fahrzeugbild`
+--
+
+DROP TABLE IF EXISTS `fahrzeugbild`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `fahrzeugbild` (
+  `fb_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `fb_dateiname` varchar(75) NOT NULL,
+  `f_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`fb_id`),
+  UNIQUE KEY `UK_rjdp9hvho0xi1hksy6yjbju35` (`fb_dateiname`),
+  KEY `FK_tjc1724lmw59ci1beies026an` (`f_id`),
+  CONSTRAINT `FK_tjc1724lmw59ci1beies026an` FOREIGN KEY (`f_id`) REFERENCES `fahrzeug` (`f_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `fahrzeugbild`
+--
+
+LOCK TABLES `fahrzeugbild` WRITE;
+/*!40000 ALTER TABLE `fahrzeugbild` DISABLE KEYS */;
+INSERT INTO `fahrzeugbild` VALUES (1,'vehicle1.png',1),(2,'vehicle2.png',2),(3,'vehicle3.png',3),(5,'vehicle4.png',4),(6,'vehicle5.png',5),(7,'vehicle6.png',6),(8,'vehicle7.png',7),(9,'vehicle8.png',8);
+/*!40000 ALTER TABLE `fahrzeugbild` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -136,6 +163,7 @@ CREATE TABLE `fahrzeugtyp` (
   `ft_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `ft_beschreibung` text NOT NULL,
   `ft_name` varchar(100) NOT NULL,
+  `ft_icon` varchar(100) NOT NULL,
   PRIMARY KEY (`ft_id`),
   UNIQUE KEY `UK_isei1uyxue1tt64ijn3235sts` (`ft_name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
@@ -147,7 +175,7 @@ CREATE TABLE `fahrzeugtyp` (
 
 LOCK TABLES `fahrzeugtyp` WRITE;
 /*!40000 ALTER TABLE `fahrzeugtyp` DISABLE KEYS */;
-INSERT INTO `fahrzeugtyp` VALUES (1,'A car!','Car'),(2,'A Van','Van'),(3,'A Pickup Truck','Pickup Truck');
+INSERT INTO `fahrzeugtyp` VALUES (1,'A car','Car','car.png'),(2,'A van','Van','van.png'),(3,'A pickup','Pickup','pickup.png');
 /*!40000 ALTER TABLE `fahrzeugtyp` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -160,8 +188,8 @@ DROP TABLE IF EXISTS `reservierung`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `reservierung` (
   `re_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `re_end_laengengrad` decimal(9,6) NOT NULL,
-  `re_end_breitengrad` decimal(9,6) NOT NULL,
+  `re_end_laengengrad` decimal(10,7) NOT NULL,
+  `re_end_breitengrad` decimal(10,7) NOT NULL,
   `re_startzeit` datetime NOT NULL,
   `b_id` int(10) unsigned NOT NULL,
   `f_id` int(10) unsigned NOT NULL,
@@ -171,7 +199,7 @@ CREATE TABLE `reservierung` (
   KEY `FK_bk49px1iafeb7y1okrkit6nx8` (`f_id`),
   CONSTRAINT `FK_bk49px1iafeb7y1okrkit6nx8` FOREIGN KEY (`f_id`) REFERENCES `fahrzeug` (`f_id`),
   CONSTRAINT `FK_ormsdpu23mgh1pixs8arrfjbi` FOREIGN KEY (`b_id`) REFERENCES `benutzer` (`b_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -180,15 +208,7 @@ CREATE TABLE `reservierung` (
 
 LOCK TABLES `reservierung` WRITE;
 /*!40000 ALTER TABLE `reservierung` DISABLE KEYS */;
-INSERT INTO `reservierung` VALUES (
-1,'12.9293270','50.8384450','2013-12-15 09:00:00',1,1,'2013-12-16 09:00:00'),(
-2,'12.8923640','50.8476240','2013-12-12 09:00:00',1,1,'2013-12-13 09:00:00'),(
-3,'12.9298980','50.8127220','2013-12-27 19:00:00',2,1,'2013-12-27 23:00:00'),(
-4,'13.7351170','51.0544570','2013-12-24 10:45:00',2,5,'2013-12-25 10:15:00'),(
-5,'12.9053440','50.8042220','2014-01-01 03:35:00',1,7,'2014-01-01 06:15:00'),(
-6,'12.9209200','50.8337910','2013-12-19 10:00:00',3,8,'2013-12-23 10:00:00'),(
-7,'12.9272890','50.8391990','2014-01-06 08:00:00',1,4,'2014-01-06 16:00:00'),(
-8,'12.8678670','50.8633680','2014-01-06 16:15:00',2,4,'2014-01-06 20:15:00');
+INSERT INTO `reservierung` VALUES (1,'12.8978770','50.8428160','2013-12-15 09:00:00',1,1,'2013-12-16 09:00:00'),(2,'12.0000000','48.0000000','2013-12-12 09:00:00',1,1,'2013-12-13 09:00:00'),(3,'12.9298980','50.8127220','2013-12-27 19:00:00',2,1,'2013-12-27 23:00:00'),(4,'13.7351170','51.0544570','2013-12-24 10:45:00',2,5,'2013-12-25 10:15:00'),(5,'12.9053440','50.8042220','2014-01-01 03:35:00',1,7,'2014-01-01 06:15:00'),(6,'12.9209200','50.8337910','2013-12-19 10:00:00',3,8,'2013-12-23 10:00:00'),(7,'12.9272890','50.8391990','2014-01-06 08:00:00',1,4,'2014-01-06 16:00:00'),(8,'12.8678670','50.8633680','2014-01-06 16:15:00',2,4,'2014-01-06 20:15:00');
 /*!40000 ALTER TABLE `reservierung` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -226,7 +246,7 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Create user
+-- Dump completed on 2013-12-22 14:59:28
 
 drop user getacar;
 CREATE USER 'getacar'@'%' IDENTIFIED BY 'getacar';

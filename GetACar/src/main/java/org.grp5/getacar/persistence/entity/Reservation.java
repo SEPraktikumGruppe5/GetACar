@@ -24,7 +24,7 @@ public class Reservation extends BaseEntity {
     private BigDecimal endLatitude;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "b_id", columnDefinition = "int(10) unsigned")
+    @JoinColumn(name = "b_id", columnDefinition = "int(10) unsigned", nullable = false, updatable = false)
     @NotNull
     public User getUser() {
         return user;
@@ -35,7 +35,7 @@ public class Reservation extends BaseEntity {
     }
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "f_id", columnDefinition = "int(10) unsigned")
+    @JoinColumn(name = "f_id", columnDefinition = "int(10) unsigned", nullable = false, updatable = true)
     @NotNull
     public Vehicle getVehicle() {
         return vehicle;
@@ -46,7 +46,7 @@ public class Reservation extends BaseEntity {
     }
 
     @Basic(optional = false)
-    @Column(name = "re_startzeit", columnDefinition = "datetime")
+    @Column(name = "re_startzeit", columnDefinition = "datetime", nullable = false, updatable = true)
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
     @NotNull
     public DateTime getStartTime() {
@@ -58,7 +58,7 @@ public class Reservation extends BaseEntity {
     }
 
     @Basic(optional = false)
-    @Column(name = "re_endzeit", columnDefinition = "datetime")
+    @Column(name = "re_endzeit", columnDefinition = "datetime", nullable = false, updatable = true)
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
     @NotNull
     public DateTime getEndTime() {

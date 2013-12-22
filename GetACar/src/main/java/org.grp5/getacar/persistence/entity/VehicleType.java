@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 public class VehicleType extends BaseEntity {
 
     private String name;
+    private String icon;
     private String description;
 
     @Basic(optional = false)
@@ -24,6 +25,17 @@ public class VehicleType extends BaseEntity {
 
     public void setName(String type) {
         this.name = type;
+    }
+
+    @Basic(optional = false)
+    @Column(name = "ft_icon", columnDefinition = "varchar(100)")
+    @NotNull
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
     @Basic(optional = false)

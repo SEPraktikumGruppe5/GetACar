@@ -147,7 +147,7 @@ module.exports = function (grunt) {
                     src: [
                         '<%= yeoman.dist %>/scripts/{,*/}*.js',
                         '<%= yeoman.dist %>/styles/{,*/}*.css',
-                        '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+//                        '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}', TODO: Try to activate again, it's giving files a revision: http://stackoverflow.com/questions/14262460/prevent-yeoman-io-from-minifying-images but as the images in the maps_icons folder is not referenced directly in HTML the files could not be found! Maybe we dont need it anyways, I guess it's a caching thing!
                         '<%= yeoman.dist %>/styles/fonts/*'
                     ]
                 }

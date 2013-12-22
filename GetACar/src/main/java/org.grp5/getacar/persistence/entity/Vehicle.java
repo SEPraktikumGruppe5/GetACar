@@ -1,10 +1,16 @@
 package org.grp5.getacar.persistence.entity;
 
+import com.google.common.collect.Lists;
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * Vehicle entity class.
@@ -17,14 +23,15 @@ public class Vehicle extends BaseEntity {
 
     private VehicleType vehicleType;
     private String licenseNumber;
-    private String picture;
-    private BigDecimal latitude;
-    private BigDecimal longitude;
+    private List<VehicleImage> vehicleImages = Lists.newArrayList();
+    private BigDecimal initialLatitude;
+    private BigDecimal initialLongitude;
     private Boolean active;
     private String comment;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = {CascadeType.ALL})
     @JoinColumn(name = "ft_id", columnDefinition = "int(10) unsigned")
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @NotNull
     public VehicleType getVehicleType() {
         return vehicleType;
@@ -35,7 +42,7 @@ public class Vehicle extends BaseEntity {
     }
 
     @Basic(optional = false)
-    @Column(name = "f_kennzeichen", columnDefinition = "varchar(20)")
+    @Column(name = "f_kennzeichen", columnDefinition = "varchar(20)", nullable = false, updatable = true)
     @Pattern(regexp = "[A-Z]{1,3}[-][A-Z]{1,2} [1-9][0-9]{0,3}")
     @NotNull
     public String getLicenseNumber() {
@@ -46,37 +53,39 @@ public class Vehicle extends BaseEntity {
         this.licenseNumber = licenseNumber;
     }
 
+    @OneToMany(mappedBy = "vehicle")
+    @Valid
+    @Size(min = 1, max = 5)
+    public List<VehicleImage> getVehicleImages() {
+        return vehicleImages;
+    }
+
+    public void setVehicleImages(List<VehicleImage> vehicleImages) {
+        this.vehicleImages = vehicleImages;
+    }
+
     @Basic(optional = false)
-    @Column(name = "f_bild", columnDefinition = "text")
-    @NotNull
-    public String getPicture() {
-        return picture;
-    }
-
-    public void setPicture(String picture) {
-        this.picture = picture;
-    }
-
-    @Basic(optional = true)
     @Column(name = "f_breitengrad_init", columnDefinition = "decimal(10,7)")
     @Digits(integer = 3, fraction = 7)
-    public BigDecimal getLatitude() {
-        return latitude;
+    @NotNull
+    public BigDecimal getInitialLatitude() {
+        return initialLatitude;
     }
 
-    public void setLatitude(BigDecimal latitude) {
-        this.latitude = latitude;
+    public void setInitialLatitude(BigDecimal initialLatitude) {
+        this.initialLatitude = initialLatitude;
     }
 
-    @Basic(optional = true)
+    @Basic(optional = false)
     @Column(name = "f_laengengrad_init", columnDefinition = "decimal(10,7)")
     @Digits(integer = 3, fraction = 7)
-    public BigDecimal getLongitude() {
-        return longitude;
+    @NotNull
+    public BigDecimal getInitialLongitude() {
+        return initialLongitude;
     }
 
-    public void setLongitude(BigDecimal longitude) {
-        this.longitude = longitude;
+    public void setInitialLongitude(BigDecimal initialLongitude) {
+        this.initialLongitude = initialLongitude;
     }
 
     @Basic(optional = false)

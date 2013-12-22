@@ -33,25 +33,26 @@ public class VehicleDAOImpl extends BaseDAOImpl<Integer, Vehicle> implements Veh
         // TODO: Use from / to in query in 'LEFT OUTER JOIN reservierung' part to not get already rented cars!
         final String sql = "SELECT final_result.f_id, final_result.f_aktiv, final_result.f_laengengrad_init, " +
                 "final_result.f_breitengrad_init, final_result.f_bemerkung, final_result.f_kennzeichen, " +
-                "final_result.f_bild, final_result.ft_id, final_result.ft_name, final_result.ft_beschreibung, " +
-                "final_result.radius FROM (SELECT *, (6371 * acos(cos(radians(tmp_result.momentaner_breitengrad)) " +
+                "final_result.ft_id, final_result.ft_name, final_result.ft_icon, final_result.ft_beschreibung, " +
+                "final_result.distance, final_result.momentaner_breitengrad, final_result.momentaner_laengengrad " +
+                "FROM (SELECT *, (6371 * acos(cos(radians(tmp_result.momentaner_breitengrad)) " +
                 "* cos(radians(:latitude)) * cos(radians(:longitude) - radians(tmp_result.momentaner_laengengrad)) " +
-                "+ sin(radians(tmp_result.momentaner_breitengrad)) * sin(radians(:latitude)))) AS radius FROM " +
+                "+ sin(radians(tmp_result.momentaner_breitengrad)) * sin(radians(:latitude)))) AS distance FROM " +
                 "(SELECT vehicle_and_type.f_id, vehicle_and_type.f_aktiv, vehicle_and_type.f_laengengrad_init, " +
                 "vehicle_and_type.f_breitengrad_init, vehicle_and_type.f_bemerkung, vehicle_and_type.f_kennzeichen, " +
-                "vehicle_and_type.f_bild, vehicle_and_type.ft_id, vehicle_and_type.ft_name, " +
-                "vehicle_and_type.ft_beschreibung, " +
+                "vehicle_and_type.ft_id, vehicle_and_type.ft_name, " +
+                "vehicle_and_type.ft_icon, vehicle_and_type.ft_beschreibung, " +
                 "CASE WHEN re.re_end_breitengrad IS NOT NULL THEN re.re_end_breitengrad " +
                 "ELSE vehicle_and_type.f_breitengrad_init END AS momentaner_breitengrad, " +
                 "CASE WHEN re.re_end_laengengrad IS NOT NULL THEN re.re_end_laengengrad " +
                 "ELSE vehicle_and_type.f_laengengrad_init END AS momentaner_laengengrad FROM " +
                 "(SELECT f.f_id, f.f_aktiv, f.f_laengengrad_init, f.f_breitengrad_init, f.f_bemerkung, " +
-                "f.f_kennzeichen, f.f_bild, f.ft_id, ft.ft_name, ft.ft_beschreibung FROM fahrzeug f, fahrzeugtyp ft " +
-                "WHERE f.f_aktiv = 1 AND f.ft_id = :vehicleTypeId AND ft.ft_id = f.ft_id) AS vehicle_and_type " +
-                "LEFT OUTER JOIN reservierung re ON re.re_id = (SELECT re_sub.re_id FROM reservierung re_sub " +
-                "WHERE re_sub.re_endzeit < :atTime AND re_sub.f_id = vehicle_and_type.f_id " +
-                "ORDER BY re_sub.re_endzeit DESC LIMIT 1)) AS tmp_result) AS final_result WHERE radius <= :radius " +
-                "ORDER BY radius ASC;";
+                "f.f_kennzeichen, f.ft_id, ft.ft_name, ft.ft_icon, " +
+                "ft.ft_beschreibung FROM fahrzeug f, fahrzeugtyp ft WHERE f.f_aktiv = 1 AND f.ft_id = :vehicleTypeId " +
+                "AND ft.ft_id = f.ft_id) AS vehicle_and_type LEFT OUTER JOIN reservierung re ON re.re_id = " +
+                "(SELECT re_sub.re_id FROM reservierung re_sub WHERE re_sub.re_endzeit < :atTime " +
+                "AND re_sub.f_id = vehicle_and_type.f_id ORDER BY re_sub.re_endzeit DESC LIMIT 1)) AS tmp_result) " +
+                "AS final_result WHERE distance <= :radius ORDER BY distance ASC;";
 
         final Session hibernateSession = getHibernateSession();
         SQLQuery query = hibernateSession.createSQLQuery(sql);

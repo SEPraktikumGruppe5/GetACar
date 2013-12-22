@@ -1,11 +1,13 @@
 angular.module('mainApp')
-    .controller('SearchVehiclesController', ['$scope', 'VehicleTypeService', 'VehicleService',
-        function ($scope, VehicleTypeService, VehicleService) {
+    .controller('SearchVehiclesController', ['$scope', 'VehicleTypeService', 'VehicleService', '$filter',
+        function ($scope, VehicleTypeService, VehicleService, $filter) {
 
+            $scope.searched = false;
             $scope.searchVehiclesFormData = {
                 // init fields here?
             };
             $scope.errors = {}; // empty initialization of server errors
+            $scope.vehicleSearchResults = []; // empty initialization of search results
 
             $scope.vehicleTypes = [];
             VehicleTypeService.allVehicleTypes(function (successResponse) {
@@ -26,29 +28,6 @@ angular.module('mainApp')
             $scope.gpLatLng = undefined;
 
             $scope.geolocationAvailable = navigator.geolocation ? true : false;
-
-            var getInitialUserPositionMarker = function () {
-                return {
-                    title: 'You are here!',
-                    latitude: undefined,
-                    longitude: undefined,
-                    showWindow: false,
-                    templateUrl: 'partials/userPosition.html',
-                    templateParameter: {
-                        position: {}
-                    },
-                    onClicked: function (marker) {
-                        $scope.$apply(function () {
-                            marker.showWindow = true;
-                        });
-                    },
-                    closeClick: function (marker) {
-                        $scope.$apply(function () {
-                            marker.showWindow = false;
-                        });
-                    }
-                };
-            };
 
             var pinAndCenter = function (latitude, longitude) {
                 $scope.$apply(function () {
@@ -111,16 +90,72 @@ angular.module('mainApp')
                     zoom: 6,
                     dragging: false,
                     bounds: {},
-                    dynamicMarkers: [],
-                    userPositionMarker: getInitialUserPositionMarker()
+                    vehicleSearchResultsMarkers: [],
+                    userPositionMarker: {
+                        latitude: undefined,
+                        longitude: undefined,
+                        showWindow: false,
+                        templateUrl: 'partials/userPosition.html',
+                        templateParameter: {
+                            position: {}
+                        },
+                        onClicked: function (marker) {
+                            $scope.$apply(function () {
+                                marker.showWindow = true;
+                            });
+                        },
+                        closeClick: function (marker) {
+                            $scope.$apply(function () {
+                                marker.showWindow = false;
+                            });
+                        }
+                    }
                 }
             });
 
             $scope.removeMarkers = function () {
-                $scope.map.dynamicMarkers.length = 0;
+                $scope.map.vehicleSearchResultsMarkers.length = 0;
                 $scope.map.userPositionMarker.latitude = undefined;
                 $scope.map.userPositionMarker.longitude = undefined;
             };
+
+            $scope.removeVehicleSearchResultsMarkers = function () {
+                $scope.map.vehicleSearchResultsMarkers.length = 0;
+            };
+
+            $scope.$watch('vehicleSearchResults', function () {
+                $scope.removeVehicleSearchResultsMarkers();
+                $scope.map.center.latitude = $scope.map.userPositionMarker.latitude;
+                $scope.map.center.longitude = $scope.map.userPositionMarker.longitude;
+                $scope.map.zoom = 12; // TODO: Dependant of chosen radius!
+                if ($scope.vehicleSearchResults) {
+                    angular.forEach($scope.vehicleSearchResults,
+                        function (vehicleSearchResult) {
+                            $scope.map.vehicleSearchResultsMarkers.push(
+                                {
+                                    icon: 'images/map_icons/' + vehicleSearchResult.vehicle.vehicleType.icon, // TODO: Dependant of vehicleType (introduce icon field in vehicleType)
+                                    latitude: vehicleSearchResult.currentLatitude,
+                                    longitude: vehicleSearchResult.currentLongitude,
+                                    showWindow: false,
+                                    templateUrl: 'partials/vehiclePosition.html',
+                                    templateParameter: {
+                                        distance: vehicleSearchResult.distance
+                                    },
+                                    onClicked: function (marker) {
+                                        $scope.$apply(function () {
+                                            marker.showWindow = true;
+                                        });
+                                    },
+                                    closeClick: function (marker) {
+                                        $scope.$apply(function () {
+                                            marker.showWindow = false;
+                                        });
+                                    }
+                                }
+                            );
+                        });
+                }
+            });
 
             $scope.searchVehicles = function (searchVehiclesFormData) {
                 var searchVehiclesFormDataToSend = angular.copy(searchVehiclesFormData);
@@ -129,7 +164,9 @@ angular.module('mainApp')
                     latitude: $scope.map.userPositionMarker.latitude
                 };
                 VehicleService.searchVehicles(searchVehiclesFormDataToSend, function (successResponse) {
-
+                    $scope.searched = true;
+                    var data = successResponse.data;
+                    $scope.vehicleSearchResults = data.vehicleSearchResults;
                 }, function (errorResponse) {
                     var status, data;
                     status = errorResponse.status;

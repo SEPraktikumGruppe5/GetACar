@@ -4,6 +4,8 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.grp5.getacar.log.LogInvocation;
 import org.grp5.getacar.persistence.dao.VehicleDAO;
+import org.grp5.getacar.persistence.dto.VehicleSearchResult;
+import org.grp5.getacar.persistence.dto.VehicleSearchResults;
 import org.grp5.getacar.persistence.entity.Vehicle;
 import org.grp5.getacar.persistence.validation.ValidationHelper;
 import org.grp5.getacar.resource.form.Position;
@@ -12,6 +14,7 @@ import org.grp5.getacar.service.TimeSimulator;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/rest/vehicles")
@@ -62,12 +65,16 @@ public class VehicleResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @LogInvocation
-    public void searchVehicles(SearchVehiclesForm searchVehiclesForm) {
+    public Response searchVehicles(SearchVehiclesForm searchVehiclesForm) {
         validationHelper.validateAndThrow(searchVehiclesForm); // TODO: Do this by AOP!?
         final VehicleDAO vehicleDAO = vehicleDAOProvider.get();
         final Position position = searchVehiclesForm.getPosition();
-        vehicleDAO.find(position.getLatitude(), position.getLongitude(), searchVehiclesForm.getRadius(),
+        final List<VehicleSearchResult> vehicleSearchResultList = vehicleDAO.find(position.getLatitude(), position.getLongitude(), searchVehiclesForm.getRadius(),
                 searchVehiclesForm.getVehicleType(), searchVehiclesForm.getFrom(), searchVehiclesForm.getTo(),
                 timeSimulatorProvider.get().getTime());
+        final VehicleSearchResults vehicleSearchResults = new VehicleSearchResults();
+        vehicleSearchResults.setSearchParameters(searchVehiclesForm);
+        vehicleSearchResults.setVehicleSearchResults(vehicleSearchResultList);
+        return Response.status(Response.Status.OK).entity(vehicleSearchResults).build();
     }
 }
