@@ -20,7 +20,7 @@
  *      country: country string, ISO 3166-1 Alpha-2 compatible country code. examples; 'ca', 'us', 'gb'
  *   }
  */
-angular.module('gpAutocomplete', [])
+angular.module('gacCommon')
     .directive('gpAutocomplete', [
         function () {
             return {

@@ -37,6 +37,7 @@
         <!-- Misc stuff -->
         <yeoman-account-project.directory>yo/account</yeoman-account-project.directory>
         <yeoman-main-project.directory>yo/main</yeoman-main-project.directory>
+        <yeoman-common-project.directory>yo/common</yeoman-common-project.directory>
     </properties>
 
     <dependencies>
@@ -228,6 +229,18 @@
                                 <resource>
                                     <directory>${yeoman-main-project.directory}/app</directory>
                                     <targetPath>app</targetPath>
+                                </resource>
+                                <resource>
+                                    <directory>${yeoman-common-project.directory}</directory>
+                                    <targetPath>common</targetPath>
+                                </resource>
+                                <resource>
+                                    <directory>${yeoman-common-project.directory}/partials</directory>
+                                    <targetPath>account/partials</targetPath>
+                                </resource>
+                                <resource>
+                                    <directory>${yeoman-common-project.directory}/partials</directory>
+                                    <targetPath>app/partials</targetPath>
                                 </resource>
                             </webResources>
                         </configuration>

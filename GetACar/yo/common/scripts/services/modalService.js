@@ -1,4 +1,4 @@
-angular.module('mainApp')
+angular.module('gacCommon')
     .service('ModalService', ['$modal',
         function ($modal) {
             var modalDefaults, modalOptions;
@@ -6,7 +6,7 @@ angular.module('mainApp')
                 backdrop: true,
                 keyboard: true,
                 modalFade: true,
-                templateUrl: '/getacar/account/partials/modal.html'
+                templateUrl: 'partials/common/modal.html'
             };
 
             modalOptions = {

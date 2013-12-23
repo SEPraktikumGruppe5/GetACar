@@ -1,4 +1,4 @@
-angular.module('mainApp')
+angular.module('gacCommon')
     .factory('VehicleService', ['Restangular',
         function (Restangular) {
             return {

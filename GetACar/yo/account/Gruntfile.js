@@ -216,6 +216,13 @@ module.exports = function (grunt) {
                         cwd: '<%= yeoman.app %>',
                         src: ['*.html', 'views/*.html', 'partials/*.html'],
                         dest: '<%= yeoman.dist %>'
+                    },
+                    {
+                        // copy over common partials
+                        expand: true,
+                        cwd: '../common',
+                        src: ['partials/shared/*.html'],
+                        dest: '<%= yeoman.dist %>'
                     }
                 ]
             }
@@ -266,6 +273,18 @@ module.exports = function (grunt) {
                         dest: '<%= yeoman.dist %>/images',
                         src: [
                             'generated/*'
+                        ]
+                    },
+                    {
+                        // copy over common stuff, too
+                        expand: true,
+                        cwd: '../common',
+                        dest: '<%= yeoman.dist %>',
+                        src: [
+                            '*.{ico,png,txt}',
+                            '.htaccess',
+                            'images/{,*/}*.{webp}',
+                            'fonts/*'
                         ]
                     }
                 ]

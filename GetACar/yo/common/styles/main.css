@@ -9,6 +9,10 @@ body {
     /* The html and body elements cannot have any padding or margin. */
 }
 
+.full-height {
+    height: 100%;
+}
+
 /* Wrapper for page content to push down footer */
 #wrap {
     min-height: 100%;
@@ -41,7 +45,8 @@ body {
     margin: 0 auto;
 }
 
-.full-width, .full-width .datetimepicker table {
+.full-width,
+.full-width .datetimepicker table {
     width: 100%;
 }
 
@@ -80,5 +85,9 @@ fieldset[disabled] .form-control.datetimepickerbox {
 }
 
 .clock {
-    width: 165px;
+    width: 175px;
+}
+
+.input-group .input-group-addon {
+    cursor: pointer;
 }

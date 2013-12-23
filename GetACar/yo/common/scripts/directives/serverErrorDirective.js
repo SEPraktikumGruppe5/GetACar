@@ -1,12 +1,12 @@
-angular.module('mainApp')
+angular.module('gacCommon')
     .directive('serverError', [
         function () {
             return {
-                restrict: 'A',
+//                restrict: 'A',
                 require: 'ngModel',
                 link: function (scope, element, attrs, modelController) {
-                    // set "valid" by default on typing
-                    element.bind('change', function () {
+//                    // set "valid" by default on typing
+                    element.bind('keydown', function () {
                         scope.$apply(function () {
                             modelController.$setValidity('server', true);
                         });
