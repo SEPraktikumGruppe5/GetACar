@@ -1,13 +1,42 @@
 angular.module('mainApp')
-    .controller('SearchVehiclesController', ['$scope', 'VehicleTypeService', 'VehicleService', '$filter',
-        function ($scope, VehicleTypeService, VehicleService, $filter) {
+    .controller('SearchVehiclesController', ['$scope', 'VehicleTypeService', 'VehicleService', '$filter', '$window',
+        function ($scope, VehicleTypeService, VehicleService, $filter, $window) {
 
             $scope.searched = false;
             $scope.searchVehiclesFormData = {
                 // init fields here?
             };
             $scope.errors = {}; // empty initialization of server errors
-            $scope.vehicleSearchResults = []; // empty initialization of search results
+
+//            $scope.vehicleSearchResults = []; // empty initialization of search results
+//            $scope.lastSearchParameters = {}; // empty initialization of search last parameters
+
+            $scope.vehicleSearchResults = [
+                {'vehicle': {'id': 6, 'vehicleType': {'id': 1, 'name': 'Car', 'icon': 'car.png', 'description': 'A car'}, 'licenseNumber': 'C-AR 6', 'vehicleImages': [], 'initialLatitude': 50.8427310, 'initialLongitude': 12.9149690, 'active': true, 'comment': 'Sechstes Auto'}, 'currentLongitude': 12.9149690, 'currentLatitude': 50.8427310, 'distance': 0.956264600875621},
+                {'vehicle': {'id': 1, 'vehicleType': {'id': 1, 'name': 'Car', 'icon': 'car.png', 'description': 'A car'}, 'licenseNumber': 'C-IA 666', 'vehicleImages': [], 'initialLatitude': 52.5200000, 'initialLongitude': 13.4000000, 'active': true, 'comment': 'Ein Fahrzeug'}, 'currentLongitude': 12.9298980, 'currentLatitude': 50.8127220, 'distance': 2.94982181363976},
+                {'vehicle': {'id': 7, 'vehicleType': {'id': 1, 'name': 'Car', 'icon': 'car.png', 'description': 'A car'}, 'licenseNumber': 'S-IE 777', 'vehicleImages': [], 'initialLatitude': 50.8427310, 'initialLongitude': 12.9149700, 'active': true, 'comment': 'The Magic Number'}, 'currentLongitude': 12.9053440, 'currentLatitude': 50.8042220, 'distance': 4.18663417489601}
+            ]; // TODO: Set on empty array again!
+            $scope.lastSearchParameters = {
+                'position': {
+                    'longitude': 12.927389,
+                    'latitude': 50.839203
+                }, 'radius': 10,
+                'vehicleType': {
+                    'id': 1,
+                    'name': 'Car',
+                    'icon': 'car.png',
+                    'description': 'A car'
+                },
+                'from': 1386029100000,
+                'to': 1386119400000
+            }; // TODO: Set on empty object again!
+
+            $scope.addSearchParametersToResult = function (result) {
+                if (result) {
+                    result.searchParameters = $scope.lastSearchParameters; // TODO: Test if we should better copy?
+                }
+                return result;
+            };
 
             $scope.vehicleTypes = [];
             VehicleTypeService.allVehicleTypes(function (successResponse) {
@@ -133,13 +162,13 @@ angular.module('mainApp')
                         function (vehicleSearchResult) {
                             $scope.map.vehicleSearchResultsMarkers.push(
                                 {
-                                    icon: 'images/map_icons/' + vehicleSearchResult.vehicle.vehicleType.icon, // TODO: Dependant of vehicleType (introduce icon field in vehicleType)
+                                    icon: 'images/map_icons/' + vehicleSearchResult.vehicle.vehicleType.icon,
                                     latitude: vehicleSearchResult.currentLatitude,
                                     longitude: vehicleSearchResult.currentLongitude,
                                     showWindow: false,
                                     templateUrl: 'partials/vehiclePosition.html',
                                     templateParameter: {
-                                        distance: vehicleSearchResult.distance
+                                        result: vehicleSearchResult
                                     },
                                     onClicked: function (marker) {
                                         $scope.$apply(function () {
@@ -167,6 +196,7 @@ angular.module('mainApp')
                     $scope.searched = true;
                     var data = successResponse.data;
                     $scope.vehicleSearchResults = data.vehicleSearchResults;
+                    $scope.lastSearchParameters = data.searchParameters;
                 }, function (errorResponse) {
                     var status, data;
                     status = errorResponse.status;

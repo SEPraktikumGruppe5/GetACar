@@ -1,7 +1,14 @@
-<div class="vehiclePosition">
+<div ng-controller="VehiclePositionController" class="vehiclePosition">
     <strong>Rent me!</strong>
 
     <div>
-        I'm just {{ parameter.distance | limitTo:3 }} Km away from you! <!-- TODO: Shorten, that does not seem to work! -->
+        I'm just {{ parameter.result.distance | number:1 }} Km away from you! {{ test }}
+    </div>
+    <div>
+        <p>
+            <button type="submit" class="btn btn-link pull-right" ng-click="jumpToSearchResult()">
+                >> Jump to search result
+            </button>
+        </p>
     </div>
 </div>

@@ -2,8 +2,8 @@
     <strong>This is your position!</strong>
 
     <div>
-        To be exact, you're at "{{ parameter.position.latitude }},
-        {{ parameter.position.longitude | limitTo:7 }}", my friend!
+        To be exact, you're at "{{ parameter.position.latitude | number:4 }},
+        {{ parameter.position.longitude | number:4 }}", my friend!
     </div>
     <div>
         This is the starting point for your radius searches!

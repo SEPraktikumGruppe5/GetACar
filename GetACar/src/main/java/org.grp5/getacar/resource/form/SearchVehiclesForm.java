@@ -39,7 +39,7 @@ public class SearchVehiclesForm {
         this.radius = radius;
     }
 
-    @NotNull
+    @NotNull // TODO: Can be null + multiple vehicle types
     public VehicleType getVehicleType() {
         return vehicleType;
     }

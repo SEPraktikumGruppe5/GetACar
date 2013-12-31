@@ -1,16 +1,26 @@
 <div class="modal-dialog" xmlns="http://www.w3.org/1999/html">
     <div class="modal-content">
         <div class="modal-header">
-            <button type="button" class="close" data-ng-click="modalOptions.close()" aria-hidden="true">&times;</button>
-            <h3 class="modal-title">{{modalOptions.headerText}}</h3>
+            <button type="button" class="close" data-ng-click="modalOptions.close()" aria-hidden="true">
+                &times;
+            </button>
+            <h3 class="modal-title">
+                {{modalOptions.headerText}}
+            </h3>
         </div>
         <div class="modal-body">
-            <p>{{modalOptions.bodyText}}</p>
+            <p>
+                {{modalOptions.bodyText}}
+            </p>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-ng-click="modalOptions.close()">{{modalOptions.closeButtonText}}
+            <button type="button" class="btn btn-default"
+                    data-ng-click="modalOptions.close()">
+                {{modalOptions.closeButtonText}}
             </button>
-            <button class="btn btn-primary" data-ng-click="modalOptions.ok();">{{modalOptions.actionButtonText}}
+            <button class="btn btn-primary"
+                    data-ng-click="modalOptions.ok();">
+                {{modalOptions.actionButtonText}}
             </button>
         </div>
     </div>

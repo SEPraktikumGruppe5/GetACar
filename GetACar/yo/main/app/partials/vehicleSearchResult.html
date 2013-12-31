@@ -1,3 +1,66 @@
-<div>
-    Hi, I'm a result! : ) {{result | json}}
+<div id="vsr{{result.vehicle.id}}" class="well">
+    <div class="row">
+        <div class="col-sm-6">
+            <span tooltip="{{result.vehicle.vehicleType.name}} - {{result.vehicle.vehicleType.description}}"
+                  tooltip-placement="right">
+                <img ng-src="{{ getIconUrl(result) }}">
+            </span>
+        </div>
+        <div class="col-sm-6">
+            <div class="pull-right" tooltip="Distance">
+                <!--<span>--> <!-- TODO: Place the id somewhere? -->
+                    <!--<strong>-->
+                        <!--#{{result.vehicle.id}}-->
+                    <!--</strong>-->
+                <!--</span>-->
+                <i class="glyphicon glyphicon-random"></i>
+                <span>
+                    {{result.distance | number:1}} Km
+                </span>
+            </div>
+        </div>
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="row">
+                <label class="col-sm-3">Current position</label>
+
+                <div class="col-sm-9">
+                    <div>
+                        <gp-geocoder gp-geocode-lat-lng="gpGeocodeLatLng"></gp-geocoder>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-3">License number</label>
+
+                <div class="col-sm-9">
+                    <div>
+                        {{result.vehicle.licenseNumber}}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-3">Additional information</label>
+
+                <div class="col-sm-9">
+                    <div>
+                        {{result.vehicle.comment}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            Space for the images / the cover image
+        </div>
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col-sm-offset-6 col-sm-6">
+            <button type="submit" class="btn btn-success pull-right" ng-click="rentVehicle()">
+                Details / Rent vehicle
+            </button>
+        </div>
+    </div>
 </div>

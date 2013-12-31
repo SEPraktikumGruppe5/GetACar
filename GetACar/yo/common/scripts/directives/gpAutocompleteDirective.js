@@ -33,8 +33,6 @@ angular.module('gacCommon')
                     gpPlaceChanged: '&onPlaceChanged'
                 },
                 link: function (scope, element, attrs, model) {
-                    var geocoder = new google.maps.Geocoder(); // TODO: Where to initialize the geocoder best?
-
                     // options for autocomplete
                     var opts;
 
@@ -102,6 +100,7 @@ angular.module('gacCommon')
 
                     scope.$watch(scope.watchGPLatLng, function () {
                         if (scope.gpLatLng && scope.gpLatLng.lat && scope.gpLatLng.lng) { // TODO: How to check more than one level deep without such a long if?
+                            var geocoder = new google.maps.Geocoder();
                             var latlng = new google.maps.LatLng(scope.gpLatLng.lat, scope.gpLatLng.lng);
                             geocoder.geocode({'latLng': latlng}, function (results, status) {
                                 if (status === google.maps.GeocoderStatus.OK) {

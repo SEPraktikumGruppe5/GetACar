@@ -25,15 +25,15 @@ angular.module('gacCommon')
             };
 
             this.show = function (customModalDefaults, customModalOptions) {
-                //Create temp objects to work with since we're in a singleton service
+                // Create temp objects to work with since we're in a singleton service
                 var tempModalDefaults, tempModalOptions;
                 tempModalDefaults = {};
                 tempModalOptions = {};
 
-                //Map angular-ui modal custom defaults to modal defaults defined in service
+                // Map angular-ui modal custom defaults to modal defaults defined in service
                 angular.extend(tempModalDefaults, modalDefaults, customModalDefaults);
 
-                //Map modal.html $scope custom properties to defaults defined in service
+                // Map modal.html $scope custom properties to defaults defined in service
                 angular.extend(tempModalOptions, modalOptions, customModalOptions);
 
                 if (!tempModalDefaults.controller) {
