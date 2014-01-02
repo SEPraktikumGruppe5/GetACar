@@ -1,0 +1,229 @@
+<div ng-controller="RentVehicleController">
+<div class="modal-header">
+    <button type="button" class="close" data-ng-click="modalOptions.close()" aria-hidden="true">
+        &times;
+    </button>
+    <h3 class="modal-title">
+        Rent Vehicle
+    </h3>
+</div>
+<div class="modal-body">
+<div class="row">
+    <div class="col-sm-7">
+        <div class="row">
+            <label class="col-sm-3">Vehicle number</label>
+
+            <div class="col-sm-9">
+                <div>
+                    {{vehicle.id}}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-3">Type</label>
+
+            <div class="col-sm-9">
+                <div>
+                        <span tooltip="{{vehicle.vehicleType.name}} - {{vehicle.vehicleType.description}}"
+                              tooltip-placement="right">
+                            <img ng-src="{{ getIconUrl(vehicle) }}">
+                        </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-3">Current position</label>
+
+            <div class="col-sm-9">
+                <div>
+                    <gp-geocoder gp-geocode-lat-lng="gpGeocodeLatLng"></gp-geocoder>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-3">License number</label>
+
+            <div class="col-sm-9">
+                <div>
+                    {{vehicle.licenseNumber}}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-3">Additional information</label>
+
+            <div class="col-sm-9">
+                <div>
+                    {{vehicle.comment}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-5">
+        <tabset>
+            <tab heading="Images" select="otherTabSelected()">
+                <div ng-if="!mapVisible" class="rentVehicleTab">
+                    <carousel interval="5000">
+                        <slide ng-repeat="vehicleImage in vehicleImages">
+                            <img ng-src="{{vehicleImage.image}}">
+
+                            <!--<div class="carousel-caption">-->
+                            <!--<h4>Slide {{$index}}</h4>-->
+
+                            <!--<p>{{slide.text}}</p>-->
+                            <!--</div>-->
+                        </slide>
+                    </carousel>
+                </div>
+            </tab>
+            <tab heading="Map" select="mapTabSelected()">
+                <div ng-if="mapVisible" class="rentVehicleTab">
+                    <google-map center="map.center" zoom="map.zoom" draggable="true" dragging="map.dragging"
+                                bounds="map.bounds" events="map.events" options="map.options"
+                                refresh="mapVisible">
+                        <!-- marker for vehicle position -->
+                        <!-- can not put google.map.animations.BOUNCE , since it is not initialized yet -->
+                        <div>
+                            <marker coords="map.vehiclePositionMarker" icon="map.vehiclePositionMarker.icon">
+                            </marker>
+                        </div>
+                    </google-map>
+                </div>
+            </tab>
+        </tabset>
+    </div>
+</div>
+<div class="row">
+    <hr/>
+    <h3>
+        Rental details
+    </h3>
+    <hr/>
+    <form name="rentVehicleForm" novalidate role="form" autocomplete="off">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="inputStartPosition" class="control-label">Start position</label>
+
+                        <div class="input-group">
+                            <!-- ng-model="dummySP" so that angular.js recognizes this field as a form field! -->
+                            <input name="startPosition" ng-model="dummySP" type="text" class="form-control"
+                                   id="inputStartPosition"
+                                   gp-autocomplete gp-value="gpStartValue" gp-details="gpStartDetails"
+                                   gp-options="gpStartOptions" gp-lat-lng="gpStartLatLng"
+                                   on-place-changed="onGPPlaceChanged(value, details)" disabled server-error/>
+                            <a class="input-group-addon btn">
+                                <i class="glyphicon glyphicon-search"></i>
+                            </a>
+                        </div>
+                        <div class="errors col-sm-offset-1 col-sm-11"
+                             ng-show="!rentVehicleForm.startPosition.$dirty && rentVehicleForm.startPosition.$invalid">
+                                    <span ng-show="rentVehicleForm.startPosition.$error.server">
+                                        {{ errors.startPosition }}
+                                    </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="inputEndPosition" class="control-label">End position</label>
+
+                        <div class="input-group">
+                            <!-- ng-model="dummyEP" so that angular.js recognizes this field as a form field! -->
+                            <input name="endPosition" ng-model="dummyEP" type="text" class="form-control"
+                                   id="inputEndPosition" gp-autocomplete gp-value="gpEndValue"
+                                   gp-details="gpEndDetails" gp-options="gpEndOptions"
+                                   gp-lat-lng="gpEndLatLng"
+                                   on-place-changed="onGPEndPlaceChanged(value, details)" server-error/>
+                            <a title="Find my location" ng-show="geolocationAvailable" ng-click="findMe()"
+                               class="input-group-addon btn">
+                                <i class="glyphicon glyphicon-search"></i>
+                            </a>
+                        </div>
+                        <div class="errors col-sm-offset-1 col-sm-11"
+                             ng-show="!rentVehicleForm.endPosition.$dirty && rentVehicleForm.endPosition.$invalid">
+                            <span ng-show="rentVehicleForm.endPosition.$error.server">{{ errors.endPosition }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="inputFrom" class="control-label">From</label>
+
+                        <div class="dropdown">
+                            <!-- TODO: Replace by Angular-UI stuff once at Bootstrap 3? -->
+                            <a class="dropdown-toggle from-toggle-select" role="button"
+                               data-toggle="dropdown">
+                                <div class="input-group">
+                                    <input name="from" id="inputFrom" type="text"
+                                           class="form-control datetimepickerbox" placeholder="From"
+                                           readonly
+                                           data-ng-model="rentVehicleFormData.from" server-error>
+                                                 <span class="input-group-addon">
+                                                    <i class="glyphicon glyphicon-calendar"></i>
+                                                 </span>
+                                </div>
+                            </a>
+                            <ul class="dropdown-menu full-width" role="menu">
+                                <datetimepicker data-ng-model="rentVehicleFormData.from"
+                                                data-datetimepicker-config="{dropdownSelector: '.from-toggle-select'}">
+                                </datetimepicker>
+                            </ul>
+                            <!-- TODO: datetimepicker options: https://github.com/dalelotts/angular-bootstrap-datetimepicker -->
+                        </div>
+                        <div class="errors col-sm-offset-1 col-sm-11"
+                             ng-show="!rentVehicleForm.from.$dirty && rentVehicleForm.from.$invalid">
+                            <span ng-show="rentVehicleForm.from.$error.server">{{ errors.from }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="inputTo" class="control-label">To</label>
+
+                        <div class="dropdown">
+                            <!-- TODO: Replace by Angular-UI stuff once at Bootstrap 3? -->
+                            <a class="dropdown-toggle to-toggle-select" role="button"
+                               data-toggle="dropdown">
+                                <div class="input-group">
+                                    <input name="to" id="inputTo" type="text"
+                                           class="form-control datetimepickerbox" placeholder="To" readonly
+                                           data-ng-model="rentVehicleFormData.to" server-error>
+                                                <span class="input-group-addon">
+                                                    <i class="glyphicon glyphicon-calendar"></i>
+                                                </span>
+                                </div>
+                            </a>
+                            <ul class="dropdown-menu full-width" role="menu">
+                                <datetimepicker data-ng-model="rentVehicleFormData.to"
+                                                data-datetimepicker-config="{dropdownSelector: '.to-toggle-select'}"></datetimepicker>
+                            </ul>
+                            <!-- TODO: datetimepicker options: https://github.com/dalelotts/angular-bootstrap-datetimepicker ; extend by max day min day like the original bs 3 date picker has? -->
+                        </div>
+                        <div class="errors col-sm-offset-1 col-sm-11"
+                             ng-show="!rentVehicleForm.to.$dirty && rentVehicleForm.to.$invalid">
+                            <span ng-show="rentVehicleForm.to.$error.server">{{ errors.to }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<hr/>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default"
+            data-ng-click="modalOptions.close()">
+        Cancel
+    </button>
+    <button class="btn btn-primary" ng-click="rentVehicle()">
+        Rent
+    </button>
+</div>
+</div>

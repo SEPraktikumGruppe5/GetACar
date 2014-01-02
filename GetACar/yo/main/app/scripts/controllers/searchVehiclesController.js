@@ -90,9 +90,6 @@ angular.module('mainApp')
                 }
             };
 
-            // Enable the new Google Maps visuals
-            google.maps.visualRefresh = true;
-
             // callback of gp-autocomplete box
             $scope.onGPPlaceChanged = function (val, details) {
                 $scope.map.userPositionMarker.latitude = undefined;
@@ -101,6 +98,9 @@ angular.module('mainApp')
                     pinAndCenter(details.geometry.location.lat(), details.geometry.location.lng());
                 }
             };
+
+            // Enable the new Google Maps visuals
+            google.maps.visualRefresh = true;
 
             // extend the scope by the 'map' object
             angular.extend($scope, {
@@ -162,7 +162,7 @@ angular.module('mainApp')
                         function (vehicleSearchResult) {
                             $scope.map.vehicleSearchResultsMarkers.push(
                                 {
-                                    icon: 'images/map_icons/' + vehicleSearchResult.vehicle.vehicleType.icon,
+                                    icon: 'images/map_icons/' + vehicleSearchResult.vehicle.vehicleType.icon, // TODO: Inject path
                                     latitude: vehicleSearchResult.currentLatitude,
                                     longitude: vehicleSearchResult.currentLongitude,
                                     showWindow: false,

@@ -20,12 +20,13 @@ angular.module('mainApp')
                     };
 
                     $scope.rentVehicle = function () {
-                        var modalDefaults, modalOptions;
+                        var modalDefaults, modalOptions; // TODO: Rename to better fitting names, modal defaults is modal options etc.
                         modalDefaults = {
                             backdrop: true,
                             keyboard: true,
                             modalFade: true,
-                            templateUrl: 'partials/rentVehicleModal.html'
+                            templateUrl: 'partials/rentVehicle.html',
+                            windowClass: 'wide-modal-dialog'
                         };
 
                         modalOptions = {

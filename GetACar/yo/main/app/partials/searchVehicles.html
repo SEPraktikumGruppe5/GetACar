@@ -139,7 +139,7 @@
         </div>
         <div class="col-xs-7">
             <google-map center="map.center" zoom="map.zoom" draggable="true" dragging="map.dragging"
-                        bounds="map.bounds" events="map.events" options="map.options">
+                        bounds="map.bounds" events="map.events" options="map.options" fit="true">
                 <div ng-repeat="vehicleSearchResultsMarker in map.vehicleSearchResultsMarkers">
                     <marker coords="vehicleSearchResultsMarker" icon="vehicleSearchResultsMarker.icon"
                             click="vehicleSearchResultsMarker.onClicked(vehicleSearchResultsMarker)">

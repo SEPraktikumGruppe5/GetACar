@@ -8,14 +8,20 @@ angular.module('accountApp')
             $scope.errors = {}; // empty initialization of server errors
 
             $scope.readTOS = function () {
-                var modalOptions = {
-                    closeButtonText: 'Cancel',
-                    actionButtonText: 'Ok',
-                    headerText: 'TOS',
-                    bodyText: 'TOS of Get A Car!'
+                var modalDefaults, modalOptions;
+                modalDefaults = {
+                    templateUrl: 'partials/tos.html',
+                    windowClass: 'wide-modal-dialog'
                 };
 
-                ModalService.showModal({}, modalOptions).then(function (result) {
+                modalOptions = {
+                    closeButtonText: 'Cancel',
+                    actionButtonText: 'Ok',
+                    headerText: 'TOS of Get A Car',
+                    bodyText: undefined // template does not use it
+                };
+
+                ModalService.showModal(modalDefaults, modalOptions).then(function (result) {
                     $scope.registerFormData.acceptTOS = true;
                 });
             };

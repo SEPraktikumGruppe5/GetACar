@@ -221,7 +221,7 @@ module.exports = function (grunt) {
                         // copy over common partials
                         expand: true,
                         cwd: '../common',
-                        src: ['partials/shared/*.html'],
+                        src: ['partials/common/*.html'],
                         dest: '<%= yeoman.dist %>'
                     }
                 ]

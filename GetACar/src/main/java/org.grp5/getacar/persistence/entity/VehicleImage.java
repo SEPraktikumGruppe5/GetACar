@@ -13,7 +13,9 @@ import javax.validation.constraints.Size;
         columnDefinition = "int(10) unsigned NOT NULL AUTO_INCREMENT"))
 public class VehicleImage extends BaseEntity {
 
+    private String fileName;
     private Vehicle vehicle;
+    // TODO: Add description
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "f_id", referencedColumnName = "f_id", columnDefinition = "int(10) unsigned",
@@ -26,8 +28,6 @@ public class VehicleImage extends BaseEntity {
     public void setVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
     }
-
-    private String fileName;
 
     @Basic(optional = false)
     @Column(name = "fb_dateiname", columnDefinition = "varchar(75)", unique = true)

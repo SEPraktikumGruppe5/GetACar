@@ -12,6 +12,21 @@ angular.module('mainApp')
                 return 'images/map_icons/' + vehicle.vehicleType.icon; // TODO: Bind and inject icon path in rootScope
             };
 
+            // TODO: TEMP REMOVE
+            var vehicleImages = $scope.vehicleImages = [];
+            $scope.addSlide = function () {
+                var newWidth = 600 + vehicleImages.length;
+                vehicleImages.push({
+                    image: 'http://placekitten.com/' + newWidth + '/500',
+                    text: ['More', 'Extra', 'Lots of', 'Surplus'][vehicleImages.length % 4] + ' ' +
+                        ['Cats', 'Kittys', 'Felines', 'Cutes'][vehicleImages.length % 4]
+                });
+            };
+            for (var i = 0; i < 4; i++) {
+                $scope.addSlide();
+            }
+            // TODO: TEMP REMOVE
+
             $scope.gpGeocodeLatLng = {
                 lat: $scope.vehicle.currentLatitude,
                 lng: $scope.vehicle.currentLongitude
@@ -69,8 +84,57 @@ angular.module('mainApp')
                 }
             };
 
+            // Small workaround to prevent the "grey box" google maps problem
+            $scope.mapVisible = false;
+            $scope.otherTabSelected = function () {
+                $scope.mapVisible = false;
+            };
+            $scope.mapTabSelected = function () {
+                $scope.mapVisible = true;
+            };
+
             // Enable the new Google Maps visuals
             google.maps.visualRefresh = true;
+
+            // extend the scope by the 'map' object
+            angular.extend($scope, {
+                map: {
+                    showTraffic: false,
+                    showBicycling: false,
+                    showWeather: false,
+                    center: {
+                        latitude: $scope.vehicle.currentLatitude,
+                        longitude: $scope.vehicle.currentLongitude
+                    },
+                    options: {
+                        streetViewControl: false,
+                        panControl: false
+                    },
+                    zoom: 12,
+                    dragging: false,
+                    bounds: {},
+                    vehiclePositionMarker: {
+                        latitude: $scope.vehicle.currentLatitude,
+                        longitude: $scope.vehicle.currentLongitude,
+                        icon: 'images/map_icons/' + $scope.vehicle.vehicleType.icon, // TODO: Inject path
+                        showWindow: false
+//                        templateUrl: 'partials/vehiclePosition.html',
+//                        templateParameter: {
+//                            position: {}
+//                        },
+//                        onClicked: function (marker) {
+//                            $scope.$apply(function () {
+//                                marker.showWindow = true;
+//                            });
+//                        },
+//                        closeClick: function (marker) {
+//                            $scope.$apply(function () {
+//                                marker.showWindow = false;
+//                            });
+//                        }
+                    }
+                }
+            });
 
             // callback of gp-autocomplete box
             $scope.onGPEndPlaceChanged = function (val, details) {
