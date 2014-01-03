@@ -1,5 +1,6 @@
 package org.grp5.getacar.resource.form;
 
+import org.grp5.getacar.persistence.entity.Vehicle;
 import org.grp5.getacar.persistence.validation.DateBeforeOtherDate;
 import org.joda.time.DateTime;
 
@@ -12,12 +13,21 @@ import javax.validation.constraints.NotNull;
 @DateBeforeOtherDate.List(
         value = {@DateBeforeOtherDate(date = "from", otherDate = "to")}
 )
-public class RentVehicleForm {
+public class ReserveVehicleForm {
 
+    private Vehicle vehicle;
     private Position startPosition;
     private Position endPosition;
     private DateTime from;
     private DateTime to;
+
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
+    }
 
     @Valid
     public Position getStartPosition() {

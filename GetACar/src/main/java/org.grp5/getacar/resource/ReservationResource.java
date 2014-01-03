@@ -2,14 +2,17 @@ package org.grp5.getacar.resource;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.grp5.getacar.log.LogInvocation;
 import org.grp5.getacar.persistence.dao.ReservationDAO;
+import org.grp5.getacar.persistence.dao.UserDAO;
 import org.grp5.getacar.persistence.entity.Reservation;
+import org.grp5.getacar.persistence.entity.User;
+import org.grp5.getacar.persistence.validation.ValidationHelper;
+import org.grp5.getacar.resource.form.ReserveVehicleForm;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
@@ -17,10 +20,15 @@ import java.util.List;
 public class ReservationResource {
 
     private final Provider<ReservationDAO> reservationDAOProvider;
+    private final Provider<UserDAO> userDAOProvider;
+    private final ValidationHelper validationHelper;
 
     @Inject
-    public ReservationResource(Provider<ReservationDAO> reservationDAOProvider) {
+    public ReservationResource(Provider<ReservationDAO> reservationDAOProvider, Provider<UserDAO> userDAOProvider,
+                               ValidationHelper validationHelper) {
         this.reservationDAOProvider = reservationDAOProvider;
+        this.userDAOProvider = userDAOProvider;
+        this.validationHelper = validationHelper;
     }
 
     @GET
@@ -39,7 +47,23 @@ public class ReservationResource {
         return reservationDAOProvider.get().findAll();
     }
 
-    public void reserveVehicle(Reservation reservation) {
-        // Könnte sein, dass wir die Parameter einzeln übergeben müssen, nicht als "fertiges" Reservation-Objekt!
+    @POST
+    @Path("/reserveVehicle")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @RequiresAuthentication
+    @LogInvocation
+    public void reserveVehicle(ReserveVehicleForm reserveVehicleForm) {
+        validationHelper.validateAndThrow(reserveVehicleForm); // TODO: Do this by AOP!?
+        final User loggedInUser = getLoggedInUser();
+    }
+
+    /**
+     * Gets the logged in {@link org.grp5.getacar.persistence.entity.User}.
+     *
+     * @return The logged in user or null if the user is not logged in.
+     */
+    private User getLoggedInUser() {
+        return userDAOProvider.get().findByLoginName((String) SecurityUtils.getSubject().getPrincipal());
     }
 }

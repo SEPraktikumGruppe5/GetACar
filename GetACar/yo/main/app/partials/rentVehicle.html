@@ -80,12 +80,16 @@
                 <div ng-if="mapVisible" class="rentVehicleTab">
                     <google-map center="map.center" zoom="map.zoom" draggable="true" dragging="map.dragging"
                                 bounds="map.bounds" events="map.events" options="map.options"
-                                refresh="mapVisible">
+                                refresh="mapVisible" fit="true">
                         <!-- marker for vehicle position -->
                         <!-- can not put google.map.animations.BOUNCE , since it is not initialized yet -->
                         <div>
-                            <marker coords="map.vehiclePositionMarker" icon="map.vehiclePositionMarker.icon">
-                            </marker>
+                            <marker coords="map.vehiclePositionMarker" icon="map.vehiclePositionMarker.icon"></marker>
+                        </div>
+                        <!-- marker for end position -->
+                        <!-- can not put google.map.animations.BOUNCE , since it is not initialized yet -->
+                        <div>
+                            <marker coords="map.endPositionMarker" icon="map.endPositionMarker.icon"></marker>
                         </div>
                     </google-map>
                 </div>
@@ -117,7 +121,7 @@
                                 <i class="glyphicon glyphicon-search"></i>
                             </a>
                         </div>
-                        <div class="errors col-sm-offset-1 col-sm-11"
+                        <div class="errors"
                              ng-show="!rentVehicleForm.startPosition.$dirty && rentVehicleForm.startPosition.$invalid">
                                     <span ng-show="rentVehicleForm.startPosition.$error.server">
                                         {{ errors.startPosition }}
@@ -141,7 +145,7 @@
                                 <i class="glyphicon glyphicon-search"></i>
                             </a>
                         </div>
-                        <div class="errors col-sm-offset-1 col-sm-11"
+                        <div class="errors"
                              ng-show="!rentVehicleForm.endPosition.$dirty && rentVehicleForm.endPosition.$invalid">
                             <span ng-show="rentVehicleForm.endPosition.$error.server">{{ errors.endPosition }}</span>
                         </div>
@@ -176,8 +180,7 @@
                             </ul>
                             <!-- TODO: datetimepicker options: https://github.com/dalelotts/angular-bootstrap-datetimepicker -->
                         </div>
-                        <div class="errors col-sm-offset-1 col-sm-11"
-                             ng-show="!rentVehicleForm.from.$dirty && rentVehicleForm.from.$invalid">
+                        <div class="errors" ng-show="!rentVehicleForm.from.$dirty && rentVehicleForm.from.$invalid">
                             <span ng-show="rentVehicleForm.from.$error.server">{{ errors.from }}</span>
                         </div>
                     </div>
@@ -201,12 +204,12 @@
                             </a>
                             <ul class="dropdown-menu full-width" role="menu">
                                 <datetimepicker data-ng-model="rentVehicleFormData.to"
-                                                data-datetimepicker-config="{dropdownSelector: '.to-toggle-select'}"></datetimepicker>
+                                                data-datetimepicker-config="{dropdownSelector: '.to-toggle-select'}">
+                                </datetimepicker>
                             </ul>
                             <!-- TODO: datetimepicker options: https://github.com/dalelotts/angular-bootstrap-datetimepicker ; extend by max day min day like the original bs 3 date picker has? -->
                         </div>
-                        <div class="errors col-sm-offset-1 col-sm-11"
-                             ng-show="!rentVehicleForm.to.$dirty && rentVehicleForm.to.$invalid">
+                        <div class="errors" ng-show="!rentVehicleForm.to.$dirty && rentVehicleForm.to.$invalid">
                             <span ng-show="rentVehicleForm.to.$error.server">{{ errors.to }}</span>
                         </div>
                     </div>

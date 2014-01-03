@@ -19,25 +19,23 @@ angular.module('gacCommon', [
             // This will add a method called loginUser that will do a POST to the path loginUser
             // signature is (name, operation, path, params, headers, elementToPost)
             user.addRestangularMethod('loginUser', 'post', 'loginUser');
-
             return user;
         });
         RestangularProvider.addElementTransformer('users', true, function (user) {
-            // This will add a method called loginUser that will do a POST to the path loginUser
-            // signature is (name, operation, path, params, headers, elementToPost)
             user.addRestangularMethod('registerUser', 'post', 'registerUser');
-
             return user;
         });
         RestangularProvider.addElementTransformer('vehicles', true, function (vehicles) {
-            // This will add a method called searchVehicles that will do a POST to the path searchVehicles
-            // signature is (name, operation, path, params, headers, elementToPost)
             vehicles.addRestangularMethod('searchVehicles', 'post', 'searchVehicles');
             return vehicles;
         });
         RestangularProvider.addElementTransformer('time', true, function (time) {
             time.addRestangularMethod('whatTimeIsIt', 'get', 'whatTimeIsIt');
             return time;
+        });
+        RestangularProvider.addElementTransformer('reservations', true, function (reservations) {
+            reservations.addRestangularMethod('reserveVehicle', 'post', 'reserveVehicle');
+            return reservations;
         });
     })
     .run(['$rootScope', '$state', '$stateParams',

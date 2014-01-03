@@ -1,12 +1,14 @@
 angular.module('mainApp')
-    .controller('RentVehicleController', ['$scope',
-        function ($scope) {
+    .controller('RentVehicleController', ['$scope', 'ReservationService',
+        function ($scope, ReservationService) {
             // convert data for easier usage
             $scope.vehicle = $scope.modalOptions.result.vehicle;
             $scope.vehicle.currentLongitude = $scope.modalOptions.result.currentLongitude;
             $scope.vehicle.currentLatitude = $scope.modalOptions.result.currentLatitude;
             $scope.vehicle.distance = $scope.modalOptions.result.distance;
             $scope.searchParameters = $scope.modalOptions.result.searchParameters;
+
+            $scope.errors = {}; // empty initialization of server errors
 
             $scope.getIconUrl = function (vehicle) {
                 return 'images/map_icons/' + vehicle.vehicleType.icon; // TODO: Bind and inject icon path in rootScope
@@ -33,6 +35,17 @@ angular.module('mainApp')
             };
 
             $scope.rentVehicleFormData = {
+                vehicle: {
+                    id: $scope.vehicle.id
+                },
+                startPosition: {
+                    longitude: $scope.vehicle.currentLongitude,
+                    latitude: $scope.vehicle.currentLatitude
+                },
+                endPosition: {
+                    longitude: undefined,
+                    latitude: undefined
+                },
                 from: new Date($scope.searchParameters.from),
                 to: new Date($scope.searchParameters.to)
             };
@@ -132,23 +145,60 @@ angular.module('mainApp')
 //                                marker.showWindow = false;
 //                            });
 //                        }
+                    },
+                    endPositionMarker: {
+                        latitude: undefined,
+                        longitude: undefined,
+                        icon: 'images/map_icons/' + 'flag.png', // TODO: Inject path
+                        showWindow: false
+//                        templateUrl: 'partials/vehiclePosition.html',
+//                        templateParameter: {
+//                            position: {}
+//                        },
+//                        onClicked: function (marker) {
+//                            $scope.$apply(function () {
+//                                marker.showWindow = true;
+//                            });
+//                        },
+//                        closeClick: function (marker) {
+//                            $scope.$apply(function () {
+//                                marker.showWindow = false;
+//                            });
+//                        }
                     }
                 }
             });
 
             // callback of gp-autocomplete box
             $scope.onGPEndPlaceChanged = function (val, details) {
-//                $scope.map.userPositionMarker.latitude = undefined;
-//                $scope.map.userPositionMarker.longitude = undefined;
-//                if (details) {
-//                    pinAndCenter(details.geometry.location.lat(), details.geometry.location.lng());
-//                }
+                $scope.map.endPositionMarker.latitude = details.geometry.location.lat();
+                $scope.map.endPositionMarker.longitude = details.geometry.location.lng();
+                // Maybe better read the value on rent-button-click?
+                $scope.rentVehicleFormData.endPosition.longitude = details.geometry.location.lng();
+                $scope.rentVehicleFormData.endPosition.latitude = details.geometry.location.lat();
             };
 
             $scope.rentVehicle = function () {
-
-
-                // return to the modal caller
-                $scope.modalOptions.ok();
+                ReservationService.reserveVehicle($scope.rentVehicleFormData, function (successResponse) {
+                    // return to the modal caller
+                    $scope.modalOptions.ok($scope.vehicle);
+                }, function (errorResponse) {
+                    var status, data;
+                    status = errorResponse.status;
+                    data = errorResponse.data;
+                    // 422 means validation errors
+                    if (status === 422) {
+                        $scope.rentVehicleForm.$setPristine();
+                        angular.forEach(data.errors, function (errors, field) {
+                            // tell the form that field is invalid
+                            var formField = $scope.rentVehicleForm[field];
+                            if (formField) {
+                                formField.$setValidity('server', false);
+                                // keep the error messages from the server
+                                $scope.errors[field] = errors.join(', ');
+                            }
+                        });
+                    }
+                });
             };
         }]);

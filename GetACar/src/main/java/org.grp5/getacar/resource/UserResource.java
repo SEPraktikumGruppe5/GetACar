@@ -222,7 +222,7 @@ public class UserResource {
     }
 
     /**
-     * Gs the logged in {@link User}.
+     * Gets the logged in {@link User}.
      *
      * @return The logged in user or null if the user is not logged in.
      */

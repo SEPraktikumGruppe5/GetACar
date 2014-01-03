@@ -187,7 +187,7 @@ angular.module('mainApp')
             });
 
             $scope.searchVehicles = function (searchVehiclesFormData) {
-                var searchVehiclesFormDataToSend = angular.copy(searchVehiclesFormData);
+                var searchVehiclesFormDataToSend = angular.copy(searchVehiclesFormData); // TODO: Use angular.copy(...) for safety everywhere!
                 searchVehiclesFormDataToSend.position = {
                     longitude: $scope.map.userPositionMarker.longitude,
                     latitude: $scope.map.userPositionMarker.latitude
