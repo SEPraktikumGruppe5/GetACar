@@ -1,5 +1,6 @@
 package org.grp5.getacar.persistence.entity;
 
+import org.grp5.getacar.persistence.validation.MaxDaysFromNow;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
@@ -49,6 +50,7 @@ public class Reservation extends BaseEntity {
     @Column(name = "re_startzeit", columnDefinition = "datetime", nullable = false, updatable = true)
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
     @NotNull
+    @MaxDaysFromNow(2)
     public DateTime getStartTime() {
         return startTime;
     }

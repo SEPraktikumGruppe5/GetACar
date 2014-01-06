@@ -14,6 +14,7 @@ import org.grp5.getacar.resource.form.ReserveVehicleForm;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/rest/reservations")
@@ -53,9 +54,22 @@ public class ReservationResource {
     @Produces(MediaType.APPLICATION_JSON)
     @RequiresAuthentication
     @LogInvocation
-    public void reserveVehicle(ReserveVehicleForm reserveVehicleForm) {
+    public Response reserveVehicle(ReserveVehicleForm reserveVehicleForm) {
         validationHelper.validateAndThrow(reserveVehicleForm); // TODO: Do this by AOP!?
+
+        final ReservationDAO reservationDAO = reservationDAOProvider.get();
         final User loggedInUser = getLoggedInUser();
+        // create the reservation
+        Reservation reservation = new Reservation();
+        reservation.setUser(loggedInUser);
+        reservation.setVehicle(reserveVehicleForm.getVehicle());
+        reservation.setStartTime(reserveVehicleForm.getFrom());
+        reservation.setEndTime(reserveVehicleForm.getTo());
+        reservation.setEndLatitude(reserveVehicleForm.getEndPosition().getLatitude());
+        reservation.setEndLongitude(reserveVehicleForm.getEndPosition().getLongitude());
+        reservationDAO.create(reservation);
+
+        return Response.status(Response.Status.CREATED).build(); // TODO: Respond with this (201) always when successfully created!
     }
 
     /**

@@ -2,6 +2,7 @@ package org.grp5.getacar.resource.form;
 
 import org.grp5.getacar.persistence.entity.Vehicle;
 import org.grp5.getacar.persistence.validation.DateBeforeOtherDate;
+import org.grp5.getacar.persistence.validation.MaxDaysFromNow;
 import org.joda.time.DateTime;
 
 import javax.validation.Valid;
@@ -48,6 +49,7 @@ public class ReserveVehicleForm {
     }
 
     @NotNull
+    @MaxDaysFromNow(2)
     public DateTime getFrom() {
         return from;
     }
