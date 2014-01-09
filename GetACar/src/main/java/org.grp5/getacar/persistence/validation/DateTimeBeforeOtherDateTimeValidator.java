@@ -8,17 +8,19 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 /**
+ * Check that the <code>DateTime</code> is before the other <code>DateTime</code>.
  *
+ * @author opn
  */
-public class DateBeforeOtherDateValidator extends BaseValidator implements
-        ConstraintValidator<DateBeforeOtherDate, Object> {
+public class DateTimeBeforeOtherDateTimeValidator extends BaseValidator implements
+        ConstraintValidator<DateTimeBeforeOtherDateTime, Object> {
 
     private String dateFieldName;
     private String otherDateFieldName;
     private String message;
 
     @Override
-    public void initialize(DateBeforeOtherDate constraintAnnotation) {
+    public void initialize(DateTimeBeforeOtherDateTime constraintAnnotation) {
         dateFieldName = constraintAnnotation.date();
         otherDateFieldName = constraintAnnotation.otherDate();
         message = constraintAnnotation.message();

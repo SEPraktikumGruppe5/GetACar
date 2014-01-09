@@ -1,6 +1,9 @@
 package org.grp5.getacar.persistence.entity;
 
+import org.grp5.getacar.persistence.validation.DateTimeBeforeOtherDateTime;
+import org.grp5.getacar.persistence.validation.FutureDateTime;
 import org.grp5.getacar.persistence.validation.MaxDaysFromNow;
+import org.grp5.getacar.persistence.validation.NoReservationTimeCollision;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
@@ -15,6 +18,22 @@ import java.math.BigDecimal;
 @Table(name = "reservierung")
 @AttributeOverride(name = "id", column = @Column(name = "re_id",
         columnDefinition = "int(10) unsigned NOT NULL AUTO_INCREMENT"))
+@NamedQueries({
+        @NamedQuery(name = "Reservation.findCollidingReservations",
+                query = "SELECT re FROM Reservation re WHERE re.vehicle = :vehicle " +
+                        "and ((re.startTime > :startTime and re.startTime < :endTime) " +
+                        "or (re.startTime = :startTime and re.endTime <= :endTime) " +
+                        "or (re.startTime <= :startTime and re.endTime >= :endTime) " +
+                        "or ((re.startTime = :startTime) and (re.endTime = :endTime)) " +
+                        "or (re.endTime > :startTime and re.endTime < :endTime) " +
+                        "or ((re.startTime < :startTime) and (re.endTime > :endTime)))")
+})
+@DateTimeBeforeOtherDateTime.List(
+        value = {@DateTimeBeforeOtherDateTime(date = "startTime", otherDate = "endTime")}
+)
+@NoReservationTimeCollision.List(
+        value = {@NoReservationTimeCollision(startTimeField = "startTime", endTimeField = "endTime")}
+)
 public class Reservation extends BaseEntity {
 
     private User user;
@@ -48,8 +67,9 @@ public class Reservation extends BaseEntity {
 
     @Basic(optional = false)
     @Column(name = "re_startzeit", columnDefinition = "datetime", nullable = false, updatable = true)
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @NotNull
+    @FutureDateTime
     @MaxDaysFromNow(2)
     public DateTime getStartTime() {
         return startTime;
@@ -61,7 +81,8 @@ public class Reservation extends BaseEntity {
 
     @Basic(optional = false)
     @Column(name = "re_endzeit", columnDefinition = "datetime", nullable = false, updatable = true)
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    @FutureDateTime
     @NotNull
     public DateTime getEndTime() {
         return endTime;

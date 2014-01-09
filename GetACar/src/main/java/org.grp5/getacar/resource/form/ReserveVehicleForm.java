@@ -1,7 +1,8 @@
 package org.grp5.getacar.resource.form;
 
 import org.grp5.getacar.persistence.entity.Vehicle;
-import org.grp5.getacar.persistence.validation.DateBeforeOtherDate;
+import org.grp5.getacar.persistence.validation.DateTimeBeforeOtherDateTime;
+import org.grp5.getacar.persistence.validation.FutureDateTime;
 import org.grp5.getacar.persistence.validation.MaxDaysFromNow;
 import org.joda.time.DateTime;
 
@@ -11,8 +12,8 @@ import javax.validation.constraints.NotNull;
 /**
  *
  */
-@DateBeforeOtherDate.List(
-        value = {@DateBeforeOtherDate(date = "from", otherDate = "to")}
+@DateTimeBeforeOtherDateTime.List(
+        value = {@DateTimeBeforeOtherDateTime(date = "from", otherDate = "to")}
 )
 public class ReserveVehicleForm {
 
@@ -49,6 +50,7 @@ public class ReserveVehicleForm {
     }
 
     @NotNull
+    @FutureDateTime
     @MaxDaysFromNow(2)
     public DateTime getFrom() {
         return from;
@@ -59,6 +61,7 @@ public class ReserveVehicleForm {
     }
 
     @NotNull
+    @FutureDateTime
     public DateTime getTo() {
         return to;
     }

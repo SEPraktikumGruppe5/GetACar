@@ -42,7 +42,7 @@
                                     <option value="100">100 Km</option>
                                 </select>
                                 <label for="inputRadius" class="input-group-addon">
-                                    <i class="glyphicon glyphicon-plus"></i>
+                                    <i class="glyphicon glyphicon-random"></i>
                                 </label>
                             </div>
                         </div>
@@ -62,7 +62,7 @@
                                     <option value="">Please choose</option>
                                 </select>
                                 <label for="inputType" class="input-group-addon">
-                                    <i class="glyphicon glyphicon-random"></i>
+                                    <i class="glyphicon glyphicon-plus"></i>
                                 </label>
                             </div>
                         </div>
@@ -170,18 +170,20 @@
         <div class="col-xs-12">
             <p>
 
-                <div ng-show="vehicleSearchResults.length === 0 && !searched">
-                    Search results will be presented to you down here!
+            <div ng-show="vehicleSearchResults.length === 0 && !searched">
+                <!-- TODO Style this one up to invite the user to search, maybe by a nice looking image or sth? -->
+                // TODO Style this one up to invite the user to search, maybe by a nice looking image or sth?
+                Search results will be presented to you down here!
+            </div>
+            <div ng-show="vehicleSearchResults.length === 0 && searched">
+                Couldn't find any vehicles matching your criteria, sorry! :(
+            </div>
+            <div ng-repeat="vehicleSearchResult in vehicleSearchResults">
+                <div>
+                    <vehicle-search-result result="addSearchParametersToResult(vehicleSearchResult)">
+                    </vehicle-search-result>
                 </div>
-                <div ng-show="vehicleSearchResults.length === 0 && searched">
-                    Couldn't find any vehicles matching your criteria, sorry! :(
-                </div>
-                <div ng-repeat="vehicleSearchResult in vehicleSearchResults">
-                    <div>
-                        <vehicle-search-result result="addSearchParametersToResult(vehicleSearchResult)">
-                        </vehicle-search-result>
-                    </div>
-                </div>
+            </div>
             </p>
         </div>
     </div>

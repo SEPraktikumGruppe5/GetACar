@@ -59,6 +59,7 @@ public class ReservationResource {
 
         final ReservationDAO reservationDAO = reservationDAOProvider.get();
         final User loggedInUser = getLoggedInUser();
+
         // create the reservation
         Reservation reservation = new Reservation();
         reservation.setUser(loggedInUser);
@@ -67,6 +68,7 @@ public class ReservationResource {
         reservation.setEndTime(reserveVehicleForm.getTo());
         reservation.setEndLatitude(reserveVehicleForm.getEndPosition().getLatitude());
         reservation.setEndLongitude(reserveVehicleForm.getEndPosition().getLongitude());
+
         reservationDAO.create(reservation);
 
         return Response.status(Response.Status.CREATED).build(); // TODO: Respond with this (201) always when successfully created!
