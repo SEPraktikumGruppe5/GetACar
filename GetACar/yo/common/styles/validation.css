@@ -31,15 +31,49 @@ form.ng-invalid {
 }
 
 form .errors {
-    padding-left: 10px;
+    padding-left: 20px;
     padding-top: 3px;
+    padding-right: 40px;
+}
+
+.form-vertical {
+}
+
+form.form-vertical .errors {
+    display: inline;
+    float: right;
 }
 
 form.form-horizontal .errors {
-    padding-left: 30px;
-    padding-top: 3px;
+    text-align: right;
 }
 
 form .alert {
     text-align: center;
 }
+
+/*
+* Required start
+* Mark a field as required by using:
+* <label>
+*     Description  <sup class="field-required">*</sup>
+* </label>
+*/
+
+form .field-required {
+    color: #880000;
+    font-weight: bold;
+}
+
+sup {
+    font-size: 100%;
+}
+
+/*sup {*/
+/*font-size: 75%;*/
+/*line-height: 0;*/
+/*position: relative;*/
+/*vertical-align: baseline;*/
+/*}*/
+
+/* Required end*/

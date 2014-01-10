@@ -1,10 +1,10 @@
-<div ng-controller="RentVehicleController">
+<div ng-controller="ReserveVehicleController">
 <div class="modal-header">
     <button type="button" class="close" data-ng-click="modalOptions.close()" aria-hidden="true">
         &times;
     </button>
     <h3 class="modal-title">
-        Rent Vehicle
+        Reserve Vehicle
     </h3>
 </div>
 <div class="modal-body">
@@ -62,7 +62,7 @@
     <div class="col-sm-5">
         <tabset>
             <tab heading="Images" select="otherTabSelected()">
-                <div ng-if="!mapVisible" class="rentVehicleTab">
+                <div ng-if="!mapVisible" class="reserveVehicleTab">
                     <carousel interval="5000">
                         <slide ng-repeat="vehicleImage in vehicleImages">
                             <img ng-src="{{vehicleImage.image}}">
@@ -77,7 +77,7 @@
                 </div>
             </tab>
             <tab heading="Map" select="mapTabSelected()">
-                <div ng-if="mapVisible" class="rentVehicleTab">
+                <div ng-if="mapVisible" class="reserveVehicleTab">
                     <google-map center="map.center" zoom="map.zoom" draggable="true" dragging="map.dragging"
                                 bounds="map.bounds" events="map.events" options="map.options"
                                 refresh="mapVisible" fit="true">
@@ -98,19 +98,21 @@
     </div>
 </div>
 <div class="row">
-    <form name="rentVehicleForm" novalidate role="form" autocomplete="off">
+    <form name="reserveVehicleForm" class="form-vertical" novalidate role="form" autocomplete="off">
         <div class="row">
             <div class="col-sm-12">
                 <div class="col-sm-12">
                     <hr/>
                     <h3>
-                        Rental details
+                        Reservation details
                     </h3>
                     <hr/>
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <label for="inputStartPosition" class="control-label">Start position</label>
+                        <label for="inputStartPosition" class="control-label">Start position
+                            <sup tooltip="This field is mandatory." class="field-required">*</sup>
+                        </label>
 
                         <div class="input-group">
                             <!-- ng-model="dummySP" so that angular.js recognizes this field as a form field! -->
@@ -124,8 +126,8 @@
                             </a>
                         </div>
                         <div class="errors"
-                             ng-show="!rentVehicleForm.startPosition.$dirty && rentVehicleForm.startPosition.$invalid">
-                                    <span ng-show="rentVehicleForm.startPosition.$error.server">
+                             ng-show="!reserveVehicleForm.startPosition.$dirty && reserveVehicleForm.startPosition.$invalid">
+                                    <span ng-show="reserveVehicleForm.startPosition.$error.server">
                                         {{ errors.startPosition }}
                                     </span>
                         </div>
@@ -133,7 +135,9 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <label for="inputEndPosition" class="control-label">End position</label>
+                        <label for="inputEndPosition" class="control-label">End position
+                            <sup tooltip="This field is mandatory." class="field-required">*</sup>
+                        </label>
 
                         <div class="input-group">
                             <!-- ng-model="dummyEP" so that angular.js recognizes this field as a form field! -->
@@ -148,8 +152,8 @@
                             </a>
                         </div>
                         <div class="errors"
-                             ng-show="!rentVehicleForm.endPosition.$dirty && rentVehicleForm.endPosition.$invalid">
-                            <span ng-show="rentVehicleForm.endPosition.$error.server">{{ errors.endPosition }}</span>
+                             ng-show="!reserveVehicleForm.endPosition.$dirty && reserveVehicleForm.endPosition.$invalid">
+                            <span ng-show="reserveVehicleForm.endPosition.$error.server">{{ errors.endPosition }}</span>
                         </div>
                     </div>
                 </div>
@@ -159,60 +163,64 @@
             <div class="col-sm-12">
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <label for="inputFrom" class="control-label">From</label>
+                        <label for="inputFrom" class="control-label">Start time
+                            <sup tooltip="This field is mandatory." class="field-required">*</sup>
+                        </label>
 
                         <div class="dropdown">
                             <!-- TODO: Replace by Angular-UI stuff once at Bootstrap 3? -->
-                            <a class="dropdown-toggle from-toggle-select" role="button"
+                            <a class="dropdown-toggle start-time-toggle-select" role="button"
                                data-toggle="dropdown">
                                 <div class="input-group">
-                                    <input name="from" id="inputFrom" type="text"
-                                           class="form-control datetimepickerbox" placeholder="From"
+                                    <input name="startTime" id="inputFrom" type="text"
+                                           class="form-control datetimepickerbox" placeholder="Start time"
                                            readonly
-                                           data-ng-model="rentVehicleFormData.from" server-error>
+                                           data-ng-model="reserveVehicleFormData.startTime" server-error>
                                                  <span class="input-group-addon">
                                                     <i class="glyphicon glyphicon-calendar"></i>
                                                  </span>
                                 </div>
                             </a>
                             <ul class="dropdown-menu full-width" role="menu">
-                                <datetimepicker data-ng-model="rentVehicleFormData.from"
-                                                data-datetimepicker-config="{dropdownSelector: '.from-toggle-select'}">
+                                <datetimepicker data-ng-model="reserveVehicleFormData.startTime"
+                                                data-datetimepicker-config="{dropdownSelector: '.start-time-toggle-select'}">
                                 </datetimepicker>
                             </ul>
                             <!-- TODO: datetimepicker options: https://github.com/dalelotts/angular-bootstrap-datetimepicker -->
                         </div>
-                        <div class="errors" ng-show="!rentVehicleForm.from.$dirty && rentVehicleForm.from.$invalid">
-                            <span ng-show="rentVehicleForm.from.$error.server">{{ errors.from }}</span>
+                        <div class="errors" ng-show="!reserveVehicleForm.startTime.$dirty && reserveVehicleForm.startTime.$invalid">
+                            <span ng-show="reserveVehicleForm.startTime.$error.server">{{ errors.startTime }}</span>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <label for="inputTo" class="control-label">To</label>
+                        <label for="inputTo" class="control-label">End time
+                            <sup tooltip="This field is mandatory." class="field-required">*</sup>
+                        </label>
 
                         <div class="dropdown">
                             <!-- TODO: Replace by Angular-UI stuff once at Bootstrap 3? -->
-                            <a class="dropdown-toggle to-toggle-select" role="button"
+                            <a class="dropdown-toggle end-time-toggle-select" role="button"
                                data-toggle="dropdown">
                                 <div class="input-group">
-                                    <input name="to" id="inputTo" type="text"
-                                           class="form-control datetimepickerbox" placeholder="To" readonly
-                                           data-ng-model="rentVehicleFormData.to" server-error>
+                                    <input name="endTime" id="inputTo" type="text"
+                                           class="form-control datetimepickerbox" placeholder="End time" readonly
+                                           data-ng-model="reserveVehicleFormData.endTime" server-error>
                                                 <span class="input-group-addon">
                                                     <i class="glyphicon glyphicon-calendar"></i>
                                                 </span>
                                 </div>
                             </a>
                             <ul class="dropdown-menu full-width" role="menu">
-                                <datetimepicker data-ng-model="rentVehicleFormData.to"
-                                                data-datetimepicker-config="{dropdownSelector: '.to-toggle-select'}">
+                                <datetimepicker data-ng-model="reserveVehicleFormData.endTime"
+                                                data-datetimepicker-config="{dropdownSelector: '.end-time-toggle-select'}">
                                 </datetimepicker>
                             </ul>
                             <!-- TODO: datetimepicker options: https://github.com/dalelotts/angular-bootstrap-datetimepicker ; extend by max day min day like the original bs 3 date picker has? -->
                         </div>
-                        <div class="errors" ng-show="!rentVehicleForm.to.$dirty && rentVehicleForm.to.$invalid">
-                            <span ng-show="rentVehicleForm.to.$error.server">{{ errors.to }}</span>
+                        <div class="errors" ng-show="!reserveVehicleForm.endTime.$dirty && reserveVehicleForm.endTime.$invalid">
+                            <span ng-show="reserveVehicleForm.endTime.$error.server">{{ errors.endTime }}</span>
                         </div>
                     </div>
                 </div>
@@ -227,8 +235,8 @@
             data-ng-click="modalOptions.close()">
         Cancel
     </button>
-    <button class="btn btn-primary" ng-click="rentVehicle()">
-        Rent
+    <button class="btn btn-primary" ng-click="reserveVehicle()">
+        Reserve vehicle
     </button>
 </div>
 </div>

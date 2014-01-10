@@ -43,7 +43,7 @@ angular.module('accountApp')
                                 if (formField) {
                                     formField.$setValidity('server', false);
                                     // keep the error messages from the server
-                                    $scope.errors[field] = errors.join(', ');
+                                    $scope.errors[field] = errors.join('; ');
                                 }
                             });
                         }

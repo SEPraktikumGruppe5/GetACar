@@ -27,8 +27,8 @@ angular.module('mainApp')
                     'icon': 'car.png',
                     'description': 'A car'
                 },
-                'from': 1386029100000,
-                'to': 1386119400000
+                'startTime': 1386029100000,
+                'endTime': 1386119400000
             }; // TODO: Set on empty object again!
 
             $scope.addSearchParametersToResult = function (result) {
@@ -210,7 +210,7 @@ angular.module('mainApp')
                             if (formField) {
                                 formField.$setValidity('server', false);
                                 // keep the error messages from the server
-                                $scope.errors[field] = errors.join(', ');
+                                $scope.errors[field] = errors.join('; ');
                             }
                         });
                     }

@@ -64,8 +64,8 @@ public class ReservationResource {
         Reservation reservation = new Reservation();
         reservation.setUser(loggedInUser);
         reservation.setVehicle(reserveVehicleForm.getVehicle());
-        reservation.setStartTime(reserveVehicleForm.getFrom());
-        reservation.setEndTime(reserveVehicleForm.getTo());
+        reservation.setStartTime(reserveVehicleForm.getStartTime());
+        reservation.setEndTime(reserveVehicleForm.getEndTime());
         reservation.setEndLatitude(reserveVehicleForm.getEndPosition().getLatitude());
         reservation.setEndLongitude(reserveVehicleForm.getEndPosition().getLongitude());
 

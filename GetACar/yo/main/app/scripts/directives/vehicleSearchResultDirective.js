@@ -19,13 +19,13 @@ angular.module('mainApp')
                         lng: $scope.result.currentLongitude
                     };
 
-                    $scope.rentVehicle = function () {
+                    $scope.reserveVehicle = function () {
                         var modalDefaults, modalOptions; // TODO: Rename to better fitting names, modal defaults is modal options etc.
                         modalDefaults = {
                             backdrop: true,
                             keyboard: true,
                             modalFade: true,
-                            templateUrl: 'partials/rentVehicle.html',
+                            templateUrl: 'partials/reserveVehicle.html',
                             windowClass: 'wide-modal-dialog'
                         };
 

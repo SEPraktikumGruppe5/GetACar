@@ -69,7 +69,7 @@ fieldset[disabled] .form-control.datetimepickerbox {
     height: 400px;
 }
 
-.rentVehicleTab, .rentVehicleTab .angular-google-map-container {
+.reserveVehicleTab, .reserveVehicleTab .angular-google-map-container {
     height: 350px;
     overflow: hidden;
 }
@@ -119,4 +119,12 @@ hr {
 
 .carousel img {
     margin: 0 auto;
+}
+
+.tooltip {
+    font-weight: normal;
+}
+
+.text-align-left-force {
+    text-align: left !important;
 }

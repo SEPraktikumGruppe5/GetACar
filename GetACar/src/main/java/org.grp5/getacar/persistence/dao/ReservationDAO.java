@@ -11,4 +11,6 @@ import java.util.List;
  */
 public interface ReservationDAO extends BaseDAO<Integer, Reservation> {
     List<Reservation> findCollidingReservations(Vehicle vehicle, DateTime startTime, DateTime endTime);
+
+    List<Reservation> findReservationsAfter(Vehicle vehicle, DateTime startTime);
 }

@@ -1,5 +1,5 @@
 angular.module('mainApp')
-    .controller('RentVehicleController', ['$scope', 'ReservationService',
+    .controller('ReserveVehicleController', ['$scope', 'ReservationService',
         function ($scope, ReservationService) {
             // convert data for easier usage
             $scope.vehicle = $scope.modalOptions.result.vehicle;
@@ -34,7 +34,14 @@ angular.module('mainApp')
                 lng: $scope.vehicle.currentLongitude
             };
 
-            $scope.rentVehicleFormData = {
+            function convertToDate(dateTimeInMs) { // TODO: Extract into date util service / factory
+                if (!dateTimeInMs) {
+                    return undefined;
+                }
+                return new Date(dateTimeInMs);
+            }
+
+            $scope.reserveVehicleFormData = {
                 vehicle: {
                     id: $scope.vehicle.id
                 },
@@ -46,8 +53,8 @@ angular.module('mainApp')
                     longitude: undefined,
                     latitude: undefined
                 },
-                from: new Date($scope.searchParameters.from),
-                to: new Date($scope.searchParameters.to)
+                startTime: convertToDate($scope.searchParameters.startTime),
+                endTime: convertToDate($scope.searchParameters.endTime)
             };
 
             // bindings of the gp-autocomplete-boxes
@@ -173,13 +180,13 @@ angular.module('mainApp')
             $scope.onGPEndPlaceChanged = function (val, details) {
                 $scope.map.endPositionMarker.latitude = details.geometry.location.lat();
                 $scope.map.endPositionMarker.longitude = details.geometry.location.lng();
-                // Maybe better read the value on rent-button-click?
-                $scope.rentVehicleFormData.endPosition.longitude = details.geometry.location.lng();
-                $scope.rentVehicleFormData.endPosition.latitude = details.geometry.location.lat();
+                // Maybe better read the value on reserve-button-click?
+                $scope.reserveVehicleFormData.endPosition.longitude = details.geometry.location.lng();
+                $scope.reserveVehicleFormData.endPosition.latitude = details.geometry.location.lat();
             };
 
-            $scope.rentVehicle = function () {
-                ReservationService.reserveVehicle($scope.rentVehicleFormData, function (successResponse) {
+            $scope.reserveVehicle = function () {
+                ReservationService.reserveVehicle($scope.reserveVehicleFormData, function (successResponse) {
                     // return to the modal caller
                     $scope.modalOptions.ok($scope.vehicle);
                 }, function (errorResponse) {
@@ -188,14 +195,14 @@ angular.module('mainApp')
                     data = errorResponse.data;
                     // 422 means validation errors
                     if (status === 422) {
-                        $scope.rentVehicleForm.$setPristine();
+                        $scope.reserveVehicleForm.$setPristine();
                         angular.forEach(data.errors, function (errors, field) {
                             // tell the form that field is invalid
-                            var formField = $scope.rentVehicleForm[field];
+                            var formField = $scope.reserveVehicleForm[field];
                             if (formField) {
                                 formField.$setValidity('server', false);
                                 // keep the error messages from the server
-                                $scope.errors[field] = errors.join(', ');
+                                $scope.errors[field] = errors.join('; ');
                             }
                         });
                     }

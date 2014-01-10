@@ -9,13 +9,13 @@
         <div class="col-sm-6">
             <div class="pull-right" tooltip="Distance">
                 <!--<span>--> <!-- TODO: Place the id somewhere? -->
-                    <!--<strong>-->
-                        <!--#{{result.vehicle.id}}-->
-                    <!--</strong>-->
+                <!--<strong>-->
+                <!--#{{result.vehicle.id}}-->
+                <!--</strong>-->
                 <!--</span>-->
                 <i class="glyphicon glyphicon-random"></i>
                 <span>
-                    {{result.distance | number:1}} Km
+                    {{ result.distance | number:1 }} Km
                 </span>
             </div>
         </div>
@@ -58,8 +58,8 @@
     <hr/>
     <div class="row">
         <div class="col-sm-offset-6 col-sm-6">
-            <button type="submit" class="btn btn-success pull-right" ng-click="rentVehicle()">
-                Details / Rent vehicle
+            <button type="submit" class="btn btn-success pull-right" ng-click="reserveVehicle()">
+                Details / Reserve vehicle
             </button>
         </div>
     </div>

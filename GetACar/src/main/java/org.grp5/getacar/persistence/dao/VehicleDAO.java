@@ -13,6 +13,6 @@ import java.util.List;
  */
 public interface VehicleDAO extends BaseDAO<Integer, Vehicle> {
 
-    List<VehicleSearchResult> find(BigDecimal latitude, BigDecimal longitude, Integer radius, VehicleType vehicleType, DateTime from,
-              DateTime to, DateTime atTime);
+    List<VehicleSearchResult> find(BigDecimal latitude, BigDecimal longitude, Integer radius, VehicleType vehicleType,
+                                   DateTime startTime, DateTime endTime, DateTime atTime);
 }

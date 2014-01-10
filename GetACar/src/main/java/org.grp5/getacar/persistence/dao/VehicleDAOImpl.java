@@ -1,5 +1,6 @@
 package org.grp5.getacar.persistence.dao;
 
+import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.grp5.getacar.persistence.dto.VehicleSearchResult;
@@ -28,9 +29,9 @@ public class VehicleDAOImpl extends BaseDAOImpl<Integer, Vehicle> implements Veh
 
     @Override
     public List<VehicleSearchResult> find(BigDecimal latitude, BigDecimal longitude, Integer radius,
-                                          VehicleType vehicleType, DateTime from, DateTime to, DateTime atTime) {
+                                          VehicleType vehicleType, DateTime startTime, DateTime endTime,
+                                          DateTime atTime) {
         // TODO: Put into @NamedQuery?
-        // TODO: Filter out vehicles that have reservations in the future!!
         final String sql = "SELECT\n  final_result.f_id,\n  final_result.f_aktiv,\n  final_result.f_laengengrad_init,\n  " +
                 "final_result.f_breitengrad_init,\n  final_result.f_bemerkung,\n  final_result.f_kennzeichen,\n  final_result.f_bilder,\n  " +
                 "final_result.ft_id,\n  final_result.ft_name,\n  final_result.ft_icon,\n  final_result.ft_beschreibung,\n  " +
@@ -48,21 +49,21 @@ public class VehicleDAOImpl extends BaseDAOImpl<Integer, Vehicle> implements Veh
                 "ELSE vehicle_and_type.f_laengengrad_init END AS momentaner_laengengrad\n            FROM " +
                 "(SELECT\n                    f.f_id,\n                    f.f_aktiv,\n                    f.f_laengengrad_init,\n                    f.f_breitengrad_init,\n                    f.f_bemerkung,\n                    " +
                 "f.f_kennzeichen,\n                    f.ft_id,\n                    ft.ft_name,\n                    ft.ft_icon,\n                    " +
-                "ft.ft_beschreibung\n                  FROM fahrzeug f, fahrzeugtyp ft\n                  WHERE f.f_aktiv = 1 AND f.ft_id = :vehicleTypeId " +
+                "ft.ft_beschreibung\n                  FROM fahrzeug f, fahrzeugtyp ft\n                  WHERE f.f_aktiv = 1 AND CASE WHEN :vehicleTypeId IS NOT NULL THEN f.ft_id = :vehicleTypeId\n                  ELSE 1 = 1 END " +
                 "AND\n                        ft.ft_id = f.ft_id) AS vehicle_and_type\n              LEFT OUTER JOIN reservierung re\n                ON re.re_id = " +
                 "(SELECT\n                                 re_sub.re_id\n                               FROM reservierung re_sub\n                               WHERE re_sub.re_endzeit < :atTime " +
                 "AND re_sub.f_id = vehicle_and_type.f_id\n                               ORDER BY re_sub.re_endzeit DESC\n                               LIMIT 1)\n              JOIN fahrzeugbild fb\n                ON fb.f_id = vehicle_and_type.f_id\n            GROUP BY vehicle_and_type.f_id\n           ) AS tmp_result) " +
-                "AS final_result\nWHERE distance <= :radius AND ((SELECT\n                                  EXISTS(\n                                      SELECT\n                                        *\n                                      FROM reservierung ris\n                                      WHERE ris.f_id = final_result.f_id AND (\n                                        (ris.re_startzeit > :fromTime AND ris.re_startzeit < :toTime)\n                                        OR (ris.re_startzeit = :fromTime AND ris.re_endzeit <= :toTime)\n                                        OR (ris.re_startzeit <= :fromTime AND ris.re_endzeit >= :toTime)\n                                        OR ((ris.re_startzeit = :fromTime) AND (ris.re_endzeit = :toTime))\n                                        OR (ris.re_endzeit > :fromTime AND ris.re_endzeit < :toTime)\n                                        OR ((ris.re_startzeit < :fromTime) AND (ris.re_endzeit > :toTime))\n                                      )\n                                      LIMIT 1\n                                  )) = 0)\nORDER BY distance ASC;";
+                "AS final_result\nWHERE distance <= :radius AND ((SELECT\n                                  EXISTS(\n                                      SELECT\n                                        *\n                                      FROM reservierung ris\n                                      WHERE ris.f_id = final_result.f_id AND (\n                                        (ris.re_startzeit > :atTime)\n\n                                        OR\n                                        CASE WHEN (:startTime IS NOT NULL AND :endTime IS NOT NULL) THEN\n                                          (\n                                            (ris.re_startzeit > :startTime AND ris.re_startzeit < :endTime)\n                                            OR (ris.re_startzeit = :startTime AND ris.re_endzeit <= :endTime)\n                                            OR (ris.re_startzeit <= :startTime AND ris.re_endzeit >= :endTime)\n                                            OR ((ris.re_startzeit = :startTime) AND (ris.re_endzeit = :endTime))\n                                            OR (ris.re_endzeit > :startTime AND ris.re_endzeit < :endTime)\n                                            OR ((ris.re_startzeit < :startTime) AND (ris.re_endzeit > :endTime))\n                                          )\n                                        ELSE 1 = 0 END\n                                      )\n                                      LIMIT 1\n                                  )) = 0)\nORDER BY distance ASC;";
 
         final Session hibernateSession = getHibernateSession();
         SQLQuery query = hibernateSession.createSQLQuery(sql);
         query.setParameter("latitude", latitude);
         query.setParameter("longitude", longitude);
         query.setParameter("radius", radius);
-        query.setParameter("vehicleTypeId", vehicleType.getId());
-        query.setParameter("fromTime", from.toString()); // when passing in the objects, the checks did not work! Remember to always pass them as strings!
-        query.setParameter("toTime", to.toString());
-        query.setParameter("atTime", atTime.toString());
+        query.setParameter("vehicleTypeId", (vehicleType != null ? vehicleType.getId() : null));
+        query.setParameter("startTime", (startTime != null ? startTime.toString() : null)); // when passing in the objects, the checks did not work! Remember endTime always pass them as strings!
+        query.setParameter("endTime", (endTime != null ? endTime.toString() : null));
+        query.setParameter("atTime", Preconditions.checkNotNull(atTime.toString()));
         query.setResultTransformer(new VehicleSearchResultTransformer());
         return query.list();
     }

@@ -1,6 +1,7 @@
 package org.grp5.getacar.resource.form;
 
 import org.grp5.getacar.persistence.entity.VehicleType;
+import org.grp5.getacar.persistence.validation.BothOrNone;
 import org.grp5.getacar.persistence.validation.DateTimeBeforeOtherDateTime;
 import org.grp5.getacar.persistence.validation.FutureDateTime;
 import org.grp5.getacar.persistence.validation.MaxDaysFromNow;
@@ -13,15 +14,18 @@ import javax.validation.constraints.NotNull;
  *
  */
 @DateTimeBeforeOtherDateTime.List(
-        value = {@DateTimeBeforeOtherDateTime(date = "from", otherDate = "to")}
+        value = {@DateTimeBeforeOtherDateTime(date = "startTime", otherDate = "endTime")}
+)
+@BothOrNone.List(
+        @BothOrNone(firstField = "startTime", secondField = "endTime")
 )
 public class SearchVehiclesForm {
 
     private Position position;
     private Integer radius;
     private VehicleType vehicleType;
-    private DateTime from;
-    private DateTime to;
+    private DateTime startTime;
+    private DateTime endTime;
 
     @Valid
     public Position getPosition() {
@@ -41,7 +45,6 @@ public class SearchVehiclesForm {
         this.radius = radius;
     }
 
-    @NotNull // TODO: Can be null + multiple vehicle types
     public VehicleType getVehicleType() {
         return vehicleType;
     }
@@ -50,24 +53,22 @@ public class SearchVehiclesForm {
         this.vehicleType = vehicleType;
     }
 
-    @NotNull
     @FutureDateTime
     @MaxDaysFromNow(2)
-    public DateTime getFrom() {
-        return from;
+    public DateTime getStartTime() {
+        return startTime;
     }
 
-    public void setFrom(DateTime from) {
-        this.from = from;
+    public void setStartTime(DateTime startTime) {
+        this.startTime = startTime;
     }
 
-    @NotNull
     @FutureDateTime
-    public DateTime getTo() {
-        return to;
+    public DateTime getEndTime() {
+        return endTime;
     }
 
-    public void setTo(DateTime to) {
-        this.to = to;
+    public void setEndTime(DateTime endTime) {
+        this.endTime = endTime;
     }
 }

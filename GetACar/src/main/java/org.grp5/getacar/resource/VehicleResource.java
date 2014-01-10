@@ -65,16 +65,20 @@ public class VehicleResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @LogInvocation
+//    @ValidateAndThrow TODO: Impl. and use everywhere where form validation is done
     public Response searchVehicles(SearchVehiclesForm searchVehiclesForm) {
         validationHelper.validateAndThrow(searchVehiclesForm); // TODO: Do this by AOP!?
+
         final VehicleDAO vehicleDAO = vehicleDAOProvider.get();
         final Position position = searchVehiclesForm.getPosition();
-        final List<VehicleSearchResult> vehicleSearchResultList = vehicleDAO.find(position.getLatitude(), position.getLongitude(), searchVehiclesForm.getRadius(),
-                searchVehiclesForm.getVehicleType(), searchVehiclesForm.getFrom(), searchVehiclesForm.getTo(),
+        final List<VehicleSearchResult> vehicleSearchResultList = vehicleDAO.find(position.getLatitude(),
+                position.getLongitude(), searchVehiclesForm.getRadius(), searchVehiclesForm.getVehicleType(),
+                searchVehiclesForm.getStartTime(), searchVehiclesForm.getEndTime(),
                 timeSimulatorProvider.get().getTime());
         final VehicleSearchResults vehicleSearchResults = new VehicleSearchResults();
         vehicleSearchResults.setSearchParameters(searchVehiclesForm);
         vehicleSearchResults.setVehicleSearchResults(vehicleSearchResultList);
+
         return Response.status(Response.Status.OK).entity(vehicleSearchResults).build();
     }
 }

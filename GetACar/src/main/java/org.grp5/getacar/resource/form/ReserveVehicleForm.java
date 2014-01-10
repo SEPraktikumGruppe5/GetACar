@@ -13,15 +13,15 @@ import javax.validation.constraints.NotNull;
  *
  */
 @DateTimeBeforeOtherDateTime.List(
-        value = {@DateTimeBeforeOtherDateTime(date = "from", otherDate = "to")}
+        value = {@DateTimeBeforeOtherDateTime(date = "startTime", otherDate = "endTime")}
 )
 public class ReserveVehicleForm {
 
     private Vehicle vehicle;
     private Position startPosition;
     private Position endPosition;
-    private DateTime from;
-    private DateTime to;
+    private DateTime startTime;
+    private DateTime endTime;
 
     public Vehicle getVehicle() {
         return vehicle;
@@ -52,21 +52,21 @@ public class ReserveVehicleForm {
     @NotNull
     @FutureDateTime
     @MaxDaysFromNow(2)
-    public DateTime getFrom() {
-        return from;
+    public DateTime getStartTime() {
+        return startTime;
     }
 
-    public void setFrom(DateTime from) {
-        this.from = from;
+    public void setStartTime(DateTime startTime) {
+        this.startTime = startTime;
     }
 
     @NotNull
     @FutureDateTime
-    public DateTime getTo() {
-        return to;
+    public DateTime getEndTime() {
+        return endTime;
     }
 
-    public void setTo(DateTime to) {
-        this.to = to;
+    public void setEndTime(DateTime endTime) {
+        this.endTime = endTime;
     }
 }
