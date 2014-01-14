@@ -22,7 +22,7 @@ public class VehicleSearchResultTransformer extends BasicTransformerAdapter { //
             new Function<String, VehicleImage>() {
                 @Override
                 public VehicleImage apply(String input) {
-                    if (input == null) {
+                    if (input == null || "".equals(input)) {
                         return null;
                     }
                     final VehicleImage vehicleImage = new VehicleImage();
@@ -51,7 +51,15 @@ public class VehicleSearchResultTransformer extends BasicTransformerAdapter { //
 
         // build and set vehicle images
         try {
-            final String imagesString = new String((byte[]) tuple[6], "UTF-8"); // strange that 'group_concat' comes in as byte[]
+            final String imagesString;
+            final Object tuple6 = tuple[6];
+            if (tuple6 instanceof byte[]) {
+                imagesString = new String((byte[]) tuple[6], "UTF-8"); // strange that 'group_concat' comes in as byte[] sometimes
+            } else if (tuple6 instanceof String) {
+                imagesString = (String) tuple6;
+            } else {
+                imagesString = "";
+            }
             final List<String> imageStrings = Lists.newArrayList(Splitter.on(",").split(imagesString));
             final List<VehicleImage> vehicleImages = Lists.transform(imageStrings, imageStringToVehicleImageFunction);
             vehicle.getVehicleImages().addAll(vehicleImages);
