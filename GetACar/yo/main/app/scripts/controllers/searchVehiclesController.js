@@ -4,32 +4,32 @@ angular.module('mainApp')
 
             $scope.searched = false;
             $scope.searchVehiclesFormData = {
-                // init fields here?
+                radius: undefined
             };
             $scope.errors = {}; // empty initialization of server errors
 
-//            $scope.vehicleSearchResults = []; // empty initialization of search results
-//            $scope.lastSearchParameters = {}; // empty initialization of search last parameters
+            $scope.vehicleSearchResults = []; // empty initialization of search results
+            $scope.lastSearchParameters = {}; // empty initialization of search last parameters
 
-            $scope.vehicleSearchResults = [
-                {'vehicle': {'id': 6, 'vehicleType': {'id': 1, 'name': 'Car', 'icon': 'car.png', 'description': 'A car'}, 'licenseNumber': 'C-AR 6', 'vehicleImages': [], 'initialLatitude': 50.8427310, 'initialLongitude': 12.9149690, 'active': true, 'comment': 'Sechstes Auto'}, 'currentLongitude': 12.9149690, 'currentLatitude': 50.8427310, 'distance': 0.956264600875621},
-                {'vehicle': {'id': 1, 'vehicleType': {'id': 1, 'name': 'Car', 'icon': 'car.png', 'description': 'A car'}, 'licenseNumber': 'C-IA 666', 'vehicleImages': [], 'initialLatitude': 52.5200000, 'initialLongitude': 13.4000000, 'active': true, 'comment': 'Ein Fahrzeug'}, 'currentLongitude': 12.9298980, 'currentLatitude': 50.8127220, 'distance': 2.94982181363976},
-                {'vehicle': {'id': 7, 'vehicleType': {'id': 1, 'name': 'Car', 'icon': 'car.png', 'description': 'A car'}, 'licenseNumber': 'S-IE 777', 'vehicleImages': [], 'initialLatitude': 50.8427310, 'initialLongitude': 12.9149700, 'active': true, 'comment': 'The Magic Number'}, 'currentLongitude': 12.9053440, 'currentLatitude': 50.8042220, 'distance': 4.18663417489601}
-            ]; // TODO: Set on empty array again!
-            $scope.lastSearchParameters = {
-                'position': {
-                    'longitude': 12.927389,
-                    'latitude': 50.839203
-                }, 'radius': 10,
-                'vehicleType': {
-                    'id': 1,
-                    'name': 'Car',
-                    'icon': 'car.png',
-                    'description': 'A car'
-                },
-                'startTime': 1386029100000,
-                'endTime': 1386119400000
-            }; // TODO: Set on empty object again!
+//            $scope.vehicleSearchResults = [
+//                {'vehicle': {'id': 6, 'vehicleType': {'id': 1, 'name': 'Car', 'icon': 'car.png', 'description': 'A car'}, 'licenseNumber': 'C-AR 6', 'vehicleImages': [], 'initialLatitude': 50.8427310, 'initialLongitude': 12.9149690, 'active': true, 'comment': 'Sechstes Auto'}, 'currentLongitude': 12.9149690, 'currentLatitude': 50.8427310, 'distance': 0.956264600875621},
+//                {'vehicle': {'id': 1, 'vehicleType': {'id': 1, 'name': 'Car', 'icon': 'car.png', 'description': 'A car'}, 'licenseNumber': 'C-IA 666', 'vehicleImages': [], 'initialLatitude': 52.5200000, 'initialLongitude': 13.4000000, 'active': true, 'comment': 'Ein Fahrzeug'}, 'currentLongitude': 12.9298980, 'currentLatitude': 50.8127220, 'distance': 2.94982181363976},
+//                {'vehicle': {'id': 7, 'vehicleType': {'id': 1, 'name': 'Car', 'icon': 'car.png', 'description': 'A car'}, 'licenseNumber': 'S-IE 777', 'vehicleImages': [], 'initialLatitude': 50.8427310, 'initialLongitude': 12.9149700, 'active': true, 'comment': 'The Magic Number'}, 'currentLongitude': 12.9053440, 'currentLatitude': 50.8042220, 'distance': 4.18663417489601}
+//            ]; // TODO: Set on empty array again!
+//            $scope.lastSearchParameters = {
+//                'position': {
+//                    'longitude': 12.927389,
+//                    'latitude': 50.839203
+//                }, 'radius': 10,
+//                'vehicleType': {
+//                    'id': 1,
+//                    'name': 'Car',
+//                    'icon': 'car.png',
+//                    'description': 'A car'
+//                },
+//                'startTime': 1386029100000,
+//                'endTime': 1386119400000
+//            }; // TODO: Set on empty object again!
 
             $scope.addSearchParametersToResult = function (result) {
                 if (result) {
@@ -58,27 +58,56 @@ angular.module('mainApp')
 
             $scope.geolocationAvailable = navigator.geolocation ? true : false;
 
-            var pinAndCenter = function (latitude, longitude) {
-                $scope.$apply(function () {
-                    $scope.map.userPositionMarker.latitude = latitude;
-                    $scope.map.userPositionMarker.longitude = longitude;
-                    $scope.map.userPositionMarker.showWindow = false;
-                    $scope.map.userPositionMarker.templateParameter = {
-                        position: {
-                            latitude: latitude,
-                            longitude: longitude
-                        }
-                    };
-                    $scope.map.center.latitude = latitude;
-                    $scope.map.center.longitude = longitude;
-                    $scope.map.zoom = 15;
-                });
+            function getBestZoomFactor(radius) {
+                switch (radius) {
+                    case 1:
+                        return 15;
+                    case 2:
+                        return 14;
+                    case 5:
+                        return 13;
+                    case 10:
+                        return 12;
+                    case 25:
+                        return 10;
+                    case 50:
+                        return 9;
+                    case 100:
+                        return 8;
+                    default:
+                        return 12;
+                }
+            }
+
+            var pinAndCenter = function (latitude, longitude, zoomFactor) {
+//                $scope.$apply(function () {
+                $scope.map.userPositionMarker.latitude = latitude;
+                $scope.map.userPositionMarker.longitude = longitude;
+                $scope.map.userPositionMarker.showWindow = false;
+                $scope.map.userPositionMarker.templateParameter = {
+                    position: {
+                        latitude: latitude,
+                        longitude: longitude
+                    }
+                };
+                $scope.map.center.latitude = latitude;
+                $scope.map.center.longitude = longitude;
+                if (zoomFactor) { // TODO: Check if number!
+                    $scope.map.zoom = zoomFactor;
+                } else {
+                    if ($scope.searchVehiclesFormData.radius) {
+                        $scope.map.zoom = getBestZoomFactor($scope.searchVehiclesFormData.radius);
+                    } else {
+                        $scope.map.zoom = 15;
+                    }
+                }
+//                });
             };
 
             $scope.findMe = function () {
                 if ($scope.geolocationAvailable) {
                     navigator.geolocation.getCurrentPosition(function (position) {
-                        pinAndCenter(position.coords.latitude, position.coords.longitude);
+                        pinAndCenter(position.coords.latitude, position.coords.longitude, 15);
                         $scope.gpLatLng = {
                             lat: position.coords.latitude,
                             lng: position.coords.longitude
@@ -95,7 +124,7 @@ angular.module('mainApp')
                 $scope.map.userPositionMarker.latitude = undefined;
                 $scope.map.userPositionMarker.longitude = undefined;
                 if (details) {
-                    pinAndCenter(details.geometry.location.lat(), details.geometry.location.lng());
+                    pinAndCenter(details.geometry.location.lat(), details.geometry.location.lng(), 15);
                 }
             };
 
@@ -154,9 +183,12 @@ angular.module('mainApp')
 
             $scope.$watch('vehicleSearchResults', function () {
                 $scope.removeVehicleSearchResultsMarkers();
-                $scope.map.center.latitude = $scope.map.userPositionMarker.latitude;
-                $scope.map.center.longitude = $scope.map.userPositionMarker.longitude;
-                $scope.map.zoom = 12; // TODO: Dependant of chosen radius!
+//                $scope.map.center.latitude = $scope.map.userPositionMarker.latitude;
+//                $scope.map.center.longitude = $scope.map.userPositionMarker.longitude;
+                pinAndCenter($scope.map.userPositionMarker.latitude,
+                    $scope.map.userPositionMarker.longitude,
+                    getBestZoomFactor($scope.lastSearchParameters.radius));
+//                $scope.map.zoom = 12; // TODO: Dependant of chosen radius!
                 if ($scope.vehicleSearchResults) {
                     angular.forEach($scope.vehicleSearchResults,
                         function (vehicleSearchResult) {
@@ -215,5 +247,10 @@ angular.module('mainApp')
                         });
                     }
                 });
+            };
+            $scope.onReservation = function (reserveVehicleFormData) {
+                $scope.searchVehicles($scope.searchVehiclesFormData);
+                // TODO: Nice modal with details in it
+                $window.alert(JSON.stringify(reserveVehicleFormData));
             };
         }]);

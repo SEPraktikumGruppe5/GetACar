@@ -44,6 +44,7 @@ public class GetACarShiroWebModule extends ShiroWebModule {
         /* Filters */
         addFilterChain("/account/logout", LOGOUT);
         addFilterChain("/app/**", AUTHC);
+        addFilterChain("/admin/**", AUTHC);
         addFilterChain("/**", ANON);
         addFilterChain("/rest/**", ANON);
         addFilterChain("/account/**", AUTHC_PASSTHRU);

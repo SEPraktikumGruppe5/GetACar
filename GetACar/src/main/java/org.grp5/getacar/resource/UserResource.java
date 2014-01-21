@@ -1,5 +1,6 @@
 package org.grp5.getacar.resource;
 
+import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.name.Named;
@@ -18,6 +19,7 @@ import org.grp5.getacar.persistence.dao.UserDAO;
 import org.grp5.getacar.persistence.entity.User;
 import org.grp5.getacar.persistence.util.UserRole;
 import org.grp5.getacar.persistence.validation.ValidationHelper;
+import org.grp5.getacar.resource.form.ChangeUserForm;
 import org.grp5.getacar.resource.form.LoginForm;
 import org.grp5.getacar.resource.form.RegisterForm;
 import org.grp5.getacar.service.TimeSimulator;
@@ -35,7 +37,7 @@ import java.util.List;
 
 import static javax.ws.rs.core.Response.Status.*;
 
-@Path("/rest/users")
+@Path("/rest/v1/users")
 public class UserResource {
 
     private final Provider<UserDAO> userDAOProvider;
@@ -65,20 +67,39 @@ public class UserResource {
     }
 
     @POST
-    @Path("/changeUserState")
+    @Path("/change")
     @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     @LogInvocation
     @RequiresRoles("Admin")
     @Transactional(rollbackOn = {Exception.class})
-    public void changeUserState(@QueryParam("id") Integer id, @QueryParam("state") boolean state) {
+    public Response changeUser(ChangeUserForm changeUserForm) {
+        final User user = changeUserForm.getUser();
         final UserDAO userDAO = userDAOProvider.get();
-        final User user = userDAO.find(id);
-        if (user == null) {
-            // error!!
-            return;
+        // needed for some password-specific checks
+        final User oldStateUser = userDAO.find(user.getId());
+
+        // set old passwords if passwords have not been changed
+        if (Strings.isNullOrEmpty(user.getPassword())) {
+            user.setPassword(oldStateUser.getPassword());
         }
-        user.setActive(state);
+
+        if (Strings.isNullOrEmpty(user.getPasswordRepeat())) {
+            user.setPasswordRepeat(oldStateUser.getPassword());
+        }
+
+        //  validate the input
+        validationHelper.validateAndThrow(changeUserForm);
+
+        // encrypt if password changed and validation passed
+        if (!oldStateUser.getPassword().equals(user.getPassword())) {
+            user.setPassword(encryptPassword(user.getPassword()));
+            user.setPasswordRepeat(user.getPassword());
+        }
+
         userDAO.change(user);
+
+        return Response.status(OK).build();
     }
 
     @GET
@@ -86,8 +107,10 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     @LogInvocation
     @RequiresAuthentication
-    public User getUser(@PathParam("id") Integer id) {
-        return userDAOProvider.get().find(id);
+    public Response getUser(@PathParam("id") Integer id) {
+        final UserDAO userDAO = userDAOProvider.get();
+        final User user = userDAO.find(id);
+        return Response.status(OK).entity(Collections.singletonMap("user", user)).build();
     }
 
     @GET
@@ -95,8 +118,10 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     @LogInvocation
     @RequiresRoles("Admin")
-    public List<User> getUsers() {
-        return userDAOProvider.get().findAll();
+    public Response getUsers() {
+        final UserDAO userDAO = userDAOProvider.get();
+        final List<User> users = userDAO.findAll();
+        return Response.status(OK).entity(Collections.singletonMap("users", users)).build();
     }
 
     @POST
@@ -170,7 +195,7 @@ public class UserResource {
      */
     private Response createRedirectResponse() throws MalformedURLException, URISyntaxException {
         final HttpServletRequest request = servletRequestProvider.get();
-        final SavedRequest savedRequest = WebUtils.getSavedRequest(request);
+        final SavedRequest savedRequest = WebUtils.getAndClearSavedRequest(request);
         URL newURL;
         if (savedRequest != null) {
             String requestURI = savedRequest.getRequestURI();

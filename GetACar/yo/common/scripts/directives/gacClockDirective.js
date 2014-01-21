@@ -1,4 +1,4 @@
-angular.module('mainApp')
+angular.module('gacCommon')
     .directive('gacClock', [
         function () {
             return {

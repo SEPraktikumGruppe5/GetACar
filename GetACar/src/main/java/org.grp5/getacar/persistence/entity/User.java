@@ -1,6 +1,8 @@
 package org.grp5.getacar.persistence.entity;
 
 import com.google.common.collect.Lists;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 import org.grp5.getacar.persistence.validation.LoginNameNotExistent;
 import org.grp5.getacar.persistence.validation.PasswordsMatch;
 import org.hibernate.validator.constraints.Email;
@@ -38,7 +40,7 @@ public class User extends BaseEntity {
     @Basic(optional = false)
     @Column(name = "b_login", columnDefinition = "varchar(20)")
     @Size(min = 4, max = 20)
-    @Pattern(regexp="[a-zA-Z' '-]*") // TODO: 'Karl-Heinz' and 'Karl Heinz' now works, but 'Karl--', too FIX!
+    @Pattern(regexp = "[a-zA-Z' '-]*") // TODO: 'Karl-Heinz' and 'Karl Heinz' now works, but 'Karl--', too FIX!
     @NotNull
     public String getLoginName() {
         return loginName;
@@ -49,23 +51,27 @@ public class User extends BaseEntity {
     }
 
     @Basic(optional = false)
-    @Column(name = "b_passwort", columnDefinition = "text")
-    @Size(min = 4, max = 20)
-    // TODO requirements for good passwords 
+    @Column(name = "b_passwort", columnDefinition = "text", nullable = false, updatable = true)
+    @Size(min = 4, max = 255)
+    // TODO: requirements for good passwords
     @NotNull
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
 
+    @JsonProperty
     public void setPassword(String password) {
         this.password = password;
     }
 
     @Transient
+    @JsonIgnore
     public String getPasswordRepeat() {
         return passwordRepeat;
     }
 
+    @JsonProperty
     public void setPasswordRepeat(String passwordRepeat) {
         this.passwordRepeat = passwordRepeat;
     }
@@ -97,8 +103,8 @@ public class User extends BaseEntity {
     @Basic(optional = false)
     @Column(name = "b_vorname", columnDefinition = "varchar(30)")
     @Size(min = 2, max = 30)
-    @Pattern(regexp="[a-zA-Z]*")
-    @NotNull    
+    @Pattern(regexp = "[a-zA-Z]*")
+    @NotNull
     public String getFirstName() {
         return firstName;
     }
@@ -110,7 +116,7 @@ public class User extends BaseEntity {
     @Basic(optional = false)
     @Column(name = "b_nachname", columnDefinition = "varchar(30)")
     @Size(min = 2, max = 30)
-    @Pattern(regexp="[a-zA-Z]*")
+    @Pattern(regexp = "[a-zA-Z]*")
     @NotNull
     public String getLastName() {
         return lastName;
@@ -142,9 +148,13 @@ public class User extends BaseEntity {
 
     /**
      * Makes sure that the passwordRepeat field is set so that validation does not fail when changing the user.
+     * <p/>
+     * Care: We rely on validation before update takes place here! As we validate at least one time before create or
+     * change in {@link org.grp5.getacar.persistence.dao.BaseDAOImpl} that should not be a problem. There were some
+     * problems with the @{@link javax.persistence.Transient} {@code passwordRepeat} field on change otherwise.
      */
-    @PostLoad
-    private void postLoad() {
+    @PreUpdate
+    private void preUpdate() {
         passwordRepeat = password;
     }
 }

@@ -1,4 +1,4 @@
-angular.module('mainApp')
+angular.module('gacCommon')
     .factory('TimeService', ['Restangular',
         function (Restangular) {
             return {
@@ -10,7 +10,7 @@ angular.module('mainApp')
                  * @returns {*}
                  */
                 whatTimeIsIt: function (successFunction, errorFunction) {
-                    return Restangular.all('time').whatTimeIsIt()
+                    return Restangular.all('times').simulated()
                         .then(successFunction, errorFunction);
                 }
             };

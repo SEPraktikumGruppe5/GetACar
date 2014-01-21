@@ -1,0 +1,115 @@
+<div ng-controller="ReservationController" xmlns="http://www.w3.org/1999/html">
+    <div class="row">
+        <div class="col-sm-12">
+            <a class="btn btn-success pull-left" ui-sref="reservations"><strong>←</strong> Overview</a>
+            <span class="pull-right">
+                <strong>
+                    Reservation ID: {{ reservation.id }}
+                </strong>
+            </span>
+        </div>
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col-sm-7">
+            <div class="row">
+                <label class="col-sm-3">Vehicle number</label>
+
+                <div class="col-sm-9">
+                    <div>
+                        {{ reservation.vehicle.id }}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-3">Type</label>
+
+                <div class="col-sm-9">
+                    <div>
+                        <span tooltip="{{reservation.vehicle.vehicleType.name}} - {{reservation.vehicle.vehicleType.description}}"
+                              tooltip-placement="right">
+                            <img ng-src="{{ getIconUrl(reservation) }}">
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-3">License number</label>
+
+                <div class="col-sm-9">
+                    <div>
+                        {{ reservation.vehicle.licenseNumber }}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-3">Start time</label>
+
+                <div class="col-sm-9">
+                    <div>
+                        {{ convertToDate(reservation.startTime) | date:'medium' }}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-3">End time</label>
+
+                <div class="col-sm-9">
+                    <div>
+                        {{ convertToDate(reservation.endTime) | date:'medium' }}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-3">End position</label>
+
+                <div class="col-sm-9">
+                    <div>
+                        <gp-geocoder
+                                gp-geocode-lat-lng="reservationEndPosition"></gp-geocoder>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-5">
+            <tabset>
+                <tab heading="Images" select="otherTabSelected()">
+                    <div ng-if="!mapVisible" class="imageMapTab">
+                        <carousel interval="5000">
+                            <slide ng-repeat="vehicleImage in vehicleImages">
+                                <img ng-src="{{vehicleImage.image}}" class="slide-image">
+
+                                <!--<div class="carousel-caption">-->
+                                <!--<h4>Slide {{$index}}</h4>-->
+
+                                <!--<p>{{slide.text}}</p>-->
+                                <!--</div>-->
+                            </slide>
+                        </carousel>
+                    </div>
+                </tab>
+                <tab heading="Map" select="mapTabSelected()">
+                    <div ng-if="mapVisible" class="imageMapTab">
+                        <google-map center="map.center" zoom="map.zoom" draggable="true" dragging="map.dragging"
+                                    bounds="map.bounds" events="map.events" options="map.options"
+                                    refresh="mapVisible" fit="true">
+                            <!-- marker for vehicle position -->
+                            <!-- can not put google.map.animations.BOUNCE , since it is not initialized yet -->
+                            <div>
+                                <marker coords="map.vehiclePositionMarker" icon="map.vehiclePositionMarker.icon"></marker>
+                            </div>
+                            <!-- marker for end position -->
+                            <!-- can not put google.map.animations.BOUNCE , since it is not initialized yet -->
+                            <div>
+                                <marker coords="map.endPositionMarker" icon="map.endPositionMarker.icon"></marker>
+                            </div>
+                        </google-map>
+                    </div>
+                </tab>
+            </tabset>
+        </div>
+    </div>
+    <!--<div>-->
+        <!--{{ reservation | json }}-->
+    <!--</div>-->
+</div>

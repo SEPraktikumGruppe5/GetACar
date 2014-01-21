@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.grp5.getacar.persistence.entity.Reservation;
+import org.grp5.getacar.persistence.entity.User;
 import org.grp5.getacar.persistence.entity.Vehicle;
 import org.grp5.getacar.persistence.validation.ValidationHelper;
 import org.hibernate.Criteria;
@@ -40,6 +41,13 @@ public class ReservationDAOImpl extends BaseDAOImpl<Integer, Reservation> implem
         final Criteria criteria = getHibernateSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("vehicle", vehicle));
         criteria.add(Restrictions.gt("startTime", Preconditions.checkNotNull(startTime)));
+        return criteria.list();
+    }
+
+    @Override
+    public List<Reservation> findByUser(User user) {
+        final Criteria criteria = getHibernateSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("user", Preconditions.checkNotNull(user)));
         return criteria.list();
     }
 }

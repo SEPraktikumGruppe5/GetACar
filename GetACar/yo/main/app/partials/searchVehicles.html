@@ -181,7 +181,6 @@
                 </marker>
             </div>
         </google-map>
-        Zoom level: {{ map.zoom }}
     </div>
 </div>
 <div class="row">
@@ -198,7 +197,8 @@
         </div>
         <div ng-repeat="vehicleSearchResult in vehicleSearchResults">
             <div>
-                <vehicle-search-result result="addSearchParametersToResult(vehicleSearchResult)">
+                <vehicle-search-result result="addSearchParametersToResult(vehicleSearchResult)"
+                                       on-reservation="onReservation(reserveVehicleFormData)">
                 </vehicle-search-result>
             </div>
         </div>

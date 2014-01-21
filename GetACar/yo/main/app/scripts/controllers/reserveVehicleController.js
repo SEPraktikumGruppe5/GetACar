@@ -14,20 +14,18 @@ angular.module('mainApp')
                 return 'images/map_icons/' + vehicle.vehicleType.icon; // TODO: Bind and inject icon path in rootScope
             };
 
-            // TODO: TEMP REMOVE
             var vehicleImages = $scope.vehicleImages = [];
-            $scope.addSlide = function () {
-                var newWidth = 600 + vehicleImages.length;
+            $scope.addSlide = function (vehicleImage) {
+//                var newWidth = 600 + vehicleImages.length;
                 vehicleImages.push({
-                    image: 'http://placekitten.com/' + newWidth + '/500',
-                    text: ['More', 'Extra', 'Lots of', 'Surplus'][vehicleImages.length % 4] + ' ' +
-                        ['Cats', 'Kittys', 'Felines', 'Cutes'][vehicleImages.length % 4]
+                    image: '../images?image=' + vehicleImage.fileName
+//                    text: ['More', 'Extra', 'Lots of', 'Surplus'][vehicleImages.length % 4] + ' ' +
+//                        ['Cats', 'Kittys', 'Felines', 'Cutes'][vehicleImages.length % 4]
                 });
             };
-            for (var i = 0; i < 4; i++) {
-                $scope.addSlide();
-            }
-            // TODO: TEMP REMOVE
+            angular.forEach($scope.vehicle.vehicleImages, function(vehicleImage) {
+                $scope.addSlide(vehicleImage);
+            });
 
             $scope.gpGeocodeLatLng = {
                 lat: $scope.vehicle.currentLatitude,
@@ -178,17 +176,19 @@ angular.module('mainApp')
 
             // callback of gp-autocomplete box
             $scope.onGPEndPlaceChanged = function (val, details) {
-                $scope.map.endPositionMarker.latitude = details.geometry.location.lat();
-                $scope.map.endPositionMarker.longitude = details.geometry.location.lng();
-                // Maybe better read the value on reserve-button-click?
-                $scope.reserveVehicleFormData.endPosition.longitude = details.geometry.location.lng();
-                $scope.reserveVehicleFormData.endPosition.latitude = details.geometry.location.lat();
+                if (details) {
+                    $scope.map.endPositionMarker.latitude = details.geometry.location.lat();
+                    $scope.map.endPositionMarker.longitude = details.geometry.location.lng();
+                    // Maybe better read the value on reserve-button-click?
+                    $scope.reserveVehicleFormData.endPosition.longitude = details.geometry.location.lng();
+                    $scope.reserveVehicleFormData.endPosition.latitude = details.geometry.location.lat();
+                }
             };
 
             $scope.reserveVehicle = function () {
                 ReservationService.reserveVehicle($scope.reserveVehicleFormData, function (successResponse) {
                     // return to the modal caller
-                    $scope.modalOptions.ok($scope.vehicle);
+                    $scope.modalOptions.ok($scope.reserveVehicleFormData);
                 }, function (errorResponse) {
                     var status, data;
                     status = errorResponse.status;

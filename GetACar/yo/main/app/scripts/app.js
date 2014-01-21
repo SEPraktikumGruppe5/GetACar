@@ -1,6 +1,5 @@
 angular.module('mainApp', [
         'gacCommon',
-        'ngSanitize',
         'google-maps'
     ])
     .config(function ($stateProvider, $urlRouterProvider) {
@@ -25,5 +24,17 @@ angular.module('mainApp', [
                 parent: 'main',
                 templateUrl: 'partials/searchVehicles.html',
                 controller: 'SearchVehiclesController'
+            })
+            .state('reservations', {
+                url: 'reservations',
+                parent: 'main',
+                templateUrl: 'partials/reservations.html',
+                controller: 'ReservationsController'
+            })
+            .state('reservation', {
+                url: 'reservations/:id', // url: 'login?justRegistered', TODO: Parameters but not like that but mandatory
+                parent: 'main',
+                templateUrl: 'partials/reservation.html',
+                controller: 'ReservationController'
             });
     });

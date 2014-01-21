@@ -6,7 +6,7 @@
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(233, 102, 102, 0.6);
 }
 
-form.ng-invalid {
+form.ng-invalid, .form-horizontal.ng-invalid, .form-vertical.ng-invalid {
     outline: 0;
     box-shadow: none;
     -webkit-box-shadow: none;
@@ -39,12 +39,12 @@ form .errors {
 .form-vertical {
 }
 
-form.form-vertical .errors {
+form.form-vertical .errors, .form-vertical .errors {
     display: inline;
     float: right;
 }
 
-form.form-horizontal .errors {
+form.form-horizontal .errors, .form-horizontal .errors {
     text-align: right;
 }
 
@@ -60,7 +60,7 @@ form .alert {
 * </label>
 */
 
-form .field-required {
+.field-required, form .field-required {
     color: #880000;
     font-weight: bold;
 }

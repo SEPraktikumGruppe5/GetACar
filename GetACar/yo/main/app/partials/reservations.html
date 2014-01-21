@@ -1,0 +1,99 @@
+<div ng-controller="ReservationsController" xmlns="http://www.w3.org/1999/html">
+    <div>
+        <h3>Reservations</h3>
+    </div>
+    <div ng-repeat="reservation in reservations">
+        <div class="well">
+            <div class="row">
+                <div class="col-sm-12">
+                    <span class="pull-right">
+                        <strong>
+                            {{ reservation.count + 1 }}
+                        </strong>
+                    </span>
+                </div>
+            </div>
+            <hr/>
+            <div class="row">
+                <div class="col-sm-7">
+                    <div class="row">
+                        <label class="col-sm-3">Vehicle number</label>
+
+                        <div class="col-sm-9">
+                            <div>
+                                {{ reservation.vehicle.id }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-3">Type</label>
+
+                        <div class="col-sm-9">
+                            <div>
+                        <span tooltip="{{reservation.vehicle.vehicleType.name}} - {{reservation.vehicle.vehicleType.description}}"
+                              tooltip-placement="right">
+                            <img ng-src="{{ getIconUrl(reservation.vehicle) }}">
+                        </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-3">License number</label>
+
+                        <div class="col-sm-9">
+                            <div>
+                                {{ reservation.vehicle.licenseNumber }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-3">Start time</label>
+
+                        <div class="col-sm-9">
+                            <div>
+                                {{ convertToDate(reservation.startTime) | date:'medium' }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-3">End time</label>
+
+                        <div class="col-sm-9">
+                            <div>
+                                {{ convertToDate(reservation.endTime) | date:'medium' }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-3">End position</label>
+
+                        <div class="col-sm-9">
+                            <div>
+                                <gp-geocoder
+                                        gp-geocode-lat-lng="reservationEndPositions[reservation.count]"></gp-geocoder>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <img class="img-thumbnail"
+                         ng-src="../images?image={{ reservation.vehicle.vehicleImages[0].fileName }}">
+                </div>
+            </div>
+            <hr/>
+            <div class="row">
+                <div class="col-sm-12">
+                    <a class="btn btn-success pull-right" ui-sref="reservation({id: reservation.id })">
+                        View Details <strong>→</strong>
+                    </a>
+                    <!--<button type="submit" class="btn btn-success pull-right" ng-click="reserveVehicle()">-->
+                    <!--Details-->
+                    <!--</button>-->
+                </div>
+            </div>
+            <!--<div>-->
+            <!--{{ reservation || json }}-->
+            <!--</div>-->
+        </div>
+    </div>
+</div>

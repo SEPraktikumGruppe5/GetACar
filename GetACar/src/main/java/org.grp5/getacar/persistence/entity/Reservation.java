@@ -1,9 +1,6 @@
 package org.grp5.getacar.persistence.entity;
 
-import org.grp5.getacar.persistence.validation.DateTimeBeforeOtherDateTime;
-import org.grp5.getacar.persistence.validation.FutureDateTime;
-import org.grp5.getacar.persistence.validation.MaxDaysFromNow;
-import org.grp5.getacar.persistence.validation.NoReservationTimeCollision;
+import org.grp5.getacar.persistence.validation.*;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
@@ -33,6 +30,9 @@ import java.math.BigDecimal;
 )
 @NoReservationTimeCollision.List(
         value = {@NoReservationTimeCollision(startTimeField = "startTime", endTimeField = "endTime")}
+)
+@NoReservationInFuture.List(
+        value = {@NoReservationInFuture(startTimeField = "startTime")}
 )
 public class Reservation extends BaseEntity {
 

@@ -15,9 +15,10 @@ import org.grp5.getacar.resource.form.ReserveVehicleForm;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Collections;
 import java.util.List;
 
-@Path("/rest/reservations")
+@Path("/rest/v1/reservations")
 public class ReservationResource {
 
     private final Provider<ReservationDAO> reservationDAOProvider;
@@ -35,17 +36,48 @@ public class ReservationResource {
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
+    @RequiresAuthentication
     @LogInvocation
-    public Reservation getReservation(@PathParam("id") Integer id) {
-        return reservationDAOProvider.get().find(id);
+    public Response getReservation(@PathParam("id") Integer id) {
+        final ReservationDAO reservationDAO = reservationDAOProvider.get();
+        final Reservation reservation = reservationDAO.find(id);
+
+        // reservation exists?
+        if (reservation == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        // is user allowed to show?
+        final User loggedInUser = getLoggedInUser();
+        if (!loggedInUser.equals(reservation.getUser())) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+
+        return Response.status(Response.Status.OK).entity(Collections.singletonMap("reservation", // Respond with 302?
+                reservation)).build();
     }
 
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     @LogInvocation
-    public List<Reservation> getReservations() {
-        return reservationDAOProvider.get().findAll();
+    public Response getReservations() {
+        final ReservationDAO reservationDAO = reservationDAOProvider.get();
+        return Response.status(Response.Status.OK).entity(Collections.singletonMap("reservations",
+                reservationDAO.findAll())).build();
+    }
+
+    @GET
+    @Path("/byUser")
+    @Produces(MediaType.APPLICATION_JSON)
+    @RequiresAuthentication
+    @LogInvocation
+    public Response getReservationsByUser() {
+        // TODO: Use uid param / maybe do it like on the slides from mr. gaedke
+        final ReservationDAO reservationDAO = reservationDAOProvider.get();
+        final List<Reservation> reservations = reservationDAO.findByUser(getLoggedInUser());
+        return Response.status(Response.Status.OK).entity(Collections.singletonMap("reservations",
+                reservations)).build();
     }
 
     @POST
@@ -80,6 +112,7 @@ public class ReservationResource {
      * @return The logged in user or null if the user is not logged in.
      */
     private User getLoggedInUser() {
-        return userDAOProvider.get().findByLoginName((String) SecurityUtils.getSubject().getPrincipal());
+        final UserDAO userDAO = userDAOProvider.get();
+        return userDAO.findByLoginName((String) SecurityUtils.getSubject().getPrincipal());
     }
 }

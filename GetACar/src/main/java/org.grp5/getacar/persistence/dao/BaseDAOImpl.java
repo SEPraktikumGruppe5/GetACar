@@ -2,8 +2,8 @@ package org.grp5.getacar.persistence.dao;
 
 import com.google.inject.Provider;
 import com.google.inject.persist.Transactional;
-import org.grp5.getacar.persistence.validation.ValidationHelper;
 import org.grp5.getacar.persistence.util.ClassHelper;
+import org.grp5.getacar.persistence.validation.ValidationHelper;
 import org.hibernate.FlushMode;
 import org.hibernate.LockMode;
 import org.hibernate.Session;
@@ -85,7 +85,7 @@ public class BaseDAOImpl<K extends Serializable, E> implements BaseDAO<K, E> {
     public void change(E entity) {
         validationHelper.validateAndThrow(entity);
         final Session hibernateSession = getHibernateSession();
-        hibernateSession.update(entity);
+        hibernateSession.merge(entity);
         hibernateSession.flush();
     }
 

@@ -1,0 +1,151 @@
+<div ng-controller="UserManagementController" xmlns="http://www.w3.org/1999/html">
+    <div class="col-sm-3">
+        <h4>Users</h4>
+        <hr/>
+        <div ng-repeat="user in users">
+            <user-list-entry user="user" on-select="onUserSelect(user)"></user-list-entry>
+        </div>
+    </div>
+    <div class="col-sm-9">
+        <div class="well">
+            <div class="col-sm-12">
+                <h4>Editing user: '{{ selectedUser.firstName }} {{ selectedUser.lastName }}'</h4>
+            </div>
+            <hr/>
+            <form name="changeUserForm" novalidate class="form-horizontal" role="form" autocomplete="off">
+                <div class="form-group">
+                    <label for="inputFirstName" class="col-sm-2 control-label">First Name
+                        <sup tooltip="This field is mandatory." class="field-required">*</sup>
+                    </label>
+
+                    <div class="col-sm-10">
+                        <input name="user.firstName" type="text" class="form-control" id="inputFirstName"
+                               placeholder="First Name"
+                               ng-model="changeUserFormData.user.firstName" server-error>
+                    </div>
+                    <div class="errors col-sm-offset-2 col-sm-10"
+                         ng-show="!changeUserForm['user.firstName'].$dirty && changeUserForm['user.firstName'].$invalid">
+                        <span ng-show="changeUserForm['user.firstName'].$error.server">
+                            {{ errors['user.firstName'] }}
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputLastName" class="col-sm-2 control-label">Last Name
+                        <sup tooltip="This field is mandatory." class="field-required">*</sup>
+                    </label>
+
+                    <div class="col-sm-10">
+                        <input name="user.lastName" type="text" class="form-control" id="inputLastName"
+                               placeholder="Last Name" ng-model="changeUserFormData.user.lastName" server-error>
+                    </div>
+                    <div class="errors col-sm-offset-2 col-sm-10"
+                         ng-show="!changeUserForm['user.lastName'].$dirty && changeUserForm['user.lastName'].$invalid">
+                        <span ng-show="changeUserForm['user.lastName'].$error.server">
+                            {{ errors['user.lastName'] }}
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputLoginName" class="col-sm-2 control-label">Login
+                        <sup tooltip="This field is mandatory." class="field-required">*</sup>
+                    </label>
+
+                    <div class="col-sm-10">
+                        <input name="user.loginName" type="text" class="form-control" id="inputLoginName"
+                               placeholder="Login" ng-model="changeUserFormData.user.loginName" server-error>
+                    </div>
+                    <div class="errors col-sm-offset-2 col-sm-10"
+                         ng-show="!changeUserForm['user.loginName'].$dirty && changeUserForm['user.loginName'].$invalid">
+                        <span ng-show="changeUserForm['user.loginName'].$error.server">
+                            {{ errors['user.loginName'] }}
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail" class="col-sm-2 control-label">E-Mail
+                        <sup tooltip="This field is mandatory." class="field-required">*</sup>
+                    </label>
+
+                    <div class="col-sm-10">
+                        <input name="user.email" type="text" class="form-control" id="inputEmail" placeholder="E-Mail"
+                               ng-model="changeUserFormData.user.email" server-error>
+                    </div>
+                    <div class="errors col-sm-offset-2 col-sm-10"
+                         ng-show="!changeUserForm['user.email'].$dirty && changeUserForm['user.email'].$invalid">
+                        <span ng-show="changeUserForm['user.email'].$error.server">
+                            {{ errors['user.email'] }}
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputPassword" class="col-sm-2 control-label">Password</label>
+
+                    <div class="col-sm-10">
+                        <input name="user.password" type="password" class="form-control" id="inputPassword"
+                               placeholder="Password (leave blank to keep old value)"
+                               ng-model="changeUserFormData.user.password" server-error>
+                    </div>
+                    <div class="errors col-sm-offset-2 col-sm-10"
+                         ng-show="!changeUserForm['user.password'].$dirty && changeUserForm['user.password'].$invalid">
+                        <span ng-show="changeUserForm['user.password'].$error.server">
+                            {{ errors['user.password'] }}
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputPasswordRepeat" class="col-sm-2 control-label">Password Repeat</label>
+
+                    <div class="col-sm-10">
+                        <input name="user.passwordRepeat" type="password" class="form-control" id="inputPasswordRepeat"
+                               placeholder="Password Repeat (leave blank to keep old value)"
+                               ng-model="changeUserFormData.user.passwordRepeat" server-error>
+                    </div>
+                    <div class="errors col-sm-offset-2 col-sm-10"
+                         ng-show="!changeUserForm['user.passwordRepeat'].$dirty
+                     && changeUserForm['user.passwordRepeat'].$invalid">
+                    <span ng-show="changeUserForm['user.passwordRepeat'].$error.server">
+                        {{ errors['user.passwordRepeat'] }}
+                    </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputActive" class="col-sm-2 control-label">Active
+                        <sup tooltip="This field is mandatory." class="field-required">*</sup>
+                    </label>
+
+                    <div class="col-sm-10">
+
+                        <select name="user.active" ng-model="changeUserFormData.user.active" class="form-control"
+                                ng-options="activeOption.value as activeOption.name for activeOption in activeOptions"
+                                id="inputActive" server-error>
+                        </select>
+                    </div>
+                    <div class="errors"
+                         ng-show="!changeUserFormData.user.active.$dirty && changeUserFormData.user.active.$invalid">
+                        <span ng-show="changeUserFormData.user.active.$error.server">{{ errors.user.active }}</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <div class="pull-right">
+                            <button class="btn btn-danger" ng-click="resetChanges()">
+                                Reset
+                            </button>
+                            <button type="submit" class="btn btn-success"
+                                    ng-click="saveChanges(changeUserFormData)">
+                                Save changes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--<div>-->
+        <!--{{ selectedUser | json }}-->
+    <!--</div>-->
+    <!--<div>-->
+        <!--{{ changeUserFormData.user | json }}-->
+    <!--</div>-->
+</div>

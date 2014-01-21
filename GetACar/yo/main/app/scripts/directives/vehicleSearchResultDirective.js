@@ -4,7 +4,8 @@ angular.module('mainApp')
             return {
                 restrict: 'E',
                 scope: {
-                    result: '=result'
+                    result: '=result',
+                    onReservation: '&'
                 },
                 templateUrl: 'partials/vehicleSearchResult.html',
                 controller: ['$scope', 'ModalService', function ($scope, ModalService) {
@@ -34,8 +35,8 @@ angular.module('mainApp')
                         };
 
                         ModalService.showModal(modalDefaults, modalOptions).then(
-                            function (result) {
-                                window.alert('kK!');
+                            function (reserveVehicleFormData) {
+                                $scope.onReservation({reserveVehicleFormData: angular.copy(reserveVehicleFormData)}); // TODO: Does not work, data does not reach parent controller
                             });
                     };
                 }]

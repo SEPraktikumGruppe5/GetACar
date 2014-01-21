@@ -10,7 +10,7 @@ angular.module('gacCommon', [
 
         /* Restangular */
 
-        RestangularProvider.setBaseUrl('/getacar/rest/'); // TODO: Change baseUrl to sth. more standard for Rest stuff -> /getacar/api/v1/ ?
+        RestangularProvider.setBaseUrl('/getacar/rest/v1/');
         // Include headers and everything else in every response
         RestangularProvider.setFullResponse(true);
 
@@ -29,13 +29,25 @@ angular.module('gacCommon', [
             vehicles.addRestangularMethod('searchVehicles', 'post', 'searchVehicles');
             return vehicles;
         });
-        RestangularProvider.addElementTransformer('time', true, function (time) {
-            time.addRestangularMethod('whatTimeIsIt', 'get', 'whatTimeIsIt');
-            return time;
+        RestangularProvider.addElementTransformer('vehicles', true, function (vehicles) {
+            vehicles.addRestangularMethod('changeVehicle', 'post', 'change');
+            return vehicles;
+        });
+        RestangularProvider.addElementTransformer('vehicles', true, function (vehicles) {
+            vehicles.addRestangularMethod('createVehicle', 'post', 'create');
+            return vehicles;
+        });
+        RestangularProvider.addElementTransformer('times', true, function (times) {
+            times.addRestangularMethod('simulated', 'get', 'simulated');
+            return times;
         });
         RestangularProvider.addElementTransformer('reservations', true, function (reservations) {
             reservations.addRestangularMethod('reserveVehicle', 'post', 'reserveVehicle');
             return reservations;
+        });
+        RestangularProvider.addElementTransformer('users', true, function (users) {
+            users.addRestangularMethod('changeUser', 'post', 'change');
+            return users;
         });
     })
     .run(['$rootScope', '$state', '$stateParams',

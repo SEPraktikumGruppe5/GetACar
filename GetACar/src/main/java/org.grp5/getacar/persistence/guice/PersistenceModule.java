@@ -36,6 +36,7 @@ public class PersistenceModule extends ServletModule {
 
         bind(VehicleDAO.class).to(VehicleDAOImpl.class);
         bind(VehicleTypeDAO.class).to(VehicleTypeDAOImpl.class);
+        bind(VehicleImageDAO.class).to(VehicleImageDAOImpl.class);
         bind(UserDAO.class).to(UserDAOImpl.class);
         bind(ReservationDAO.class).to(ReservationDAOImpl.class);
         bind(RoleDAO.class).to(RoleDAOImpl.class);

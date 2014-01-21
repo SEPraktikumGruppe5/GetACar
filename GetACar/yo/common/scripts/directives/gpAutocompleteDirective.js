@@ -110,7 +110,7 @@ angular.module('gacCommon')
                                     } else {
                                         // TODO No results found message
                                     }
-                                } else {
+                                } else { // TODO: Retry on too many requests like in gpGeocoderDirective
                                     // TODO Error message
                                 }
                             });

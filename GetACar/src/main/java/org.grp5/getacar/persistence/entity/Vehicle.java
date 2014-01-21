@@ -1,6 +1,7 @@
 package org.grp5.getacar.persistence.entity;
 
 import com.google.common.collect.Lists;
+import org.codehaus.jackson.annotate.JsonManagedReference;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
@@ -53,13 +54,16 @@ public class Vehicle extends BaseEntity {
         this.licenseNumber = licenseNumber;
     }
 
-    @OneToMany(mappedBy = "vehicle")
+    @OneToMany(mappedBy = "vehicle", cascade = {CascadeType.ALL})
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @Valid
     @Size(min = 1, max = 5)
+    @JsonManagedReference // get and set have to be annotated
     public List<VehicleImage> getVehicleImages() {
         return vehicleImages;
     }
 
+    @JsonManagedReference // get and set have to be annotated
     public void setVehicleImages(List<VehicleImage> vehicleImages) {
         this.vehicleImages = vehicleImages;
     }
@@ -101,6 +105,7 @@ public class Vehicle extends BaseEntity {
 
     @Basic(optional = false)
     @Column(name = "f_bemerkung", columnDefinition = "text")
+    @Size(min = 1, max = 500)
     @NotNull
     public String getComment() {
         return comment;

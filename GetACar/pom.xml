@@ -37,6 +37,7 @@
         <!-- Misc stuff -->
         <yeoman-account-project.directory>yo/account</yeoman-account-project.directory>
         <yeoman-main-project.directory>yo/main</yeoman-main-project.directory>
+        <yeoman-admin-project.directory>yo/admin</yeoman-admin-project.directory>
         <yeoman-common-project.directory>yo/common</yeoman-common-project.directory>
     </properties>
 
@@ -179,6 +180,24 @@
             <artifactId>joda-time</artifactId>
             <version>${joda-time.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.imgscalr</groupId>
+            <artifactId>imgscalr-lib</artifactId>
+            <version>4.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.2.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20090211</version>
+        </dependency>
     </dependencies>
 
     <profiles>
@@ -229,6 +248,10 @@
                                 <resource>
                                     <directory>${yeoman-main-project.directory}/app</directory>
                                     <targetPath>app</targetPath>
+                                </resource>
+                                <resource>
+                                    <directory>${yeoman-admin-project.directory}/app</directory>
+                                    <targetPath>admin</targetPath>
                                 </resource>
                                 <resource>
                                     <directory>${yeoman-common-project.directory}</directory>
@@ -309,6 +332,15 @@
                                     <goal>build</goal>
                                 </goals>
                             </execution>
+                            <execution>
+                                <id>admin</id>
+                                <configuration>
+                                    <yeomanProjectDirectory>${yeoman-admin-project.directory}</yeomanProjectDirectory>
+                                </configuration>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                            </execution>
                         </executions>
                     </plugin>
                     <plugin>
@@ -323,6 +355,23 @@
                                 <resource>
                                     <directory>${yeoman-main-project.directory}/dist</directory>
                                     <targetPath>app</targetPath>
+                                </resource>
+                                <resource>
+                                    <directory>${yeoman-admin-project.directory}/dist</directory>
+                                    <targetPath>admin</targetPath>
+                                </resource>
+                                <!-- Uglify does not work for jquery-file-upload somehow so we keep it beautifully -->
+                                <resource>
+                                    <directory>${yeoman-admin-project.directory}/app/bower_components/jquery-file-upload/js</directory>
+                                    <targetPath>bower_components/jquery-file-upload/js</targetPath>
+                                </resource>
+                                <resource>
+                                    <directory>${yeoman-admin-project.directory}/app/bower_components/blueimp-load-image/js</directory>
+                                    <targetPath>bower_components/blueimp-load-image/js</targetPath>
+                                </resource>
+                                <resource>
+                                    <directory>${yeoman-admin-project.directory}/app/bower_components/blueimp-canvas-to-blob/js</directory>
+                                    <targetPath>bower_components/blueimp-canvas-to-blob/js</targetPath>
                                 </resource>
                             </webResources>
                         </configuration>
@@ -373,6 +422,18 @@
                         </fileset>
                         <fileset>
                             <directory>${yeoman-main-project.directory}/node_modules</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>${yeoman-admin-project.directory}/dist</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>${yeoman-admin-project.directory}/.tmp</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>${yeoman-admin-project.directory}/app/components</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>${yeoman-admin-project.directory}/node_modules</directory>
                         </fileset>
                     </filesets>
                 </configuration>

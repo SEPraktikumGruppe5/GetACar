@@ -37,6 +37,8 @@ public abstract class BaseEntity implements Serializable {
         return true;
     }
 
+    // TODO: Version!
+
     @Override
     public int hashCode() {
         return Objects.hashCode(id);

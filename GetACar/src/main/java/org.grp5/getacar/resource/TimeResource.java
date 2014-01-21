@@ -15,7 +15,7 @@ import java.util.Collections;
 
 import static javax.ws.rs.core.Response.Status.OK;
 
-@Path("/rest/time")
+@Path("/rest/v1/times")
 public class TimeResource {
 
     private final Provider<TimeSimulator> timeSimulatorProvider;
@@ -27,11 +27,11 @@ public class TimeResource {
     }
 
     @GET
-    @Path("/whatTimeIsIt")
+    @Path("/simulated")
     @Produces(MediaType.APPLICATION_JSON)
     @LogInvocation
     @RequiresAuthentication
-    public Response whatTimeIsIt() {
+    public Response getSimulatedTime() {
         final TimeSimulator timeSimulator = timeSimulatorProvider.get();
         return Response.status(OK).entity(Collections.singletonMap("time", timeSimulator.getTime()))
                 .build();

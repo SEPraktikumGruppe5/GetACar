@@ -1,0 +1,25 @@
+<div class="full-height" ng-controller="MainController">
+    <div role="navigation" class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a ui-sref="login" class="navbar-brand">Get A Car</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav pull-right">
+                    <li ng-class="{active: $state.includes('userManagement')}"><a ui-sref="userManagement">User management</a></li>
+                    <li ng-class="{active: $state.includes('vehicleManagement')}"><a ui-sref="vehicleManagement">Vehicle management</a></li>
+                    <li><a href="../account/logout">Log out!</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="wrap" class="container" ui-view></div>
+
+    <div class="footer">
+        <p class="pull-left">♥ from your Get A Car team - Stay sober!</p>
+
+        <div class="pull-right" tooltip="This is the simulated time" tooltip-placement="top">
+            <gac-Clock></gac-Clock>
+        </div>
+    </div>
+</div>

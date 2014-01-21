@@ -34,7 +34,8 @@ public class MaxDaysFromNowValidator implements ConstraintValidator<MaxDaysFromN
                     value.withTimeAtStartOfDay()).getDays();
             return daysBetween <= maxDaysFromNow;
         } catch (Exception ex) {
-            return true;
+            // ignore
         }
+        return true;
     }
 }

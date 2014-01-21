@@ -14,19 +14,13 @@ angular.module('gacCommon')
                 restrict: 'E',
                 template: '<span class="gp-geocoder">{{ geoCoded }}</span>',
                 scope: {
-                    gpGeocodeLatLng: '='
+                    gpGeocodeLatLng: '=' // gpGeocoder watches this variable and tries to find the address for the coordinates
                 },
                 controller: ['$scope', function ($scope) {
-                    // gpGeocoder watches this variable and tries to find the address for the coordinates
                     $scope.geoCoded = 'Looking up address...';
                 }],
                 link: function (scope, element, attrs, model) {
-                    // watch latLng provided to directive
-                    scope.watchGPGeocodeLatLng = function () {
-                        return scope.gpGeocodeLatLng;
-                    };
-
-                    scope.$watch(scope.watchGPGeocodeLatLng, function () {
+                    function geocode() {
                         // TODO: How to check more than one level deep without such a long if?
                         if (scope.gpGeocodeLatLng && scope.gpGeocodeLatLng.lat && scope.gpGeocodeLatLng.lng) {
                             var geocoder = new google.maps.Geocoder();
@@ -44,12 +38,23 @@ angular.module('gacCommon')
                                         });
                                     }
                                 } else {
-                                    scope.$apply(function () {
-                                        scope.geoCoded = 'Error: Could not fetch the address';
-                                    });
+                                    if (status === google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
+                                        setTimeout(geocode, 2000);
+                                    } else {
+                                        scope.geoCoded = 'Error: Could not fetch the address'; // for some reason a digest is already in progress here
+                                    }
                                 }
                             });
                         }
+                    }
+
+                    // watch latLng provided to directive
+                    scope.watchGPGeocodeLatLng = function () {
+                        return scope.gpGeocodeLatLng;
+                    };
+
+                    scope.$watch(scope.watchGPGeocodeLatLng, function () {
+                        geocode();
                     }, true);
                 }
             };

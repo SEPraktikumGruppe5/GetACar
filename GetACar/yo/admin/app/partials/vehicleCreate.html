@@ -1,0 +1,270 @@
+<div ng-controller="VehicleCreateController" xmlns="http://www.w3.org/1999/html">
+<div class="modal-header">
+	<button type="button" class="close" data-ng-click="modalOptions.close()" aria-hidden="true">
+		&times;
+	</button>
+	<h3 class="modal-title">
+		{{modalOptions.headerText}}
+	</h3>
+</div>
+<div class="modal-body">
+<div ng-form="createVehicleForm" novalidate class="form-horizontal" role="form" autocomplete="off">
+<tabset>
+<tab heading="Form" select="formTabSelected(true)">
+	<div ng-if="formVisible" class="well">
+		<!--<div class="col-sm-12">-->
+		<!--<h4>Editing vehicle: '{{ selectedVehicle.id }} {{ selectedVehicle.licenseNumber }}'</h4>-->
+		<!--</div>-->
+		<hr/>
+		<div>
+			<div class="form-group">
+				<label for="inputLicenseNumber" class="col-sm-3 control-label">License number
+					<sup tooltip="This field is mandatory." class="field-required">*</sup>
+				</label>
+
+				<div class="col-sm-9">
+					<input name="vehicle.licenseNumber" type="text" class="form-control" id="inputLicenseNumber"
+					       placeholder="License number"
+					       ng-model="createVehicleFormData.vehicle.licenseNumber" server-error>
+				</div>
+				<div class="errors col-sm-offset-3 col-sm-9"
+				     ng-show="!createVehicleForm['vehicle.licenseNumber'].$dirty
+                         && createVehicleForm['vehicle.licenseNumber'].$invalid">
+                        <span ng-show="createVehicleForm['vehicle.licenseNumber'].$error.server">
+                            {{ errors['vehicle.licenseNumber'] }}
+                        </span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="inputType" class="col-sm-3 control-label">Type
+					<sup tooltip="This field is mandatory." class="field-required">*</sup>
+				</label>
+
+				<div class="col-sm-9">
+					<select name="vehicle.vehicleType" ng-model="createVehicleFormData.vehicle.vehicleType"
+					        ng-options="vt as vt.name for vt in vehicleTypes" class="form-control"
+					        id="inputType" server-error>
+					</select>
+				</div>
+				<div class="errors col-sm-offset-3 col-sm-9"
+				     ng-show="!createVehicleForm['vehicle.vehicleType'].$dirty
+                         && createVehicleForm['vehicle.vehicleType'].$invalid">
+                        <span ng-show="createVehicleForm['vehicle.vehicleType'].$error.server">
+                            {{ errors['vehicle.vehicleType'] }}
+                        </span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="inputInitialPosition" class="col-sm-3 control-label">Initial position
+					<sup tooltip="This field is mandatory." class="field-required">*</sup>
+				</label>
+
+				<div class="col-sm-9 input-group">
+					<!-- ng-model="dummy" so that angular.js recognizes this field as a form field! -->
+					<input name="position" ng-model="dummy" type="text" class="form-control"
+					       id="inputInitialPosition"
+					       gp-autocomplete gp-value="gpValue" gp-details="gpDetails"
+					       gp-options="gpOptions"
+					       gp-lat-lng="gpLatLng" on-place-changed="onGPPlaceChanged(value, details)"
+					       server-error/>
+					<a title="Find my location" ng-show="geolocationAvailable" ng-click="findMe()"
+					   class="input-group-addon btn">
+						<i class="glyphicon glyphicon-search"></i>
+					</a>
+				</div>
+
+				<div class="errors col-sm-offset-3 col-sm-9"
+				     ng-show="!createVehicleForm['vehicle.initialPosition'].$dirty
+                         && createVehicleForm['vehicle.initialPosition'].$invalid">
+                        <span ng-show="createVehicleForm['vehicle.initialPosition'].$error.server">
+                            {{ errors.['vehicle.initialPosition'] }}
+                        </span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="inputComment" class="col-sm-3 control-label">Description
+					<sup tooltip="This field is mandatory." class="field-required">*</sup>
+				</label>
+
+				<div class="col-sm-9">
+					<textarea name="vehicle.comment" class="form-control" id="inputComment"
+					          placeholder="Description"
+					          ng-model="createVehicleFormData.vehicle.comment" server-error>
+					</textarea>
+				</div>
+				<div class="errors col-sm-offset-3 col-sm-9"
+				     ng-show="!createVehicleForm['vehicle.comment'].$dirty
+                         && createVehicleForm['vehicle.comment'].$invalid">
+                        <span ng-show="createVehicleForm['vehicle.comment'].$error.server">
+                            {{ errors['vehicle.comment'] }}
+                        </span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="inputActive" class="col-sm-3 control-label">Active
+					<sup tooltip="This field is mandatory." class="field-required">*</sup>
+				</label>
+
+				<div class="col-sm-9">
+
+					<select name="vehicle.active" ng-model="createVehicleFormData.vehicle.active"
+					        class="form-control"
+					        ng-options="activeOption.value as activeOption.name for activeOption in activeOptions"
+					        id="inputActive" server-error>
+					</select>
+				</div>
+				<div class="errors col-sm-offset-3 col-sm-9"
+				     ng-show="!createVehicleForm['vehicle.active'].$dirty && createVehicleForm['vehicle.active'].$invalid">
+                    <span ng-show="createVehicleForm['vehicle.active'].$error.server">
+                        {{ errors['vehicle.active'] }}
+                    </span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">Vehicle images
+					<sup tooltip="This field is mandatory." class="field-required">*</sup>
+				</label>
+
+				<div class="col-sm-9">
+					<input type="hidden" id="inputVehicleImages" name="vehicle.vehicleImages"
+					       ng-model="dummyVehicleImages"/>
+					<carousel ng-show="vehicleImages.length > 0" interval="5000" class="vehicleManagementSlide">
+						<slide ng-repeat="vehicleImage in vehicleImages">
+							<img ng-src="{{vehicleImage.image}}" class="slide-image">
+
+							<div class="carousel-caption">
+								<button class="btn btn-danger" ng-click="removeImage(vehicleImage)"
+								        tooltip="Remove this image" tooltip-placement="left">
+									<i class="glyphicon glyphicon-remove"></i>
+								</button>
+							</div>
+						</slide>
+					</carousel>
+					<!-- TODO: How to reset the error message here? All tried solutions did not work. -->
+					<div class="errors col-sm-offset-3 col-sm-9" ng-show="!createVehicleForm['vehicle.vehicleImages'].$dirty &&
+                             createVehicleForm['vehicle.vehicleImages'].$invalid">
+                            <span ng-show="createVehicleForm['vehicle.vehicleImages'].$error.server">
+                                {{ errors['vehicle.vehicleImages'] }}
+                            </span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</tab>
+<tab heading="Image upload" select="formTabSelected(false)">
+	<div class="well" ng-if="!formVisible">
+		<!--<div class="col-sm-12">-->
+		<!--<h4>Editing vehicle: '{{ selectedVehicle.id }} {{ selectedVehicle.licenseNumber }}'</h4>-->
+		<!--</div>-->
+		<hr/>
+		<div class="col-sm-12">
+			<!--Create a file upload form with options passed in from your scope-->
+			<div data-file-upload="uploadOptions" data-ng-controller="VehicleManagementController">
+				<div class="row fileupload-buttonbar">
+					<div class="col-lg-7">
+						<!-- The file-input-button span is used to style the file input field as button -->
+                <span class="btn btn-success fileinput-button" ng-class="{disabled: disabled}">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    <span>Add files...</span>
+                    <input type="file" name="files[]" multiple ng-disabled="disabled">
+                </span>
+						<button type="button" class="btn btn-primary start" data-ng-click="submit()">
+							<i class="glyphicon glyphicon-upload"></i>
+							<span>Start upload</span>
+						</button>
+						<button type="button" class="btn btn-warning cancel" data-ng-click="cancel()">
+							<i class="glyphicon glyphicon-ban-circle"></i>
+							<span>Cancel upload</span>
+						</button>
+						<!-- The global file processing state -->
+						<span class="fileupload-process"></span>
+					</div>
+					<!-- The global progress state -->
+					<div class="col-lg-5 fade" data-ng-class="{in: active()}">
+						<!-- The global progress bar -->
+						<div class="progress progress-striped active" data-file-upload-progress="progress()">
+							<div class="progress-bar progress-bar-success" data-ng-style="{width: num + '%'}"></div>
+						</div>
+						<!-- The extended global progress state -->
+						<div class="progress-extended">&nbsp;</div>
+					</div>
+				</div>
+				<!-- The table listing the files available for upload/download -->
+				<table class="table table-striped files ng-cloak">
+					<tr data-ng-repeat="file in queue" data-ng-class="{'processing': file.$processing()}">
+						<td data-ng-switch data-on="!!file.thumbnailUrl">
+							<div class="preview" data-ng-switch-when="true">
+								<a data-ng-href="{{file.url}}" title="{{file.name}}" download="{{file.name}}"
+								   data-gallery><img
+										data-ng-src="{{file.thumbnailUrl}}" alt=""></a>
+							</div>
+							<div class="preview" data-ng-switch-default data-file-upload-preview="file"></div>
+						</td>
+						<td>
+							<p class="name" data-ng-switch data-on="!!file.url">
+                        <span data-ng-switch-when="true" data-ng-switch data-on="!!file.thumbnailUrl">
+                            <a data-ng-switch-when="true" data-ng-href="{{file.url}}" title="{{file.name}}"
+                               download="{{file.name}}" data-gallery>{{file.name}}</a>
+                            <a data-ng-switch-default data-ng-href="{{file.url}}" title="{{file.name}}"
+                               download="{{file.name}}">{{file.name}}</a>
+                        </span>
+								<span data-ng-switch-default>{{file.name}}</span>
+							</p>
+							<strong data-ng-show="file.error" class="error text-danger">{{file.error}}</strong>
+						</td>
+						<td>
+							<p class="size">{{file.size | formatFileSize}}</p>
+
+							<div class="progress progress-striped active fade"
+							     data-ng-class="{pending: 'in'}[file.$state()]"
+							     data-file-upload-progress="file.$progress()">
+								<div class="progress-bar progress-bar-success" data-ng-style="{width: num + '%'}"></div>
+							</div>
+						</td>
+						<td>
+							<button type="button" class="btn btn-primary start" data-ng-click="file.$submit()"
+							        data-ng-hide="!file.$submit || options.autoUpload"
+							        data-ng-disabled="file.$state() == 'pending' || file.$state() == 'rejected'">
+								<i class="glyphicon glyphicon-upload"></i>
+								<span>Start</span>
+							</button>
+							<button type="button" class="btn btn-warning cancel" data-ng-click="file.$cancel()"
+							        data-ng-hide="!file.$cancel">
+								<i class="glyphicon glyphicon-ban-circle"></i>
+								<span>Cancel</span>
+							</button>
+							<!--<button data-ng-controller="FileDestroyController" type="button"-->
+							<!--class="btn btn-danger destroy"-->
+							<!--data-ng-click="file.$destroy()" data-ng-hide="!file.$destroy">-->
+							<!--<i class="glyphicon glyphicon-trash"></i>-->
+							<!--<span>Delete</span>-->
+							<!--</button>-->
+						</td>
+					</tr>
+				</table>
+			</div>
+			<span ng-show="queue.length == 0" class="well-sm alert-info">
+				Uploaded images are automagically added to the vehicle in the order you upload them here!
+			</span>
+		</div>
+	</div>
+</tab>
+</tabset>
+</div>
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-default"
+	        data-ng-click="modalOptions.close()">
+		{{modalOptions.closeButtonText}}
+	</button>
+	<button class="btn btn-danger" ng-click="resetChanges()">
+		Reset
+	</button>
+	<button type="submit" class="btn btn-success"
+	        ng-click="save(createVehicleFormData)">
+		Save changes
+	</button>
+</div>
+</div>
+</div>

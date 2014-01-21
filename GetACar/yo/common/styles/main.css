@@ -8,6 +8,11 @@ body {
     height: 100%;
 }
 
+/* Hide Angular JS elements before initializing */
+.ng-cloak {
+    display: none;
+}
+
 .full-height {
     height: 100%;
 }
@@ -69,7 +74,12 @@ fieldset[disabled] .form-control.datetimepickerbox {
     height: 400px;
 }
 
-.reserveVehicleTab, .reserveVehicleTab .angular-google-map-container {
+/* Place the carousel indicators at the top, not at the bottom as default */
+.carousel-indicators {
+    top: 5px;
+}
+
+.imageMapTab, .imageMapTab .angular-google-map-container {
     height: 350px;
     overflow: hidden;
 }
@@ -127,4 +137,18 @@ hr {
 
 .text-align-left-force {
     text-align: left !important;
+}
+
+.vehicleManagementSlide .carousel-caption {
+    left: 87%;
+    padding-bottom: 0;
+    top: 0;
+}
+
+.slide-image {
+    max-height: 250px !important;
+}
+
+.no-margin {
+    margin: 0;
 }
