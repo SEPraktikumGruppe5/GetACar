@@ -2,10 +2,11 @@ angular.module('adminApp')
     .directive('vehicleListEntry', [
         function () {
             return {
-                restrict: 'E',
+                restrict: 'AE',
                 scope: {
                     vehicle: '=',
-                    onSelect: '&'
+                    onSelect: '&',
+                    selectedVehicle: '='
                 },
                 templateUrl: 'partials/vehicleListEntry.html',
                 controller: ['$scope', function ($scope) {

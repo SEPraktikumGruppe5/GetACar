@@ -21,9 +21,10 @@ public class WebModule extends ServletModule {
         filter("/").through(BaseURLRedirectFilter.class);
         bind(ImageServeServlet.class).in(Singleton.class);
         serve("/images").with(ImageServeServlet.class);
+        serve("/images/*").with(ImageServeServlet.class);
         bind(ImageUploadServlet.class).in(Singleton.class);
-        serve("/uploads/*").with(ImageUploadServlet.class);
         serve("/uploads").with(ImageUploadServlet.class);
+        serve("/uploads/*").with(ImageUploadServlet.class);
 
         /* Constants */
         if (OSUtil.isUnix()) {

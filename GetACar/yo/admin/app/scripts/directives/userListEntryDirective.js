@@ -2,10 +2,11 @@ angular.module('adminApp')
     .directive('userListEntry', [
         function () {
             return {
-                restrict: 'E',
+                restrict: 'AE',
                 scope: {
                     user: '=',
-                    onSelect: '&'
+                    onSelect: '&',
+                    selectedUser: '='
                 },
                 templateUrl: 'partials/userListEntry.html',
                 controller: ['$scope', function ($scope) {

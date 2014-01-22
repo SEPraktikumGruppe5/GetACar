@@ -3,7 +3,7 @@
 	<div class="row">
 		<div class="col-sm-12">
 			<h4 class="pull-left no-margin">Vehicles</h4>
-			<button class="btn btn-xs btn-success pull-right" ng-class="{disabled: disabled}"
+			<button class="btn btn-sm btn-success pull-right" ng-class="{disabled: disabled}"
 			        ng-click="createVehicle()">
 				<i class="glyphicon glyphicon-plus"></i>
 				<span>Vehicle</span>
@@ -11,9 +11,11 @@
 		</div>
 	</div>
 	<hr/>
-	<div ng-repeat="vehicle in vehicles">
-		<vehicle-list-entry vehicle="vehicle" on-select="onVehicleSelect(vehicle)"></vehicle-list-entry>
-	</div>
+	<ul class="nav nav-pills nav-stacked">
+		<li vehicle-list-entry ng-repeat="vehicle in vehicles" vehicle="vehicle"
+		    on-select="onVehicleSelect(vehicle)" selectedVehicle="selectedVehicle"
+		    ng-class="{active: selectedVehicle.id === vehicle.id}"></li>
+	</ul>
 </div>
 <div class="col-sm-9">
 <div ng-form="changeVehicleForm" novalidate class="form-horizontal" role="form" autocomplete="off">
