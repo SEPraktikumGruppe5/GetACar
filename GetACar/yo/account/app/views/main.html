@@ -1,20 +1,32 @@
 <div class="full-height" ng-controller="MainController">
-    <div role="navigation" class="navbar navbar-default navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <a ui-sref="login" class="navbar-brand">Get A Car</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav pull-right">
-                    <li ng-class="{active: $state.includes('login')}"><a ui-sref="login">Login</a></li>
-                    <li ng-class="{active: $state.includes('register')}"><a ui-sref="register">Register</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div id="wrap" class="container" ui-view></div>
+	<div role="navigation" class="navbar navbar-default navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<a ui-sref="login" class="navbar-brand">Get A Car</a>
+			</div>
+			<div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav pull-right">
+					<li ng-class="{active: $state.includes('login')}">
+						<a ui-sref="login">
+							<i class="glyphicon glyphicon-log-in"></i>
+							Login
+						</a>
+					</li>
+					<li ng-class="{active: $state.includes('register')}">
+						<a ui-sref="register">
+							<i class="glyphicon glyphicon-list-alt"></i>
+							Register
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div id="wrap" class="container" ui-view></div>
 
-    <div class="footer">
-        <p>♥ from your Get A Car team - Stay sober!</p>
-    </div>
+	<div class="footer">
+		<p class="pull-left">♥ from your Get A Car team - Stay sober!
+			<i class="glyphicon glyphicon-glass"></i>
+		</p>
+	</div>
 </div>

@@ -122,7 +122,7 @@
                                    gp-options="gpStartOptions" gp-lat-lng="gpStartLatLng"
                                    on-place-changed="onGPPlaceChanged(value, details)" disabled server-error/>
                             <a class="input-group-addon btn">
-                                <i class="glyphicon glyphicon-search"></i>
+                                <i class="glyphicon glyphicon-screenshot"></i>
                             </a>
                         </div>
                         <div class="errors"
@@ -146,9 +146,9 @@
                                    gp-details="gpEndDetails" gp-options="gpEndOptions"
                                    gp-lat-lng="gpEndLatLng"
                                    on-place-changed="onGPEndPlaceChanged(value, details)" server-error/>
-                            <a title="Find my location" ng-show="geolocationAvailable" ng-click="findMe()"
+                            <a tooltip="Find my location" ng-show="geolocationAvailable" ng-click="findMe()"
                                class="input-group-addon btn">
-                                <i class="glyphicon glyphicon-search"></i>
+                                <i class="glyphicon glyphicon-screenshot"></i>
                             </a>
                         </div>
                         <div class="errors"
@@ -231,11 +231,11 @@
 <hr/>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-default"
+    <button type="button" class="btn btn-danger"
             data-ng-click="modalOptions.close()">
         Cancel
     </button>
-    <button class="btn btn-primary" ng-click="reserveVehicle()">
+    <button class="btn btn-success" ng-click="reserveVehicle()">
         Reserve vehicle
     </button>
 </div>

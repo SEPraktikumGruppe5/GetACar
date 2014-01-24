@@ -67,9 +67,9 @@
 					       gp-options="gpOptions"
 					       gp-lat-lng="gpLatLng" on-place-changed="onGPPlaceChanged(value, details)"
 					       server-error/>
-					<a title="Find my location" ng-show="geolocationAvailable" ng-click="findMe()"
+					<a tooltip="Find my location" ng-show="geolocationAvailable" ng-click="findMe()"
 					   class="input-group-addon btn">
-						<i class="glyphicon glyphicon-search"></i>
+						<i class="glyphicon glyphicon-screenshot"></i>
 					</a>
 				</div>
 
@@ -195,18 +195,17 @@
 					<tr data-ng-repeat="file in queue" data-ng-class="{'processing': file.$processing()}">
 						<td data-ng-switch data-on="!!file.thumbnailUrl">
 							<div class="preview" data-ng-switch-when="true">
-								<a data-ng-href="{{file.url}}" title="{{file.name}}" download="{{file.name}}"
-								   data-gallery><img
-										data-ng-src="{{file.thumbnailUrl}}" alt=""></a>
+								<a data-ng-href="{{file.url}}" tooltip="{{file.name}}" download="{{file.name}}"
+								   data-gallery><img data-ng-src="{{file.thumbnailUrl}}" alt=""></a>
 							</div>
 							<div class="preview" data-ng-switch-default data-file-upload-preview="file"></div>
 						</td>
 						<td>
 							<p class="name" data-ng-switch data-on="!!file.url">
                         <span data-ng-switch-when="true" data-ng-switch data-on="!!file.thumbnailUrl">
-                            <a data-ng-switch-when="true" data-ng-href="{{file.url}}" title="{{file.name}}"
+                            <a data-ng-switch-when="true" data-ng-href="{{file.url}}" tooltip="{{file.name}}"
                                download="{{file.name}}" data-gallery>{{file.name}}</a>
-                            <a data-ng-switch-default data-ng-href="{{file.url}}" title="{{file.name}}"
+                            <a data-ng-switch-default data-ng-href="{{file.url}}" tooltip="{{file.name}}"
                                download="{{file.name}}">{{file.name}}</a>
                         </span>
 								<span data-ng-switch-default>{{file.name}}</span>
@@ -254,11 +253,11 @@
 </div>
 </div>
 <div class="modal-footer">
-	<button type="button" class="btn btn-default"
+	<button type="button" class="btn btn-danger"
 	        data-ng-click="modalOptions.close()">
 		{{modalOptions.closeButtonText}}
 	</button>
-	<button class="btn btn-danger" ng-click="resetChanges()">
+	<button class="btn btn-warning" ng-click="resetChanges()">
 		Reset
 	</button>
 	<button type="submit" class="btn btn-success"

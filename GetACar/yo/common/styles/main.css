@@ -152,3 +152,16 @@ hr {
 .no-margin {
     margin: 0;
 }
+
+.rounded-corners {
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.navbar-nav > li > a {
+    padding: 15px 7px;
+}
+
+.navbar-nav > li > a > .glyphicon {
+    font-size: 120%;
+}

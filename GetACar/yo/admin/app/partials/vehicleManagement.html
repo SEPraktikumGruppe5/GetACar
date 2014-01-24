@@ -77,9 +77,9 @@
 					       gp-options="gpOptions"
 					       gp-lat-lng="gpLatLng" on-place-changed="onGPPlaceChanged(value, details)"
 					       server-error/>
-					<a title="Find my location" ng-show="geolocationAvailable" ng-click="findMe()"
+					<a tooltip="Find my location" ng-show="geolocationAvailable" ng-click="findMe()"
 					   class="input-group-addon btn">
-						<i class="glyphicon glyphicon-search"></i>
+						<i class="glyphicon glyphicon-screenshot"></i>
 					</a>
 				</div>
 
@@ -162,7 +162,7 @@
 			<div class="form-group">
 				<div class="col-sm-12">
 					<div class="pull-right">
-						<button class="btn btn-danger" ng-click="resetChanges()">
+						<button class="btn btn-warning" ng-click="resetChanges()">
 							Reset
 						</button>
 						<button type="submit" class="btn btn-success"
@@ -219,7 +219,7 @@
 					<tr data-ng-repeat="file in queue" data-ng-class="{'processing': file.$processing()}">
 						<td data-ng-switch data-on="!!file.thumbnailUrl">
 							<div class="preview" data-ng-switch-when="true">
-								<a data-ng-href="{{file.url}}" title="{{file.name}}" download="{{file.name}}"
+								<a data-ng-href="{{file.url}}" tooltip="{{file.name}}" download="{{file.name}}"
 								   data-gallery><img
 										data-ng-src="{{file.thumbnailUrl}}" alt=""></a>
 							</div>
@@ -228,9 +228,9 @@
 						<td>
 							<p class="name" data-ng-switch data-on="!!file.url">
                         <span data-ng-switch-when="true" data-ng-switch data-on="!!file.thumbnailUrl">
-                            <a data-ng-switch-when="true" data-ng-href="{{file.url}}" title="{{file.name}}"
+                            <a data-ng-switch-when="true" data-ng-href="{{file.url}}" tooltip="{{file.name}}"
                                download="{{file.name}}" data-gallery>{{file.name}}</a>
-                            <a data-ng-switch-default data-ng-href="{{file.url}}" title="{{file.name}}"
+                            <a data-ng-switch-default data-ng-href="{{file.url}}" tooltip="{{file.name}}"
                                download="{{file.name}}">{{file.name}}</a>
                         </span>
 								<span data-ng-switch-default>{{file.name}}</span>
@@ -268,7 +268,7 @@
 					</tr>
 				</table>
 			</div>
-			<span ng-show="queue.length == 0" class="well-sm alert-info">
+			<span ng-show="queue.length == 0" class="alert alert-info">
 				Uploaded images are automagically added to the vehicle in the order you upload them here!
 			</span>
 		</div>

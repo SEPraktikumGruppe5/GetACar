@@ -1,208 +1,213 @@
 <div ng-controller="SearchVehiclesController" xmlns="http://www.w3.org/1999/html">
 <div class="row">
-    <div class="col-sm-5">
-        <div class="row">
-            <form name="searchVehiclesForm" novalidate class="form-vertical" role="form" autocomplete="off">
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <label for="inputPosition" class="control-label">Position
-                            <sup tooltip="This field is mandatory." class="field-required">*</sup>
-                        </label>
+	<div class="col-sm-5">
+		<div class="well">
+			<div class="row">
+				<form name="searchVehiclesForm" novalidate class="form-vertical" role="form" autocomplete="off">
+					<div class="col-sm-12">
+						<div class="form-group">
+							<label for="inputPosition" class="control-label">Position
+								<sup tooltip="This field is mandatory." class="field-required">*</sup>
+							</label>
 
-                        <div class="input-group">
-                            <!-- ng-model="dummy" so that angular.js recognizes this field as a form field! -->
-                            <input name="position" ng-model="dummy" type="text" class="form-control"
-                                   id="inputPosition"
-                                   gp-autocomplete gp-value="gpValue" gp-details="gpDetails"
-                                   gp-options="gpOptions"
-                                   gp-lat-lng="gpLatLng" on-place-changed="onGPPlaceChanged(value, details)"
-                                   server-error/>
-                            <a title="Find my location" ng-show="geolocationAvailable" ng-click="findMe()"
-                               class="input-group-addon btn">
-                                <i class="glyphicon glyphicon-search"></i>
-                            </a>
-                        </div>
+							<div class="input-group">
+								<!-- ng-model="dummy" so that angular.js recognizes this field as a form field! -->
+								<input name="position" ng-model="dummy" type="text" class="form-control"
+								       id="inputPosition"
+								       gp-autocomplete gp-value="gpValue" gp-details="gpDetails"
+								       gp-options="gpOptions"
+								       gp-lat-lng="gpLatLng" on-place-changed="onGPPlaceChanged(value, details)"
+								       server-error/>
+								<a tooltip="Find my location" ng-show="geolocationAvailable" ng-click="findMe()"
+								   class="input-group-addon btn">
+									<i class="glyphicon glyphicon-screenshot"></i>
+								</a>
+							</div>
 
-                        <div class="errors"
-                             ng-show="!searchVehiclesForm.position.$dirty && searchVehiclesForm.position.$invalid">
-                            <span ng-show="searchVehiclesForm.position.$error.server">{{ errors.position }}</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="inputRadius" class="control-label">Radius
-                                    <sup title="This field is mandatory." class="field-required">*</sup>
-                                </label>
+							<div class="errors"
+							     ng-show="!searchVehiclesForm.position.$dirty && searchVehiclesForm.position.$invalid">
+								<span ng-show="searchVehiclesForm.position.$error.server">{{ errors.position }}</span>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label for="inputRadius" class="control-label">Radius
+										<sup tooltip="This field is mandatory." class="field-required">*</sup>
+									</label>
 
-                                <div class="input-group">
-                                    <select name="radius" ng-model="searchVehiclesFormData.radius" class="form-control"
-                                            id="inputRadius" server-error>
-                                        <option value="">Please Choose</option>
-                                        <option value="1">1 Km</option>
-                                        <option value="2">2 Km</option>
-                                        <option value="5">5 Km</option>
-                                        <option value="10">10 Km</option>
-                                        <option value="25">25 Km</option>
-                                        <option value="50">50 Km</option>
-                                        <option value="100">100 Km</option>
-                                    </select>
-                                    <label for="inputRadius" class="input-group-addon">
-                                        <i class="glyphicon glyphicon-random"></i>
-                                    </label>
-                                </div>
-                                <div class="errors"
-                                     ng-show="!searchVehiclesForm.radius.$dirty && searchVehiclesForm.radius.$invalid">
-                                    <span ng-show="searchVehiclesForm.radius.$error.server">{{ errors.radius }}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="inputType" class="control-label">Type</label>
+									<div class="input-group">
+										<select name="radius" ng-model="searchVehiclesFormData.radius"
+										        class="form-control"
+										        id="inputRadius" server-error>
+											<option value="">Please Choose</option>
+											<option value="1">1 Km</option>
+											<option value="2">2 Km</option>
+											<option value="5">5 Km</option>
+											<option value="10">10 Km</option>
+											<option value="25">25 Km</option>
+											<option value="50">50 Km</option>
+											<option value="100">100 Km</option>
+										</select>
+										<label for="inputRadius" class="input-group-addon">
+											<i class="glyphicon glyphicon-random"></i>
+										</label>
+									</div>
+									<div class="errors"
+									     ng-show="!searchVehiclesForm.radius.$dirty && searchVehiclesForm.radius.$invalid">
+										<span ng-show="searchVehiclesForm.radius.$error.server">{{ errors.radius }}</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label for="inputType" class="control-label">Type</label>
 
-                                <div class="input-group">
-                                    <select name="vehicleType" ng-model="searchVehiclesFormData.vehicleType"
-                                            ng-options="vt.name for vt in vehicleTypes" class="form-control"
-                                            id="inputType" server-error>
-                                        <option value="">Please choose</option>
-                                    </select>
-                                    <label for="inputType" class="input-group-addon">
-                                        <i class="glyphicon glyphicon-plus"></i>
-                                    </label>
-                                </div>
-                                <div class="errors"
-                                     ng-show="!searchVehiclesForm.vehicleType.$dirty && searchVehiclesForm.vehicleType.$invalid">
-                                    <span ng-show="searchVehiclesForm.vehicleType.$error.server">{{ errors.vehicleType }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <label for="inputFrom" class="control-label">Start time</label>
+									<div class="input-group">
+										<select name="vehicleType" ng-model="searchVehiclesFormData.vehicleType"
+										        ng-options="vt.name for vt in vehicleTypes" class="form-control"
+										        id="inputType" server-error>
+											<option value="">Please choose</option>
+										</select>
+										<label for="inputType" class="input-group-addon">
+											<i class="glyphicon glyphicon-plus"></i>
+										</label>
+									</div>
+									<div class="errors"
+									     ng-show="!searchVehiclesForm.vehicleType.$dirty && searchVehiclesForm.vehicleType.$invalid">
+										<span ng-show="searchVehiclesForm.vehicleType.$error.server">{{ errors.vehicleType }}</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-12">
+						<div class="form-group">
+							<label for="inputFrom" class="control-label">Start time</label>
 
-                        <div class="dropdown"> <!-- TODO: Replace by Angular-UI stuff once at Bootstrap 3? -->
-                            <a class="dropdown-toggle start-time-toggle-select" role="button"
-                               data-toggle="dropdown">
-                                <div class="input-group">
-                                    <input name="startTime" id="inputFrom" type="text"
-                                           class="form-control datetimepickerbox" placeholder="Start time" readonly
-                                           data-ng-model="searchVehiclesFormData.startTime" server-error>
+							<div class="dropdown"> <!-- TODO: Replace by Angular-UI stuff once at Bootstrap 3? -->
+								<a class="dropdown-toggle start-time-toggle-select" role="button"
+								   data-toggle="dropdown">
+									<div class="input-group">
+										<input name="startTime" id="inputFrom" type="text"
+										       class="form-control datetimepickerbox" placeholder="Start time" readonly
+										       data-ng-model="searchVehiclesFormData.startTime" server-error>
                                          <span class="input-group-addon">
                                             <i class="glyphicon glyphicon-calendar"></i>
                                          </span>
-                                </div>
-                            </a>
-                            <ul class="dropdown-menu full-width" role="menu">
-                                <datetimepicker data-ng-model="searchVehiclesFormData.startTime"
-                                                data-datetimepicker-config="{dropdownSelector: '.start-time-toggle-select'}">
-                                </datetimepicker>
-                            </ul>
-                            <!-- TODO: datetimepicker options: https://github.com/dalelotts/angular-bootstrap-datetimepicker -->
-                        </div>
-                        <div class="errors"
-                             ng-show="!searchVehiclesForm.startTime.$dirty && searchVehiclesForm.startTime.$invalid">
-                            <span ng-show="searchVehiclesForm.startTime.$error.server">{{ errors.startTime }}</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <label for="inputTo" class="control-label">End time</label>
+									</div>
+								</a>
+								<ul class="dropdown-menu full-width" role="menu">
+									<datetimepicker data-ng-model="searchVehiclesFormData.startTime"
+									                data-datetimepicker-config="{dropdownSelector: '.start-time-toggle-select'}">
+									</datetimepicker>
+								</ul>
+								<!-- TODO: datetimepicker options: https://github.com/dalelotts/angular-bootstrap-datetimepicker -->
+							</div>
+							<div class="errors"
+							     ng-show="!searchVehiclesForm.startTime.$dirty && searchVehiclesForm.startTime.$invalid">
+								<span ng-show="searchVehiclesForm.startTime.$error.server">{{ errors.startTime }}</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-12">
+						<div class="form-group">
+							<label for="inputTo" class="control-label">End time</label>
 
-                        <div class="dropdown"> <!-- TODO: Replace by Angular-UI stuff once at Bootstrap 3? -->
-                            <a class="dropdown-toggle end-time-toggle-select" role="button"
-                               data-toggle="dropdown">
-                                <div class="input-group">
-                                    <input name="endTime" id="inputTo" type="text"
-                                           class="form-control datetimepickerbox" placeholder="End time"
-                                           readonly
-                                           data-ng-model="searchVehiclesFormData.endTime" server-error>
+							<div class="dropdown"> <!-- TODO: Replace by Angular-UI stuff once at Bootstrap 3? -->
+								<a class="dropdown-toggle end-time-toggle-select" role="button"
+								   data-toggle="dropdown">
+									<div class="input-group">
+										<input name="endTime" id="inputTo" type="text"
+										       class="form-control datetimepickerbox" placeholder="End time"
+										       readonly
+										       data-ng-model="searchVehiclesFormData.endTime" server-error>
                                         <span class="input-group-addon">
                                             <i class="glyphicon glyphicon-calendar"></i>
                                         </span>
-                                </div>
-                            </a>
-                            <ul class="dropdown-menu full-width" role="menu">
-                                <datetimepicker data-ng-model="searchVehiclesFormData.endTime"
-                                                data-datetimepicker-config="{dropdownSelector: '.end-time-toggle-select'}"></datetimepicker>
-                            </ul>
-                            <!-- TODO: datetimepicker options: https://github.com/dalelotts/angular-bootstrap-datetimepicker ; extend by max day min day like the original bs 3 date picker has? -->
-                        </div>
+									</div>
+								</a>
+								<ul class="dropdown-menu full-width" role="menu">
+									<datetimepicker data-ng-model="searchVehiclesFormData.endTime"
+									                data-datetimepicker-config="{dropdownSelector: '.end-time-toggle-select'}"></datetimepicker>
+								</ul>
+								<!-- TODO: datetimepicker options: https://github.com/dalelotts/angular-bootstrap-datetimepicker ; extend by max day min day like the original bs 3 date picker has? -->
+							</div>
 
-                        <div class="errors"
-                             ng-show="!searchVehiclesForm.endTime.$dirty && searchVehiclesForm.endTime.$invalid">
-                            <span ng-show="searchVehiclesForm.endTime.$error.server">{{ errors.endTime }}</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-default pull-right"
-                                        ng-click="searchVehicles(searchVehiclesFormData)">
-                                    Search
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="col-sm-7">
-        <google-map center="map.center" zoom="map.zoom" draggable="true" dragging="map.dragging"
-                    bounds="map.bounds" events="map.events" options="map.options" fit="true">
-            <div ng-repeat="vehicleSearchResultsMarker in map.vehicleSearchResultsMarkers">
-                <marker coords="vehicleSearchResultsMarker" icon="vehicleSearchResultsMarker.icon"
-                        click="vehicleSearchResultsMarker.onClicked(vehicleSearchResultsMarker)">
-                    <window show="vehicleSearchResultsMarker.showWindow"
-                            templateUrl="vehicleSearchResultsMarker.templateUrl"
-                            templateParameter="vehicleSearchResultsMarker.templateParameter">
-                    </window>
-                </marker>
-            </div>
-
-            <!-- marker for user position -->
-            <!-- can not put google.map.animations.BOUNCE , since it is not initialized yet -->
-            <div>
-                <marker coords="map.userPositionMarker" icon="map.userPositionMarker.icon"
-                        click="map.userPositionMarker.onClicked(map.userPositionMarker)">
-                    <window show="map.userPositionMarker.showWindow"
-                            closeClick="map.userPositionMarker.closeClick(map.userPositionMarker)"
-                            templateUrl="map.userPositionMarker.templateUrl"
-                            templateParameter="map.userPositionMarker.templateParameter">
-                    </window>
-                </marker>
-            </div>
-        </google-map>
-    </div>
+							<div class="errors"
+							     ng-show="!searchVehiclesForm.endTime.$dirty && searchVehiclesForm.endTime.$invalid">
+								<span ng-show="searchVehiclesForm.endTime.$error.server">{{ errors.endTime }}</span>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="col-sm-12">
+								<div class="form-group">
+									<button type="submit" class="btn btn-success pull-right"
+									        ng-click="searchVehicles(searchVehiclesFormData)">
+										<i class="glyphicon glyphicon-search"></i> Search
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-7">
+		<div class="rounded-corners">
+			<google-map center="map.center" zoom="map.zoom" draggable="true" dragging="map.dragging"
+			            bounds="map.bounds" events="map.events" options="map.options" fit="true">
+				<div ng-repeat="vehicleSearchResultsMarker in map.vehicleSearchResultsMarkers">
+					<marker coords="vehicleSearchResultsMarker" icon="vehicleSearchResultsMarker.icon"
+					        click="vehicleSearchResultsMarker.onClicked(vehicleSearchResultsMarker)">
+						<window show="vehicleSearchResultsMarker.showWindow"
+						        templateUrl="vehicleSearchResultsMarker.templateUrl"
+						        templateParameter="vehicleSearchResultsMarker.templateParameter">
+						</window>
+					</marker>
+				</div>
+				<!-- marker for user position -->
+				<!-- can not put google.map.animations.BOUNCE , since it is not initialized yet -->
+				<div>
+					<marker coords="map.userPositionMarker" icon="map.userPositionMarker.icon"
+					        click="map.userPositionMarker.onClicked(map.userPositionMarker)">
+						<window show="map.userPositionMarker.showWindow"
+						        closeClick="map.userPositionMarker.closeClick(map.userPositionMarker)"
+						        templateUrl="map.userPositionMarker.templateUrl"
+						        templateParameter="map.userPositionMarker.templateParameter">
+						</window>
+					</marker>
+				</div>
+			</google-map>
+		</div>
+	</div>
 </div>
+<hr />
 <div class="row">
-    <div class="col-sm-12">
-        <p>
+	<div class="col-sm-12">
+		<p>
 
-        <div ng-show="vehicleSearchResults.length === 0 && !searched">
-            <!-- TODO Style this one up to invite the user to search, maybe by a nice looking image or sth? -->
-            // TODO Style this one up to invite the user to search, maybe by a nice looking image or sth?
-            Search results will be presented to you down here!
-        </div>
-        <div ng-show="vehicleSearchResults.length === 0 && searched">
-            Couldn't find any vehicles matching your criteria, sorry! :(
-        </div>
-        <div ng-repeat="vehicleSearchResult in vehicleSearchResults">
-            <div>
-                <vehicle-search-result result="addSearchParametersToResult(vehicleSearchResult)"
-                                       on-reservation="onReservation(reserveVehicleFormData)">
-                </vehicle-search-result>
-            </div>
-        </div>
-        </p>
-    </div>
+		<div class="well text-center" ng-show="vehicleSearchResults.length === 0 && !searched">
+		    <span>
+				<i class="glyphicon glyphicon-search"></i>The search results will be presented to you down here!
+		    </span>
+		</div>
+		<div class="well alert alert-danger text-center" ng-show="vehicleSearchResults.length === 0 && searched">
+			Couldn't find any vehicles matching your criteria, sorry!
+		</div>
+		<div ng-repeat="vehicleSearchResult in vehicleSearchResults">
+			<div>
+				<vehicle-search-result result="addSearchParametersToResult(vehicleSearchResult)"
+				                       on-reservation="onReservation(reserveVehicleFormData)">
+				</vehicle-search-result>
+			</div>
+		</div>
+		</p>
+	</div>
 </div>
 </div>
