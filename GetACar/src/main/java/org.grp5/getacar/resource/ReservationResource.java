@@ -34,6 +34,16 @@ public class ReservationResource {
     }
 
     @GET
+    @Path("/")
+    @Produces(MediaType.APPLICATION_JSON)
+    @LogInvocation
+    public Response getReservations() {
+        final ReservationDAO reservationDAO = reservationDAOProvider.get();
+        return Response.status(Response.Status.OK).entity(Collections.singletonMap("reservations",
+                reservationDAO.findAll())).build();
+    }
+
+    @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @RequiresAuthentication
@@ -53,18 +63,8 @@ public class ReservationResource {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
 
-        return Response.status(Response.Status.OK).entity(Collections.singletonMap("reservation", // Respond with 302?
+        return Response.status(Response.Status.OK).entity(Collections.singletonMap("reservation",
                 reservation)).build();
-    }
-
-    @GET
-    @Path("/")
-    @Produces(MediaType.APPLICATION_JSON)
-    @LogInvocation
-    public Response getReservations() {
-        final ReservationDAO reservationDAO = reservationDAOProvider.get();
-        return Response.status(Response.Status.OK).entity(Collections.singletonMap("reservations",
-                reservationDAO.findAll())).build();
     }
 
     @GET
@@ -111,7 +111,7 @@ public class ReservationResource {
      *
      * @return The logged in user or null if the user is not logged in.
      */
-    private User getLoggedInUser() {
+    public User getLoggedInUser() {
         final UserDAO userDAO = userDAOProvider.get();
         return userDAO.findByLoginName((String) SecurityUtils.getSubject().getPrincipal());
     }

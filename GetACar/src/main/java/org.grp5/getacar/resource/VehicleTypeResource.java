@@ -24,23 +24,6 @@ public class VehicleTypeResource {
         this.vehicleTypeDAOProvider = vehicleTypeDAOProvider;
     }
 
-    public void addVehicleType(VehicleType vehicleType) {
-
-    }
-
-    public void changeVehicleType(VehicleType vehicleType) {
-
-    }
-
-    @GET
-    @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    @LogInvocation
-    public VehicleType getVehicleType(@PathParam("id") Integer id) {
-        final VehicleTypeDAO vehicleTypeDAO = vehicleTypeDAOProvider.get();
-        return vehicleTypeDAO.find(id);
-    }
-
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
@@ -51,7 +34,21 @@ public class VehicleTypeResource {
                 vehicleTypeDAO.findAll())).build();
     }
 
-    public void removeVehicleType() {
+    @GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @LogInvocation
+    public Response getVehicleType(@PathParam("id") Integer id) {
+        final VehicleTypeDAO vehicleTypeDAO = vehicleTypeDAOProvider.get();
 
+        final VehicleType vehicleType = vehicleTypeDAO.find(id);
+
+        // vehicle type exists?
+        if (vehicleType == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        return Response.status(Response.Status.OK).entity(Collections.singletonMap("vehicleType",
+                vehicleType)).build();
     }
 }

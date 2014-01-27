@@ -21,7 +21,7 @@ import javax.validation.constraints.NotNull;
 )
 public class SearchVehiclesForm {
 
-    private Position position;
+    private Position position = new Position();
     private Integer radius;
     private VehicleType vehicleType;
     private DateTime startTime;

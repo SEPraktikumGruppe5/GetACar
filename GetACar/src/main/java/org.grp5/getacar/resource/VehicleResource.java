@@ -138,6 +138,12 @@ public class VehicleResource {
     public Response getVehicle(@PathParam("id") Integer id) {
         final VehicleDAO vehicleDAO = vehicleDAOProvider.get();
         final Vehicle vehicle = vehicleDAO.find(id);
+
+        // vehicle exists?
+        if (vehicle == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
         return Response.status(OK).entity(Collections.singletonMap("vehicle", vehicle)).build();
     }
 
@@ -179,7 +185,7 @@ public class VehicleResource {
         return Response.status(OK).entity(vehicleSearchResults).build();
     }
 
-    private boolean imageExists(String imageName) {
+    public boolean imageExists(String imageName) {
         if (Strings.isNullOrEmpty(imageName)) {
             return false;
         }

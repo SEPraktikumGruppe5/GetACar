@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
-    <persistence-unit name="GAC_PU" transaction-type="RESOURCE_LOCAL">
+    <persistence-unit name="GAC_TEST_PU" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <class>org.grp5.getacar.persistence.entity.Reservation</class>
+        <class>org.grp5.getacar.persistence.entity.Role</class>
+        <class>org.grp5.getacar.persistence.entity.User</class>
+        <class>org.grp5.getacar.persistence.entity.Vehicle</class>
+        <class>org.grp5.getacar.persistence.entity.VehicleImage</class>
+        <class>org.grp5.getacar.persistence.entity.VehicleType</class>
         <properties>
             <property name="hibernate.hbm2ddl.auto" value="validate"/>
             <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/getacar_test"/>

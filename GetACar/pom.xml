@@ -26,6 +26,10 @@
         <jackson-datatype-joda.version>2.1.2</jackson-datatype-joda.version>
         <joda-time.version>2.3</joda-time.version>
         <usertype.core.version>3.0.0.GA</usertype.core.version>
+        <org.apache.onami.test.version>1.4.0-incubating</org.apache.onami.test.version>
+        <mockito-core.version>1.9.5</mockito-core.version>
+        <json.version>20090211</json.version>
+        <commons-fileupload.version>1.2.2</commons-fileupload.version>
 
         <!-- Standard encoding -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -92,13 +96,6 @@
             <artifactId>org.apache.onami.logging.slf4j</artifactId>
             <version>${org.apache.onami.logging.slf4j.version}</version>
             <scope>compile</scope>
-        </dependency>
-        <!-- JUnit -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${jUnit.version}</version>
-            <scope>test</scope>
         </dependency>
         <!-- Shiro -->
         <dependency>
@@ -180,23 +177,42 @@
             <artifactId>joda-time</artifactId>
             <version>${joda-time.version}</version>
         </dependency>
-
+        <!-- imgscalr -->
         <dependency>
             <groupId>org.imgscalr</groupId>
             <artifactId>imgscalr-lib</artifactId>
             <version>4.2</version>
         </dependency>
-
+        <!-- Apache commons fileupload -->
         <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
-            <version>1.2.2</version>
+            <version>${commons-fileupload.version}</version>
         </dependency>
-
+        <!-- JSON -->
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>20090211</version>
+            <version>${json.version}</version>
+        </dependency>
+        <!-- JUnit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${jUnit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Mockito -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito-core.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.onami</groupId>
+            <artifactId>org.apache.onami.test</artifactId>
+            <version>${org.apache.onami.test.version}</version>
         </dependency>
     </dependencies>
 
@@ -223,18 +239,6 @@
                         <configuration>
                             <skip>true</skip>
                         </configuration>
-                        <!--<executions>-->
-                        <!--<execution>-->
-                        <!--<id>surefire-it</id>-->
-                        <!--<phase>integration-test</phase>-->
-                        <!--<goals>-->
-                        <!--<goal>test</goal>-->
-                        <!--</goals>-->
-                        <!--<configuration>-->
-                        <!--<skip>false</skip>-->
-                        <!--</configuration>-->
-                        <!--</execution>-->
-                        <!--</executions>-->
                     </plugin>
                     <plugin>
                         <artifactId>maven-war-plugin</artifactId>
@@ -291,7 +295,7 @@
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
                         <configuration>
-                            <skip>true</skip>
+                            <skip>false</skip>
                         </configuration>
                         <!--<executions>-->
                         <!--<execution>-->
@@ -362,15 +366,21 @@
                                 </resource>
                                 <!-- Uglify does not work for jquery-file-upload somehow so we keep it beautifully -->
                                 <resource>
-                                    <directory>${yeoman-admin-project.directory}/app/bower_components/jquery-file-upload/js</directory>
+                                    <directory>
+                                        ${yeoman-admin-project.directory}/app/bower_components/jquery-file-upload/js
+                                    </directory>
                                     <targetPath>bower_components/jquery-file-upload/js</targetPath>
                                 </resource>
                                 <resource>
-                                    <directory>${yeoman-admin-project.directory}/app/bower_components/blueimp-load-image/js</directory>
+                                    <directory>
+                                        ${yeoman-admin-project.directory}/app/bower_components/blueimp-load-image/js
+                                    </directory>
                                     <targetPath>bower_components/blueimp-load-image/js</targetPath>
                                 </resource>
                                 <resource>
-                                    <directory>${yeoman-admin-project.directory}/app/bower_components/blueimp-canvas-to-blob/js</directory>
+                                    <directory>
+                                        ${yeoman-admin-project.directory}/app/bower_components/blueimp-canvas-to-blob/js
+                                    </directory>
                                     <targetPath>bower_components/blueimp-canvas-to-blob/js</targetPath>
                                 </resource>
                             </webResources>

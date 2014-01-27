@@ -5,7 +5,6 @@ import com.google.inject.Injector;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.persist.PersistFilter;
-import com.google.inject.persist.jpa.JpaPersistModule;
 import com.google.inject.servlet.ServletModule;
 import org.grp5.getacar.persistence.dao.*;
 import org.grp5.getacar.persistence.validation.InjectingConstraintValidationFactory;
@@ -27,8 +26,6 @@ public class PersistenceModule extends ServletModule {
 
     @Override
     protected void configureServlets() {
-        install(new JpaPersistModule("GAC_PU"));
-
         /* IMPORTANT: Has to be the first filter */
         filter("/*").through(PersistFilter.class);
 
@@ -53,7 +50,8 @@ public class PersistenceModule extends ServletModule {
     public ValidatorFactory getValidatorFactory(Injector injector) {
         final Configuration<?> configure = Validation.byDefaultProvider().configure();
         return configure.messageInterpolator(configure.getDefaultMessageInterpolator())
-                .constraintValidatorFactory(new InjectingConstraintValidationFactory(injector)).buildValidatorFactory();
+                .constraintValidatorFactory(new InjectingConstraintValidationFactory(injector))
+                .buildValidatorFactory();
     }
 
     /**

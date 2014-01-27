@@ -165,3 +165,7 @@ hr {
 .navbar-nav > li > a > .glyphicon {
     font-size: 120%;
 }
+
+.footer .glyphicon.glyphicon-glass {
+    font-size: 80%;
+}

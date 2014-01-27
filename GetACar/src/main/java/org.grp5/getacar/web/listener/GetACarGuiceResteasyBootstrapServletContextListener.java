@@ -3,9 +3,10 @@ package org.grp5.getacar.web.listener;
 import com.google.common.collect.Lists;
 import com.google.inject.Module;
 import com.google.inject.matcher.Matchers;
+import com.google.inject.persist.jpa.JpaPersistModule;
 import org.apache.onami.logging.slf4j.Slf4jLoggingModule;
-import org.grp5.getacar.persistence.guice.PersistenceModule;
 import org.grp5.getacar.log.guice.LogModule;
+import org.grp5.getacar.persistence.guice.PersistenceModule;
 import org.grp5.getacar.resource.guice.ResourcesModule;
 import org.grp5.getacar.security.guice.SecurityModule;
 import org.grp5.getacar.service.guice.ServicesModule;
@@ -24,8 +25,8 @@ public class GetACarGuiceResteasyBootstrapServletContextListener extends
 
     @Override
     protected List<Module> getModules(ServletContext context) {
-        return Lists.newArrayList(new PersistenceModule(), new ResourcesModule(), new ServicesModule(),
-                new SecurityModule(context), new Slf4jLoggingModule(Matchers.any()), new LogModule(),
-                new WebModule());
+        return Lists.newArrayList(new JpaPersistModule("GAC_PU"), new PersistenceModule(), new ResourcesModule(),
+                new ServicesModule(), new SecurityModule(context), new Slf4jLoggingModule(Matchers.any()),
+                new LogModule(), new WebModule());
     }
 }

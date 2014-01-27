@@ -77,7 +77,7 @@ public class UserResource {
         final User user = changeUserForm.getUser();
         final UserDAO userDAO = userDAOProvider.get();
         // needed for some password-specific checks
-        final User oldStateUser = userDAO.find(user.getId());
+        final User oldStateUser = userDAO.findCurrentDbStateInstance(user.getId());
 
         // set old passwords if passwords have not been changed
         if (Strings.isNullOrEmpty(user.getPassword())) {
@@ -110,6 +110,12 @@ public class UserResource {
     public Response getUser(@PathParam("id") Integer id) {
         final UserDAO userDAO = userDAOProvider.get();
         final User user = userDAO.find(id);
+
+        // user exists
+        if (user == null) {
+            return Response.status(NOT_FOUND).build();
+        }
+
         return Response.status(OK).entity(Collections.singletonMap("user", user)).build();
     }
 
@@ -164,15 +170,13 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     @LogInvocation
     public Response registerUser(RegisterForm registerForm) {
-        validationHelper.validateAndThrow(registerForm);
         final UserDAO userDAO = userDAOProvider.get();
         final User user = registerForm.getUser();
         user.setActive(false);
         final RoleDAO roleDAO = roleDAOProvider.get();
+        user.getRoles().clear();
         user.getRoles().add(roleDAO.findByName(UserRole.USER.getNameInDB()));
-        // validate early so that we can match the password with the password repetition before overwriting them
-        // with the encrypted passwords
-//        validationHelper.validateAndThrow(user); // Should already be validated!
+        validationHelper.validateAndThrow(registerForm);
         user.setPassword(encryptPassword(user.getPassword()));
         user.setPasswordRepeat(user.getPassword());
         userDAO.create(user);
@@ -193,7 +197,7 @@ public class UserResource {
      * @throws MalformedURLException If anything goes wrong while creating the URL
      * @throws URISyntaxException    If anything goes wrong while creating the URL
      */
-    private Response createRedirectResponse() throws MalformedURLException, URISyntaxException {
+    public Response createRedirectResponse() throws MalformedURLException, URISyntaxException {
         final HttpServletRequest request = servletRequestProvider.get();
         final SavedRequest savedRequest = WebUtils.getAndClearSavedRequest(request);
         URL newURL;
