@@ -287,6 +287,13 @@ module.exports = function (grunt) {
                             'images/{,*/}*.{webp}',
                             'fonts/*'
                         ]
+                    },
+                    {
+                        // copy over common images
+                        expand: true,
+                        cwd: '../common',
+                        src: ['images/*.*'],
+                        dest: '<%= yeoman.dist %>'
                     }
                 ]
             },

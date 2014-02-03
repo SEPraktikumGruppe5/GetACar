@@ -87,6 +87,12 @@ angular.module('adminApp')
                 $scope.formVisible = selected;
                 if ($scope.formVisible) {
                     $scope.queue = [];
+                    if ($scope.createVehicleFormData.vehicle) {
+                        $scope.gpLatLng = {
+                            lat: $scope.createVehicleFormData.vehicle.initialLatitude,
+                            lng: $scope.createVehicleFormData.vehicle.initialLongitude
+                        };
+                    }
                 }
             };
 

@@ -1,6 +1,7 @@
 angular.module('mainApp')
     .controller('SearchVehiclesController', ['$scope', 'VehicleTypeService', 'VehicleService', '$filter', '$window',
-        function ($scope, VehicleTypeService, VehicleService, $filter, $window) {
+        '$state',
+        function ($scope, VehicleTypeService, VehicleService, $filter, $window, $state) {
 
             $scope.searched = false;
             $scope.searchVehiclesFormData = {
@@ -250,7 +251,8 @@ angular.module('mainApp')
             };
             $scope.onReservation = function (reserveVehicleFormData) {
                 $scope.searchVehicles($scope.searchVehiclesFormData);
-                // TODO: Nice modal with details in it
-                $window.alert(JSON.stringify(reserveVehicleFormData));
+                if ($window.confirm('Show the reservation now?')) {
+                    $state.go('reservations');
+                }
             };
         }]);

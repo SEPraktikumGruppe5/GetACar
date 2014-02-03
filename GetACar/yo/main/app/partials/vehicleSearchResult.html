@@ -8,11 +8,6 @@
         </div>
         <div class="col-sm-6">
             <div class="pull-right" tooltip="Distance">
-                <!--<span>--> <!-- TODO: Place the id somewhere? -->
-                <!--<strong>-->
-                <!--#{{result.vehicle.id}}-->
-                <!--</strong>-->
-                <!--</span>-->
                 <i class="glyphicon glyphicon-random"></i>
                 <span>
                     {{ result.distance | number:1 }} Km
@@ -53,7 +48,6 @@
         </div>
         <div class="col-sm-4">
             <img class="img-thumbnail" ng-src="../images?image={{ result.vehicle.vehicleImages[0].fileName }}">
-            <!--Space for the images / the cover image-->
         </div>
     </div>
     <hr/>

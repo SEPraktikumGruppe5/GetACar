@@ -5,13 +5,16 @@ import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.persist.Transactional;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.grp5.getacar.log.LogInvocation;
+import org.grp5.getacar.persistence.dao.UserDAO;
 import org.grp5.getacar.persistence.dao.VehicleDAO;
 import org.grp5.getacar.persistence.dao.VehicleImageDAO;
 import org.grp5.getacar.persistence.dto.VehicleSearchResult;
 import org.grp5.getacar.persistence.dto.VehicleSearchResults;
+import org.grp5.getacar.persistence.entity.User;
 import org.grp5.getacar.persistence.entity.Vehicle;
 import org.grp5.getacar.persistence.entity.VehicleImage;
 import org.grp5.getacar.persistence.validation.ValidationHelper;
@@ -19,7 +22,9 @@ import org.grp5.getacar.resource.form.ChangeVehicleForm;
 import org.grp5.getacar.resource.form.CreateVehicleForm;
 import org.grp5.getacar.resource.form.Position;
 import org.grp5.getacar.resource.form.SearchVehiclesForm;
+import org.grp5.getacar.service.RSSFeed;
 import org.grp5.getacar.service.TimeSimulator;
+import org.grp5.getacar.service.util.FeedMessage;
 import org.grp5.getacar.web.guice.annotation.AbsoluteImagePath;
 
 import javax.ws.rs.*;
@@ -39,18 +44,23 @@ public class VehicleResource {
     private final String absoluteImagePath;
     private final Provider<VehicleDAO> vehicleDAOProvider;
     private final Provider<VehicleImageDAO> vehicleImageDAOProvider;
+    private final Provider<UserDAO> userDAOProvider;
     private final Provider<TimeSimulator> timeSimulatorProvider;
     private final ValidationHelper validationHelper;
+    private final RSSFeed rssFeed;
 
     @Inject
     public VehicleResource(@AbsoluteImagePath String absoluteImagePath, Provider<VehicleDAO> vehicleDAOProvider,
                            Provider<VehicleImageDAO> vehicleImageDAOProvider,
-                           Provider<TimeSimulator> timeSimulatorProvider, ValidationHelper validationHelper) {
+                           Provider<UserDAO> userDAOProvider, Provider<TimeSimulator> timeSimulatorProvider,
+                           ValidationHelper validationHelper, RSSFeed rssFeed) {
         this.absoluteImagePath = absoluteImagePath;
         this.vehicleDAOProvider = vehicleDAOProvider;
         this.vehicleImageDAOProvider = vehicleImageDAOProvider;
+        this.userDAOProvider = userDAOProvider;
         this.timeSimulatorProvider = timeSimulatorProvider;
         this.validationHelper = validationHelper;
+        this.rssFeed = rssFeed;
     }
 
     @POST
@@ -60,7 +70,7 @@ public class VehicleResource {
     @LogInvocation
     @RequiresRoles("Admin")
     @Transactional(rollbackOn = {Exception.class})
-    public Response addVehicle(CreateVehicleForm createVehicleForm) {
+    public Response addVehicle(CreateVehicleForm createVehicleForm) throws Exception {
         //  validate the input
         validationHelper.validateAndThrow(createVehicleForm);
 
@@ -78,7 +88,27 @@ public class VehicleResource {
 
         vehicleDAO.create(vehicle);
 
+        addFeedMessage(vehicle);
+
         return Response.status(CREATED).build();
+    }
+
+    public void addFeedMessage(Vehicle vehicle) throws Exception {
+        rssFeed.addFeedMessage(createFeedMessage(vehicle));
+    }
+
+    private FeedMessage createFeedMessage(Vehicle vehicle) {
+        final User loggedInUser = getLoggedInUser();
+        final FeedMessage feedMessage = new FeedMessage();
+        feedMessage.setAuthor(loggedInUser.getFirstName() + " " + loggedInUser.getLastName());
+        feedMessage.setDescription("A new " + vehicle.getVehicleType().getName() +
+                " has been added!<br/><br/>" +
+                "Description:<br/>" +
+                vehicle.getComment());
+        feedMessage.setGuid(vehicle.getLicenseNumber());
+        feedMessage.setTitle("A shiny new vehicle is available");
+        feedMessage.setLink("http://localhost:8080/getacar/app/#/vehicles/" + String.valueOf(vehicle.getId()));
+        return feedMessage;
     }
 
     @POST
@@ -191,5 +221,14 @@ public class VehicleResource {
         }
         final File file = new File(absoluteImagePath + imageName);
         return file.exists();
+    }
+
+    /**
+     * Gets the logged in {@link org.grp5.getacar.persistence.entity.User}.
+     *
+     * @return The logged in user or null if the user is not logged in.
+     */
+    private User getLoggedInUser() {
+        return userDAOProvider.get().findByLoginName((String) SecurityUtils.getSubject().getPrincipal());
     }
 }

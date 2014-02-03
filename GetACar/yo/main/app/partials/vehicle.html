@@ -1,0 +1,60 @@
+<div class="well" ng-controller="VehicleController" xmlns="http://www.w3.org/1999/html">
+	<div class="row">
+		<div class="col-sm-12">
+			<!--<a class="btn btn-success pull-left" ui-sref="reservations"><strong>←</strong> Overview</a>-->
+            <span class="pull-right">
+                <strong>
+	                Vehicle ID: {{ vehicle.id }}
+                </strong>
+            </span>
+		</div>
+	</div>
+	<hr/>
+	<div class="row">
+		<div class="col-sm-7">
+			<div class="row">
+				<label class="col-sm-4">Type</label>
+
+				<div class="col-sm-8">
+					<div>
+                        <span tooltip="{{vehicle.vehicleType.name}} - {{vehicle.vehicleType.description}}"
+                              tooltip-placement="right">
+                            <img ng-src="{{ getIconUrl(vehicle) }}">
+                        </span>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<label class="col-sm-4">License number</label>
+
+				<div class="col-sm-8">
+					<div>
+						{{ vehicle.licenseNumber }}
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<label class="col-sm-4">Additional information</label>
+
+				<div class="col-sm-8">
+					<div>
+						{{vehicle.comment}}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-5">
+			<carousel interval="5000">
+				<slide ng-repeat="vehicleImage in vehicleImages">
+					<img ng-src="{{vehicleImage.image}}" class="slide-image">
+
+					<!--<div class="carousel-caption">-->
+					<!--<h4>Slide {{$index}}</h4>-->
+
+					<!--<p>{{slide.text}}</p>-->
+					<!--</div>-->
+				</slide>
+			</carousel>
+		</div>
+	</div>
+</div>

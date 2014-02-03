@@ -1,5 +1,5 @@
 angular.module('accountApp')
-    .controller('MainController', ['$scope',
-        function ($scope) {
+    .controller('MainController', ['$scope', '$rootScope',
+        function ($scope, $rootScope) {
             // Nothing right now!
         }]);

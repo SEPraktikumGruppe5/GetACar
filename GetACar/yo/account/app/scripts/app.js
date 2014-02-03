@@ -1,10 +1,22 @@
 angular.module('accountApp', [
         'gacCommon'
     ])
-    .config(function ($stateProvider, $urlRouterProvider) {
+    .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
+        $locationProvider.html5Mode(false).hashPrefix('');
+
         /* Routes */
-        // For any unmatched url, redirect to /login
-        $urlRouterProvider.otherwise('/login');
+        $urlRouterProvider.otherwise(function ($rootScope, $location) {
+//            RedirectService.setUnresolvedPath($location.path());
+//            $rootScope.unresolvedLocation = {
+//                path: $location.path()
+//            };
+//            console.log($rootScope.unresolvedLocation);
+            var unresolvedPath = $location.path();
+            $location.path('login');
+            if (unresolvedPath && unresolvedPath !== '') {
+                $location.search('redirect', unresolvedPath);
+            }
+        });
         // Now set up the states
         $stateProvider
             .state('main', {
@@ -13,7 +25,7 @@ angular.module('accountApp', [
                 controller: 'MainController'
             })
             .state('login', {
-                url: 'login?justRegistered',
+                url: 'login?justRegistered&redirect',
                 parent: 'main',
                 templateUrl: 'partials/login.html',
                 controller: 'LoginController'

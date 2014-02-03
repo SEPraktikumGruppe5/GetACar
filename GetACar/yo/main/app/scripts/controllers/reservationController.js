@@ -105,6 +105,11 @@ angular.module('mainApp')
                         // TODO: Check status code
                         $scope.reservation = successResponse.data.reservation;
 
+                        $scope.reservationStartPosition = {
+                            lat: $scope.reservation.startLatitude,
+                            lng: $scope.reservation.startLongitude
+                        };
+
                         $scope.reservationEndPosition = {
                             lat: $scope.reservation.endLatitude,
                             lng: $scope.reservation.endLongitude
@@ -113,10 +118,10 @@ angular.module('mainApp')
                         $scope.map.center.latitude = $scope.reservation.endLatitude; // TODO: Use start coordinate here?
                         $scope.map.center.longitude = $scope.reservation.endLongitude;
 
-//                        $scope.map.startPositionMarker.latitude = $scope.reservation.startLatitude; // TODO: Once available
-//                        $scope.map.startPositionMarker.longitude = $scope.reservation.startLongitude;
                         $scope.map.startPositionMarker.icon = 'images/map_icons/' +
                             $scope.reservation.vehicle.vehicleType.icon; // TODO: Inject path
+                        $scope.map.startPositionMarker.latitude = $scope.reservation.startLatitude;
+                        $scope.map.startPositionMarker.longitude = $scope.reservation.startLongitude;
 
                         $scope.map.endPositionMarker.latitude = $scope.reservation.endLatitude;
                         $scope.map.endPositionMarker.longitude = $scope.reservation.endLongitude;

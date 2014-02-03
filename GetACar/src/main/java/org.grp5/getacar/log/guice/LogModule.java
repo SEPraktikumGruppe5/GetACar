@@ -12,6 +12,8 @@ public class LogModule extends AbstractModule {
 
     @Override
     protected void configure() {
+        bindListener(Matchers.any(), new Slf4JTypeListener());
+
         final InvocationLogger invocationLogger = new InvocationLogger();
         requestInjection(invocationLogger);
         bindInterceptor(Matchers.any(), Matchers.annotatedWith(LogInvocation.class), invocationLogger);

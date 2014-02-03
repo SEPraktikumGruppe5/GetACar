@@ -149,6 +149,7 @@ module.exports = function (grunt) {
                         '<%= yeoman.dist %>/styles/{,*/}*.css',
                         '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
                         '!<%= yeoman.dist %>/images/map_icons/**',
+                        '!<%= yeoman.dist %>/images/home_slides/**',
                         '<%= yeoman.dist %>/styles/fonts/*'
                     ]
                 }
@@ -287,6 +288,13 @@ module.exports = function (grunt) {
                             'images/{,*/}*.{webp}',
                             'fonts/*'
                         ]
+                    },
+                    {
+                        // copy over common images
+                        expand: true,
+                        cwd: '../common',
+                        src: ['images/*.*'],
+                        dest: '<%= yeoman.dist %>'
                     }
                 ]
             },

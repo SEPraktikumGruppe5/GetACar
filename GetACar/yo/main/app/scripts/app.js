@@ -36,5 +36,11 @@ angular.module('mainApp', [
                 parent: 'main',
                 templateUrl: 'partials/reservation.html',
                 controller: 'ReservationController'
+            })
+            .state('vehicles', {
+                url: 'vehicles/:id', // url: 'login?justRegistered', TODO: Parameters but not like that but mandatory
+                parent: 'main',
+                templateUrl: 'partials/vehicle.html',
+                controller: 'VehicleController'
             });
     });

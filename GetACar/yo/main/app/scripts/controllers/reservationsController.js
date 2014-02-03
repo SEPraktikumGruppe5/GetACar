@@ -18,6 +18,7 @@ angular.module('mainApp')
             ReservationService.reservationsByUser(function (successResponse) {
                 if (successResponse.data.reservations) {
                     $scope.reservations = [];
+                    $scope.reservationStartPositions = [];
                     $scope.reservationEndPositions = [];
                     var count = 0;
                     angular.forEach(successResponse.data.reservations, function (reservation) {
@@ -26,10 +27,16 @@ angular.module('mainApp')
                         currentReservation.count = count;
 
                         //noinspection JSUnresolvedVariable
+                        $scope.reservationStartPositions[count] = {
+                            lat: reservation.startLatitude,
+                            lng: reservation.startLongitude
+                        };
+                        //noinspection JSUnresolvedVariable
                         $scope.reservationEndPositions[count] = {
                             lat: reservation.endLatitude,
                             lng: reservation.endLongitude
                         };
+
                         count = count + 1;
                     });
                 }

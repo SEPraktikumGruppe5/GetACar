@@ -40,6 +40,8 @@ public class Reservation extends BaseEntity {
     private Vehicle vehicle;
     private DateTime startTime;
     private DateTime endTime;
+    private BigDecimal startLongitude;
+    private BigDecimal startLatitude;
     private BigDecimal endLongitude;
     private BigDecimal endLatitude;
 
@@ -90,6 +92,28 @@ public class Reservation extends BaseEntity {
 
     public void setEndTime(DateTime endTime) {
         this.endTime = endTime;
+    }
+
+    @Basic(optional = false)
+    @Column(name = "re_start_breitengrad", columnDefinition = "decimal(10,7)", nullable = false, updatable = true)
+    @NotNull
+    public BigDecimal getStartLatitude() {
+        return startLatitude;
+    }
+
+    public void setStartLatitude(BigDecimal startLatitude) {
+        this.startLatitude = startLatitude;
+    }
+
+    @Basic(optional = false)
+    @Column(name = "re_start_laengengrad", columnDefinition = "decimal(10,7)", nullable = false, updatable = true)
+    @NotNull
+    public BigDecimal getStartLongitude() {
+        return startLongitude;
+    }
+
+    public void setStartLongitude(BigDecimal startLongitude) {
+        this.startLongitude = startLongitude;
     }
 
     @Basic(optional = false)

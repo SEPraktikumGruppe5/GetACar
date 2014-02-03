@@ -56,7 +56,7 @@ public class ReservationResourceIntegrationTest extends BaseResourceIntegrationT
         Map<String, List<Reservation>> reservationsMap = (Map<String, List<Reservation>>) response.getEntity();
         final List<Reservation> reservations = reservationsMap.get("reservations");
         Assert.assertEquals("Wrong status code", 200, response.getStatus());
-        Assert.assertEquals("Wrong number of reservations", 8, reservations.size());
+        Assert.assertEquals("Wrong number of reservations", 10, reservations.size());
     }
 
     @Test
@@ -81,7 +81,7 @@ public class ReservationResourceIntegrationTest extends BaseResourceIntegrationT
         Map<String, List<Reservation>> reservationsMap = (Map<String, List<Reservation>>) response.getEntity();
         final List<Reservation> reservations = reservationsMap.get("reservations");
         Assert.assertEquals("Wrong status code", 200, response.getStatus());
-        Assert.assertEquals("Wrong number of reservations", 4, reservations.size());
+        Assert.assertEquals("Wrong number of reservations", 6, reservations.size());
     }
 
     @Test

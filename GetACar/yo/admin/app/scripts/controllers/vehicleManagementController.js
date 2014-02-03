@@ -83,19 +83,25 @@ angular.module('adminApp')
                 });
             });
 
-            $scope.formVisible = false;
-            $scope.formTabSelected = function (selected) {
-                $scope.formVisible = selected;
-                if ($scope.formVisible) {
-                    $scope.queue = [];
-                }
-            };
-
             // bindings of the gp-autocomplete-box
             $scope.gpOptions = undefined;
             $scope.gpValue = undefined;
             $scope.gpDetails = undefined;
             $scope.gpLatLng = undefined;
+
+            $scope.formVisible = false;
+            $scope.formTabSelected = function (selected) {
+                $scope.formVisible = selected;
+                if ($scope.formVisible) {
+                    $scope.queue = [];
+                    if ($scope.changeVehicleFormData.vehicle) {
+                        $scope.gpLatLng = {
+                            lat: $scope.changeVehicleFormData.vehicle.initialLatitude,
+                            lng: $scope.changeVehicleFormData.vehicle.initialLongitude
+                        };
+                    }
+                }
+            };
 
             // callback of gp-autocomplete box
             $scope.onGPPlaceChanged = function (val, details) {

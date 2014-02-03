@@ -1,42 +1,46 @@
 <div class="full-height" ng-controller="MainController">
-    <div role="navigation" class="navbar navbar-default navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <a href="../app/" class="navbar-brand" tooltip="Go to the main application...">Get A Car</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav pull-right">
-                    <li ng-class="{active: $state.includes('userManagement')}">
-	                    <a ui-sref="userManagement">
-		                    <i class="glyphicon glyphicon-user"></i>
-		                    User management
-	                    </a>
-                    </li>
-                    <li ng-class="{active: $state.includes('vehicleManagement')}">
-	                    <a ui-sref="vehicleManagement">
-		                    <i class="glyphicon glyphicon-road"></i>
-		                    Vehicle management
-	                    </a>
-                    </li>
-	                <li>
-		                <a href="../account/logout">
-			                <i class="glyphicon glyphicon-log-out"></i>
-			                <span>Log out</span>
-		                </a>
-	                </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div id="wrap" class="container" ui-view></div>
+	<div role="navigation" class="navbar navbar-default navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<a href="../app/" class="brand-logo" tooltip="Go to the main application..." tooltip-placement="bottom">
+					<img src="images/get_a_car_logo.png" alt="Get A Car"/>
+				</a>
+			</div>
 
-    <div class="footer">
-        <p class="pull-left">♥ from your Get A Car team - Stay sober!
-	        <i class="glyphicon glyphicon-glass"></i>
-        </p>
+			</a>
+			<div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav pull-right">
+					<li ng-class="{active: $state.includes('userManagement')}">
+						<a ui-sref="userManagement">
+							<i class="glyphicon glyphicon-user"></i>
+							User management
+						</a>
+					</li>
+					<li ng-class="{active: $state.includes('vehicleManagement')}">
+						<a ui-sref="vehicleManagement">
+							<i class="glyphicon glyphicon-road"></i>
+							Vehicle management
+						</a>
+					</li>
+					<li>
+						<a href="../account/logout">
+							<i class="glyphicon glyphicon-log-out"></i>
+							<span>Log out</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div id="wrap" class="container" ui-view></div>
 
-        <div class="pull-right" tooltip="This is the simulated time" tooltip-placement="top">
-            <gac-Clock></gac-Clock>
-        </div>
-    </div>
+	<div class="footer">
+		<p class="pull-left">♥ from your Get A Car team - Stay sober!
+			<i class="glyphicon glyphicon-glass"></i>
+		</p>
+
+		<div class="pull-right" tooltip="This is the simulated time" tooltip-placement="top">
+			<gac-Clock></gac-Clock>
+		</div>
+	</div>
 </div>

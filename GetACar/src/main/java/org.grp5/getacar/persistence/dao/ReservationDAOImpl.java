@@ -9,6 +9,7 @@ import org.grp5.getacar.persistence.entity.Vehicle;
 import org.grp5.getacar.persistence.validation.ValidationHelper;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.joda.time.DateTime;
 
@@ -48,6 +49,7 @@ public class ReservationDAOImpl extends BaseDAOImpl<Integer, Reservation> implem
     public List<Reservation> findByUser(User user) {
         final Criteria criteria = getHibernateSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("user", Preconditions.checkNotNull(user)));
+        criteria.addOrder(Order.desc("startTime"));
         return criteria.list();
     }
 }

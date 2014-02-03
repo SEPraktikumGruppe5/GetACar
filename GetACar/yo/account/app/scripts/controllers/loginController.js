@@ -1,9 +1,9 @@
 angular.module('accountApp')
-    .controller('LoginController', ['$scope', 'AccountService', '$window', '$stateParams',
-        function ($scope, AccountService, $window, $stateParams) {
+    .controller('LoginController', ['$rootScope', '$scope', 'AccountService', '$window', '$stateParams',
+        function ($rootScope, $scope, AccountService, $window, $stateParams) {
 
             $scope.loginFormData = {
-                timeSimulation : new Date()
+                timeSimulation: new Date()
             };
             $scope.errorMessage = undefined;
             $scope.errors = {};
@@ -13,6 +13,7 @@ angular.module('accountApp')
                 $scope.errorMessage = undefined;
                 $scope.errors = {};
                 $stateParams.justRegistered = undefined;
+                console.log($stateParams.redirect);
 
                 AccountService.login(loginFormData,
                     function (successResponse) {
@@ -24,7 +25,11 @@ angular.module('accountApp')
                         if (status === 202) {
                             location = headers('Location');
                             if (location) {
-                                $window.location.replace(location);
+                                if (!$stateParams.redirect) {
+                                    $window.location.replace(location);
+                                } else {
+                                    $window.location.replace(location + '#' + $stateParams.redirect);
+                                }
                             } else {
                                 $scope.errorMessage = 'Unknown Err0r!'; // TODO: ErrorMessageDirective?
                             }

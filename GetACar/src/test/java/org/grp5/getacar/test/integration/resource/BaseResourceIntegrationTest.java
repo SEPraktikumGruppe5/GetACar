@@ -12,10 +12,13 @@ import org.apache.shiro.authc.credential.DefaultPasswordService;
 import org.apache.shiro.authc.credential.PasswordService;
 import org.grp5.getacar.persistence.guice.PersistenceModule;
 import org.grp5.getacar.resource.guice.ResourcesModule;
+import org.grp5.getacar.service.RSSFeed;
+import org.grp5.getacar.service.RSSFeedImpl;
 import org.grp5.getacar.service.TimeSimulator;
 import org.grp5.getacar.service.TimeSimulatorImpl;
 import org.grp5.getacar.test.integration.util.PersistenceInitializer;
 import org.grp5.getacar.web.guice.annotation.AbsoluteImagePath;
+import org.grp5.getacar.web.guice.annotation.AbsoluteRSSFeedPath;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.After;
@@ -38,9 +41,11 @@ public class BaseResourceIntegrationTest extends AbstractShiroTest implements Mo
     @Override
     public void configure(Binder binder) {
         binder.bind(TimeSimulator.class).toInstance(timeSimulator);
+        binder.bind(RSSFeed.class).to(RSSFeedImpl.class);
         binder.bind(PasswordService.class).to(DefaultPasswordService.class);
         binder.bindConstant().annotatedWith(Names.named("shiro.successUrl")).to("/fakeSuccessUrl");
         binder.bindConstant().annotatedWith(AbsoluteImagePath.class).to("fakeAbsoluteImagePath");
+        binder.bindConstant().annotatedWith(AbsoluteRSSFeedPath.class).to("fakeAbsoluteRSSPath");
     }
 
     @Inject

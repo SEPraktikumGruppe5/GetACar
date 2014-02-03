@@ -60,6 +60,16 @@
                     </div>
                 </div>
             </div>
+	        <div class="row">
+		        <label class="col-sm-3">Start position</label>
+
+		        <div class="col-sm-9">
+			        <div>
+				        <gp-geocoder
+						        gp-geocode-lat-lng="reservationStartPosition"></gp-geocoder>
+			        </div>
+		        </div>
+	        </div>
             <div class="row">
                 <label class="col-sm-3">End position</label>
 
@@ -96,7 +106,7 @@
                             <!-- marker for vehicle position -->
                             <!-- can not put google.map.animations.BOUNCE , since it is not initialized yet -->
                             <div>
-                                <marker coords="map.vehiclePositionMarker" icon="map.vehiclePositionMarker.icon"></marker>
+                                <marker coords="map.startPositionMarker" icon="map.startPositionMarker.icon"></marker>
                             </div>
                             <!-- marker for end position -->
                             <!-- can not put google.map.animations.BOUNCE , since it is not initialized yet -->

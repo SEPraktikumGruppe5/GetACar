@@ -59,8 +59,10 @@ public class VehicleResourceIntegrationTest extends BaseResourceIntegrationTest 
     @BeforeClass
     public static void doBeforeClass() throws Exception {
         vehicleResource = Mockito.spy(vehicleResource);
-        Mockito.doReturn(true).when(vehicleResource).imageExists("vehicle1.png");
+        Mockito.doReturn(true).when(vehicleResource).imageExists("vehicle_1_1.jpg");
+        Mockito.doReturn(true).when(vehicleResource).imageExists("vehicle_1_2.jpg");
         Mockito.doReturn(true).when(vehicleResource).imageExists("testvehicle.png");
+        Mockito.doNothing().when(vehicleResource).addFeedMessage((Vehicle) Mockito.any());
 
         reservationResource = Mockito.spy(reservationResource);
         final User adminUser = new User();
@@ -69,7 +71,7 @@ public class VehicleResourceIntegrationTest extends BaseResourceIntegrationTest 
     }
 
     @Test
-    public void addVehicleSuccessTest() {
+    public void addVehicleSuccessTest() throws Exception {
         final CreateVehicleForm createVehicleForm = new CreateVehicleForm();
 
         final int count = vehicleDAO.count();

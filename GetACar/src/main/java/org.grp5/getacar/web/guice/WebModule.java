@@ -2,10 +2,13 @@ package org.grp5.getacar.web.guice;
 
 import com.google.inject.Singleton;
 import com.google.inject.servlet.ServletModule;
+import org.grp5.getacar.web.exception.UnsupportedOperatingSystemException;
 import org.grp5.getacar.web.filter.BaseURLRedirectFilter;
 import org.grp5.getacar.web.guice.annotation.AbsoluteImagePath;
+import org.grp5.getacar.web.guice.annotation.AbsoluteRSSFeedPath;
 import org.grp5.getacar.web.servlet.ImageServeServlet;
 import org.grp5.getacar.web.servlet.ImageUploadServlet;
+import org.grp5.getacar.web.servlet.RSSFeedServeServlet;
 import org.grp5.getacar.web.util.OSUtil;
 
 /**
@@ -14,6 +17,10 @@ import org.grp5.getacar.web.util.OSUtil;
  * {@link org.grp5.getacar.security.guice.GetACarShiroWebModule}.
  */
 public class WebModule extends ServletModule {
+
+    private static final String GET_A_CAR_DATA_BASE_PATH_UNIX = "/opt/GetACarData/";
+    private static final String GET_A_CAR_DATA_BASE_PATH_WINDOWS = "C:\\getacardata\\";
+
     @Override
     protected void configureServlets() {
         // Every servlet (or filter) is required to be a @Singleton
@@ -25,12 +32,19 @@ public class WebModule extends ServletModule {
         bind(ImageUploadServlet.class).in(Singleton.class);
         serve("/uploads").with(ImageUploadServlet.class);
         serve("/uploads/*").with(ImageUploadServlet.class);
+        bind(RSSFeedServeServlet.class).in(Singleton.class);
+        serve("/rss").with(RSSFeedServeServlet.class);
+        serve("/rss/").with(RSSFeedServeServlet.class);
 
         /* Constants */
         if (OSUtil.isUnix()) {
-            bindConstant().annotatedWith(AbsoluteImagePath.class).to("/opt/GetACarData/images/");
+            bindConstant().annotatedWith(AbsoluteImagePath.class).to(GET_A_CAR_DATA_BASE_PATH_UNIX + "images/");
+            bindConstant().annotatedWith(AbsoluteRSSFeedPath.class).to(GET_A_CAR_DATA_BASE_PATH_UNIX + "rss.xml");
         } else if (OSUtil.isWindows()) {
-            bindConstant().annotatedWith(AbsoluteImagePath.class).to("C:\\getacardata\\images\\");
+            bindConstant().annotatedWith(AbsoluteImagePath.class).to(GET_A_CAR_DATA_BASE_PATH_WINDOWS + "images\\");
+            bindConstant().annotatedWith(AbsoluteRSSFeedPath.class).to(GET_A_CAR_DATA_BASE_PATH_WINDOWS + "rss.xml");
+        } else {
+            throw new UnsupportedOperatingSystemException();
         }
     }
 }

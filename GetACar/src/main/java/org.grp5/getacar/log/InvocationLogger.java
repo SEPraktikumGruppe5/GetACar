@@ -2,7 +2,7 @@ package org.grp5.getacar.log;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
-import org.apache.onami.logging.core.InjectLogger;
+import org.grp5.getacar.log.guice.annotation.InjectLogger;
 import org.slf4j.Logger;
 
 import java.lang.reflect.Method;

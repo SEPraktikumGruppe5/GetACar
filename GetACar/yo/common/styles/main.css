@@ -49,6 +49,15 @@ body {
     margin: 0 auto;
 }
 
+.brand-logo {
+    margin-top: 4px;
+}
+
+.brand-logo img {
+    height: 45px;
+    margin-top: 4px;
+}
+
 .full-width,
 .full-width .datetimepicker table {
     width: 100%;
@@ -127,6 +136,10 @@ hr {
     width: 1190px;
 }
 
+.modal-dialog {
+    padding-bottom: 175px;
+}
+
 .carousel img {
     margin: 0 auto;
 }
@@ -139,6 +152,14 @@ hr {
     text-align: left !important;
 }
 
+.carousel .carousel-control {
+    background: none;
+}
+
+.vehicleManagementSlide {
+    height: 300px;
+}
+
 .vehicleManagementSlide .carousel-caption {
     left: 87%;
     padding-bottom: 0;
@@ -146,7 +167,11 @@ hr {
 }
 
 .slide-image {
-    max-height: 250px !important;
+    max-height: 300px !important;
+}
+
+.home-slide-image {
+    max-height: 400px !important;
 }
 
 .no-margin {
